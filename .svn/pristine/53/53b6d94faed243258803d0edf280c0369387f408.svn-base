@@ -1,0 +1,108 @@
+package site.itwill.dto;
+
+public class ProductDTO {
+
+	
+	
+	private int no;
+	private String name;
+	private int price;
+	private	int stock;
+	private String image;
+	private String imagedetail;
+	
+	
+	
+	public ProductDTO() {
+		// TODO Auto-generated constructor stub
+	}
+
+
+
+	public int getNo() {
+		return no;
+	}
+
+
+
+	public void setNo(int no) {
+		this.no = no;
+	}
+
+
+
+	public String getName() {
+		return name;
+	}
+
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+
+	public int getPrice() {
+		return price;
+	}
+
+
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+
+
+	public int getStock() {
+		return stock;
+	}
+
+
+
+	public void setStock(int stock) {
+		this.stock = stock;
+	}
+
+
+
+	public String getImage() {
+		return image;
+	}
+
+
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+
+
+	public String getImagedetail() {
+		return imagedetail;
+	}
+
+
+
+	public void setImagedetail(String imagedetail) {
+		this.imagedetail = imagedetail;
+	}
+
+
+
+	public ProductDTO(int no, String name, int price, int stock, String image, String imagedetail) {
+		super();
+		this.no = no;
+		this.name = name;
+		this.price = price;
+		this.stock = stock;
+		this.image = image;
+		this.imagedetail = imagedetail;
+	}
+	
+	
+	
+	
+	
+}

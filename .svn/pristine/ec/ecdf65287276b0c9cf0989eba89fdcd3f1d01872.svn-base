@@ -1,0 +1,368 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@include file="/security/login_status.jspf" %>
+<%
+    String message= (String)session.getAttribute("message");
+    if(message==null){
+        message="";
+    } else {
+        session.removeAttribute("message");
+    }
+%>
+
+<style>
+
+/* Column container */
+
+#side {
+    border: 4px solid green;
+    display: inline;
+    width: 20%;
+    float: left;
+}
+
+#side .side_warp {
+    padding: 0;
+    width: 200px;
+    margin: 0;
+}
+
+
+#side .lnb {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.mypage-lnb {
+    padding: 90px 0 100px;
+}
+
+#side .mypage-lnb h2 {
+    font-size: 22px;
+    font-family: "notokrB";
+    font-weight: bold;
+    line-height: 24px;
+
+}
+
+#side h2 {
+    position: relative;
+    margin: 0 auto 10px;
+    text-align: left;
+}
+
+h2 {
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+#side .mypage-lnb h3 {
+    position: relative;
+    padding: 0 0 15px 0;
+    line-height: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: "notokrM";
+    letter-spacing: 1px;
+    text-align: left;
+    background: none;
+}
+
+.mypage-lnb h3 {
+    margin: 32px 0 0;
+    color: #222;
+}
+
+h3 {
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+#side .mypage-lnb ul {
+    padding: 0 0 0 8px;
+    
+}
+
+.mypageUser {
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
+.mypage-lnb ul {
+    line-height: 24px;
+}
+
+ul {
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px; 
+}
+
+ul, li {
+    margin: 0;
+    list-style: none;
+}
+
+#side .mypage-lnb li {
+    line-height: 28px;
+}
+
+.mypage-lnb ul li {
+    
+}
+
+ul, li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+li {
+    display: list-item;
+}
+
+#side .mypage-lnb li a {
+    color: #8f8f8f;
+}
+
+a {
+    text-decoration: none;
+}
+
+.content {  
+    width: 1200px;
+    height: 1000px;
+    border: 3px solid red;
+    margin: 0 auto;
+}
+
+
+/* Main column */
+.main {   
+  margin: 0 50px;
+  width: 70%;
+  float: right;
+  border: 3px solid blue;
+}
+
+.member_infor {
+  display: inline-block;
+  width: 400px;
+  height: 150px;
+}
+.member_points {
+  display: inline-block;
+  width: 350px;
+  height: 75px;
+}
+
+.member_coupon {
+  display: inline-block;
+  width: 150px;
+  height: 75px;
+}
+
+.member_question {
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+}
+
+#gradesize {
+    padding: 30px 30px 30px 20px;
+    height: 150px;
+}
+
+#mygrade {
+    border: 1px solid gray;
+}
+
+#order-section {
+    border: 1px solid gray;
+}
+
+.section {
+    text-align: center;
+}
+
+.section-h {
+    text-align: left;
+    display: inline;
+}
+.section-h .option {
+    text-align: right;
+}
+
+
+ol li{
+  display: inline-block;
+}
+
+</style>
+
+<div class="content">
+    <!-- sidebar -->
+    <div id="side">
+    <div class="side_wrap -moslow">
+        <div class="inner_wrap -moslow">
+            <div class="lnb mypage-lnb">
+                <h2>마이페이지</h2>
+                <h3>쇼핑정보</h3>
+                <ul>
+                    <li>
+                      <a href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=order_search';">주문목록/배송조회</a></li>
+                    <li>
+                      <a href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=order_cancel';">취소/반품/교환내역</a></li>
+                    <li>
+                      <a href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=order_refund';">환불/입금리스트</a></li>
+                </ul>
+                <h3>고객센터</h3>
+                <ul>
+                    <li>
+                      <a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp">공지사항</a></li>
+                    <li>
+                      <a href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=board/QnA&work=QnA_list';">1:1문의</a></li>
+                    <li>
+                      <a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp">FAQ</a></li>
+                </ul>
+                <h3>회원정보</h3>
+                <ul>
+                    <li>
+                      <a href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=changeUser_confirm';">회원정보변경</a></li>
+                    <li>
+                      <a href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=deleteUser';">회원탈퇴</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- main -->
+    <div class="main">
+        <!-- 회원 가입시 회원 요약정보 -->
+        <div class="mypageUser" id="mygrade">
+            <div class="section" id="gradesize">
+                <div class="member_infor">
+                    <div class="member_img">
+                        <img alt="" src="">
+                    </div>
+                    <div class="member_text">
+                        <p><%=loginUser.getName() %>님의</p>
+                        <p>
+                            회원등급은 <span class="strong">일반회원등급</span>입니다.
+                        </p>
+                    </div>
+                </div>
+                <div class="member_points">
+                    <div class="member_question">
+                        <div class="inner">
+                            <span class=""></span>
+                            <p>문의</p>
+                            <div>
+                                <a href=""><span class="number">0</span></a> 건
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 배송주문 내역 -->
+        <div class="mypageUser" id="ordering">
+            <div class="section-h" id="">
+                <h2>진행중인 주문</h2>
+                <p>최근 30일 내에 진행중인 주문정보입니다.</p>
+            </div>
+            <div class="section-body" id="order-section">
+                <div class="order-step clear">
+                <table>
+                    <tr>
+                        <td>입금대기</td>
+                            <th>0</th>
+                        <td>결제완료</td>
+                            <th>0</th>
+                        <td>상품준비중</td>
+                            <th>0</th>
+                        <td>배송중</td>
+                            <th>0</th>
+                        <td>배송완료</td>
+                            <th>0</th>
+                        <td>구매확정</td>
+                            <th>0</th>
+                    </tr>
+                </table>
+                    <ol class="clear">
+                        <li>
+                            <div class="num">
+                                <span>0</span>
+                            </div>
+                            <p>입금대기</p>
+                        </li>
+                        <li>
+                            <div class="num">
+                                <span>0</span>
+                            </div>
+                            <p>결제완료</p>
+                        </li>
+                        <li>
+                            <div class="num">
+                                <span>0</span>
+                            </div>
+                            <p>상품준비중</p>
+                        </li>
+                        <li>
+                            <div class="num">
+                                <span>0</span>
+                            </div>
+                            <p>배송중</p>
+                        </li>
+                        <li>
+                            <div class="num">
+                                <span>0</span>
+                            </div>
+                            <p>배송완료</p>
+                        </li>
+                        <li>
+                            <div class="num">
+                                <span>0</span>
+                            </div>
+                            <p>구매확정</p>
+                        </li>
+                    </ol>
+                    <div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 최근 주문 정보 -->
+        <div class="mypageUser" id="orderlist">
+            <div class="section-h" id="">
+                <h2>최근 주문 정보</h2>
+                <p>최근 30일 내에 주문하신 내역입니다.</p>
+                <div class="option">
+                    <a href="">더보기</a>
+                </div>
+            </div>
+            <hr>
+            <div class="section-body" id=""></div>
+        </div>
+        <!-- 최근 본 상품 -->
+        <div class="mypageUser" id="choicelist">
+            <div class="section-h" id="">
+                <h2>최근 본 상품</h2>
+                <p>박재윤 님께서 본 최근 상품입니다.</p>
+            </div>
+            <hr>
+            <div class="section-body" id=""></div>
+        </div>
+    </div>
+</div>

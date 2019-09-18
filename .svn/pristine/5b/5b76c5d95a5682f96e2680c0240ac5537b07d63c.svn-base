@@ -1,0 +1,196 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<style type="text/css">
+body {
+    font-family: "Noto Sans KR";
+}
+
+#main{
+    width: 1180px;
+    margin: 100px auto;
+    text-align: center;
+}
+
+#infor {
+    width: 800px;
+    margin: 0 auto;
+}
+
+table {
+    border-collapse: collapse;
+    margin-left: 0;
+}
+th,td {
+    text-align: left;
+    padding-right: 50px;
+}
+
+th{
+    font-size: 13px;
+}
+
+#id,#pass,#repass,#name,#nickName,#phone{
+    width: 300px;
+    height: 20px;
+}
+
+#choice {
+    height: 20px;
+}
+
+#email,#addr{
+    width: 200px;
+    height: 20px;
+}
+
+#addr_ad1,#addr_ad2{
+    width: 210px;
+    height: 20px;
+}
+
+.check {
+    font-size: 8px;
+}
+
+#submitBtn{
+    width: 150px;
+    height: 20px;
+    background-color: black;
+    color: white;
+}
+
+#postAddress {
+    border: 1px solid black;
+    font-size: 13px;
+}
+
+.error{
+    color: red;
+    position: relative;
+    display: none;
+}
+
+</style>
+    <div id="main">
+    <h1>JOIN US</h1>
+    <p>
+        약관동의> <span style="color: black; font-weight: bold;">정보입력</span> > 가입완료
+    </p>
+    <form id="insert" name="insertForm" method="post" action="<%=request.getContextPath() %>/lush/member/insertUser_action.jsp">
+        <div id="infor">
+        <div id="loghead">
+            <p><span style="font-weight: bold; font-size: 22px;" id="reffer">기본정보</span>
+            표시는반드시입력하셔야하는항목입니다.</p>
+        </div>
+        <hr>
+        <table>
+            <tr>
+                <th>아이디</th>
+                <td>
+                <input type="text" name="id" id="id" required>
+                <div id="idRegMsg" class="error">아이디는 영문자로 시작되는 영문자,숫자,_의 6~20범위의 문자로만 작성 가능합니다.</div>
+                </td>
+            </tr>
+            <tr>
+                <th>비밀번호</th>
+                <td>
+                <input type="password" name="pass" id="pass" required>
+                <div id="passwdRegMsg" class="error">비밀번호는 영문자,숫자,특수문자가 반드시 하나이상 포함된 6~20 범위의 문자로만 작성 가능합니다.</div>
+                </td>
+            </tr>
+            <tr>
+                <th>비밀번호확인</th>
+                <td>
+                <input type="password" name="repass" id="repass" required>
+                <div id="repasswdMatchMsg" class="error">비밀번호가 일치하지 않습니다.</div>
+                </td>
+            </tr>
+            <tr>
+                <th>이름</th>
+                <td>
+                <input type="text" name="name" id="name" required>
+                </td>
+            </tr>
+            <tr>
+                <th>닉네임</th>
+                <td>
+                <input type="text" name="nickName" id="nickName">
+                </td>
+            </tr>
+            <tr>
+                <th>이메일</th>
+                <td>
+                <input type="email" name="email" id="email" required>
+                <select name="choice" id="choice">
+                    <option value="" selected>직접입력</option>
+                    <option value="@naver.com">naver.com</option>
+                    <option value="@daum.net">daum.net</option>
+                    <option value="@gmail.com">gmail.com</option>
+                    <option value="@nate.com">nate.com</option>
+                </select>
+                <input type="checkbox" class="check">정보/이벤트메일수신에동의합니다.
+                </td>
+            </tr>
+            <tr>
+                <th>휴대폰번호</th>
+                <td>
+                <input type="number" name="phone" id="phone" placeholder="-없이입력하세요." required>
+                <input type="checkbox" class="check">정보/이벤트메일수신에동의합니다.
+                <div id="phoneRegMsg" class="error">전화번호는 - 없이 숫자로만 입력해 주세요.</div>
+                </td>
+            </tr>
+             <tr>
+                <th>주소</th>
+                <td>
+                <input type="text" name="addr" id="addr">
+                <span id="postAddress">우편번호검색</span><br>
+                <input type="text" name="addr_ad1" id="addr_ad1"> <input type="text" name="addr_ad2" id="addr_ad2">
+                </td>
+            </tr>
+        </table>
+        <hr>
+        </div>
+        <div id="fs">
+            <button type="submit" id="submitBtn" style="width: 300px; height: 40px;">회원가입</button>
+        </div>
+    </form>
+    </div>
+<script type="text/javascript">
+$("#insert").submit(function() {
+    var submitResult=true;
+    
+    $(".error").css("display","none");
+
+    var idReg=/^[a-zA-Z]\w{5,19}$/g;
+    if(!idReg.test($("#id").val())) {
+        $("#idRegMsg").css("display","block");
+        submitResult=false;
+    }
+        
+    var passwdReg=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*_-]).{6,20}$/g;
+    if(!passwdReg.test($("#passwd").val())) {
+        $("#passwdRegMsg").css("display","block");
+        submitResult=false;
+    } 
+    
+    if($("#passwd").val()!=$("#repasswd").val()) {
+        $("#repasswdMatchMsg").css("display","block");
+        submitResult=false;
+    }
+
+    var phoneReg=/^\d{11}$/;
+    if(!phoneReg.test($("#phone").val())) {
+        $("#phoneRegMsg").css("display","block");
+        submitResult=false;
+    }
+    
+    return submitResult;
+    
+});
+
+$("#postAddress").click(function() {
+	window.open("<%=request.getContextPath() %>/lushuser/postaddress_search.jsp","우편번호검색","width=500,height=400,left=400,top=350");
+});
+</script>

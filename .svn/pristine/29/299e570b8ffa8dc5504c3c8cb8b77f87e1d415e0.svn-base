@@ -1,0 +1,87 @@
+package site.itwill.dto;
+/*
+이름       널?       유형             
+-------- -------- -------------- 
+NUM      NOT NULL NUMBER(20)     
+RATING   NOT NULL VARCHAR2(100)  //상품의 별점 - 별★★★★★~★
+ITEM     NOT NULL NUMBER(10)     //리뷰를 달기 위해선 어떤 상품 번호인지 알아야함. 
+CONTENT  NOT NULL VARCHAR2(3000) //리뷰 내용
+ID     NOT NULL VARCHAR2(100)  	//글쓴이
+REGDATE           DATE           
+STATUS            NUMBER(1)      
+
+ 
+*/
+
+public class ReviewDTO {
+	private int num;
+	private String rating;
+	private int item;
+	private String content;
+	private String id;
+	private String regDate;
+	private int status;
+
+	public ReviewDTO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getNum() {
+		return num;
+	}
+
+	public void setNum(int num) {
+		this.num = num;
+	}
+
+	public String getRating() {
+		return rating;
+	}
+
+	public void setRating(String rating) {
+		this.rating = rating;
+	}
+
+	public int getItem() {
+		return item;
+	}
+
+	public void setItem(int item) {
+		this.item = item;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getRegDate() {
+		return regDate;
+	}
+
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	
+	
+}

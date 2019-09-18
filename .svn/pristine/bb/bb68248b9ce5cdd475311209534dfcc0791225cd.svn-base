@@ -1,0 +1,195 @@
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="site.itwill.dto.noticeDTO"%>
+<%@page import="java.util.List"%>
+<%@page import="site.itwill.dao.noticeDAO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+
+<%
+	String search = request.getParameter("search");
+	if (search == null)
+		search = "";
+	String keyword = request.getParameter("keyword");
+	if (keyword == null)
+		keyword = "";
+
+	int pageNum = 1;
+	if (request.getParameter("pageNum") != null) {
+		pageNum = Integer.parseInt(request.getParameter("pageNum"));
+
+	}
+
+	int pageSize = 10;
+
+	int totalNotice = noticeDAO.getDAO().getNoticeTotal(keyword, search);
+
+	int totalPage = (int) Math.ceil((double) totalNotice / pageSize);
+
+	if (pageNum <= 0 || pageNum > totalPage) {
+		pageNum = 1;
+	}
+
+	int startRow = (pageNum - 1) * pageSize + 1;
+
+	int endRow = pageNum * pageSize;
+
+	if (endRow > totalNotice) {
+		endRow = totalNotice;
+	}
+
+	List<noticeDTO> noticeList = noticeDAO.getDAO().getNoticeList(startRow, endRow, search, keyword);
+
+	int number = totalNotice - (pageNum - 1) * pageSize;
+
+	//	noticeDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
+	String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+%>
+
+
+
+
+<jsp:include page="/admin/header.jsp" />
+ <link href="css/admin_board.css" rel="stylesheet" type="text/css">
+
+<!--본문내용역역 시작 content로 잡으면 됩니다  -->
+
+<div id="content">
+	<div class="mTitle">
+		<h1>게시물관리</h1>
+	</div>
+
+	<div class="section" id="QA_list2">
+
+
+
+		<form
+			action="<%=request.getContextPath()%>/admin/index.jsp?workgroup=board&work=board_list"
+			method="post" id="searchForm">
+
+			<div class="mButtongCenter">
+				<input type="text" name="keyword" id="keyword">
+
+				<button type="submit" class="btnSearch">검색</button>
+			</div>
+		
+
+		<!-- 표영역 -->
+		
+			<div class="mBoardtypeListgScrollgCell">
+
+				<table class="eChkColor">
+				
+					<tr>
+						<th scope="col"><input type="checkbox" class="allcheck"id="check"></th>
+						<th  width="100">번호</th>
+						<th width="100">작성자</th>
+						<th width="100">제목</th>
+						<th width="100">조회수</th>
+						<th width="100">작성일</th>
+					</tr>
+
+					<%if (totalNotice==0){ %>
+					<tr>
+						<td colspan="5">검색된 게시글이 존재하지 않습니다</td>
+					</tr>
+					<%}else { %>
+					<%for (noticeDTO notice:noticeList){ %>
+
+
+					
+					<tr>
+						<!-- 글번호 -->
+						<td><%=number%></td>
+						<!--글제목 -->
+						<td class="title"><a
+							href="<%=request.getContextPath()%>
+							/admin/index.jsp?workgroup=board&work=board_detail&num=
+							<%=notice.getNum()%>&pageNum=<%=pageNum%>&search=<%=search%>&keyword=
+							<%=keyword%>"><%=notice.getTitle() %></a>
+						</td>
+						<!-- 작성자-->
+						<td><%=notice.getId() %></td>
+						<!-- 조회수 -->
+						<td><%=notice.getReadcount() %></td>
+						<!-- 작성일 -->
+						<% if(currentDate.equals(notice.getRegdate().substring(0,10))) { %>
+						<%=notice.getRegdate().substring(11, 19) %>
+						<% } else { %>
+						<%=notice.getRegdate().substring(0, 19) %>
+						<% } %>
+
+					</tr>
+					<% number--; %>
+				<%} %>
+				<% }%>
+			</table>
+			</form>
+			</div>
+
+			<%-- 페이지 번호 출력(페이징 처리) 및 하이퍼 링크 --%>
+
+		</div>
+		<br>
+
+<!--
+	
+
+
+	</div>
+
+  -->
+
+<%
+int blockSize=5;
+int startPage=(pageNum-1)/blockSize*blockSize+1;
+int endPage=startPage+blockSize-1;
+if(endPage>totalPage){
+	endPage=totalPage;
+}
+%>
+<div>
+<%if (startPage>blockSize){ %>
+<a href="<%=request.getContextPath()%>
+/admin/index.jsp?workgroup=board&work=board_list&pageNum=1
+&search=<%=search%>&keyword=<%=keyword%>">[처음]</a>
+<a href="<%=request.getContextPath()%>/admin/index.jsp?workgroup=board&work=board_list&pageNum
+=<%=startPage-blockSize%>&search=<%=search%>&keyword=<%=keyword%>">[이전]</a>
+	<% } else { %>	
+	[처음][이전]
+	<%} %>
+<% for(int i=startPage;i<=endPage;i++) { %>
+		<% if(pageNum!=i) { %>
+		<a href="<%=request.getContextPath()%>/admin/index.jsp?workgroup=board&work=board_list&pageNum=
+		<%=i%>&search=<%=search%>&keyword=<%=keyword%>">[<%=i %>]</a>
+		<% } else { %>
+		<span style="font-weight: bold; color: red;">[<%=i %>]</span>
+		<% } %>
+	<% } %>
+		<% if(endPage!=totalPage) { %>
+	<a href="<%=request.getContextPath()%>
+	/admin/index.jsp?workgroup=board&work=board_list&pageNum=
+	<%=startPage+blockSize%>&search=<%=search%>&keyword=<%=keyword%>">[다음]</a>
+	<a href="<%=request.getContextPath()%>/admin/index.jsp?workgroup=board&work=board_list&pageNum=
+	<%=totalPage%>&search=<%=search%>&keyword=<%=keyword%>">[마지막]</a>
+	<% } else { %>
+	[다음][마지막]
+	<% } %>
+</div>
+<br>
+
+
+
+
+</div>
+<!--content 영역종료 -->
+
+
+</div>
+<!-- container 영역종료 -->
+</div>
+<!-- wrap영역종료 -->
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+eclipse.preferences.version=1
+encoding//WebContent/board/QnA/QnA_modify_action.jsp=UTF-8
+encoding//WebContent/board/QnA/QnA_remove_action.jsp=UTF-8
+encoding//src/site/itwill/dao/LushUserDAO.java=UTF-8

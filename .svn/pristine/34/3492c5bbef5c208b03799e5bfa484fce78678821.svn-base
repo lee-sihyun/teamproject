@@ -1,0 +1,73 @@
+<%@page import="site.itwill.dao.ProductDAO"%>
+<%@page import="site.itwill.dto.ProductDTO"%>
+<%@page import="site.itwill.dto.LushUserDTO"%>
+<%@page import="java.util.List"%>
+<%@page import="site.itwill.dao.CartDAO"%>
+<%@page import="site.itwill.dto.CartDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@include file="/security/login_status2.jspf" %>
+<%-- 상품페이지에서 상품정보를 전달받아 CART 테이블에 저장하고 출력페이지로 이동 --%>
+<%-- => 1. 상품 >> 주문 일 경우 처리페이지 = order_write.jsp  --%>
+<%
+	//POST 방식으로 요청되어 전달된 값들에 대한 캐릭터셋 변경
+	request.setCharacterEncoding("UTF-8");
+
+	//CART 테이블에 저장하기 위해 전달받은 값들을 반환받아 저장
+	//장바구니번호 : 자동증가값 : 전달 X
+	
+	//아이디 : 세션으로 공유된 인증정보를 반환받아 저장
+	String id=loginUser.getId();  
+
+	//상품코드 : 상품페이지에서 getParameter
+	int itemNo=Integer.parseInt(request.getParameter("itemNo"));
+
+	//수량 : 상품페이지에서 getParameter
+	int volume=Integer.parseInt(request.getParameter("amount"));
+
+	//금액 : itemNo로 상품정보 DTO 생성 후 가격 가져오기
+	ProductDTO item=ProductDAO.getDAO().getProduct2(itemNo);
+	int price=item.getPrice();
+
+	//합계금액 : 수량 * 금액 : 전달 X
+	
+	//CART 테이블의 cart_no 컬럼에 저장할 자동증가값을 생성하는 DAO 클래스의 메소드 호출 
+	int num=CartDAO.getCartDAO().getCartNum();
+			
+	//DTO 인스턴스 생성 후 필드값 변경
+	CartDTO cart1=new CartDTO();
+	cart1.setCartNo(num);
+	cart1.setId(id);
+	cart1.setItemNo(itemNo);
+	cart1.setVolume(volume);
+	cart1.setPrice(price);
+	cart1.setTotalPrice(volume*price);
+	cart1.setCartStatus(0);
+			
+	//변경한 값을 CART 테이블에 전달해 저장하는 DAO 클래스의 메소드 호출
+	CartDAO.getCartDAO().addCart(cart1);
+	
+	//order_write 에 전달해줄 값 : 장바구니번호, 재고
+	int checkCartNo=cart1.getCartNo();
+	int stock=item.getStock();
+
+	//출력페이지로 이동
+	response.sendRedirect(request.getContextPath()+"/index.jsp?workgroup=order&work=order_write&checkCartNo="+checkCartNo+"&stock="+stock);
+	
+%>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,206 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<style type="text/css">
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    color: #333;
+    font-family: "notokrR",Malgun Gothic,"맑은 고딕",AppleGothic,Dotum,"돋움",sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    letter-spacing: -0.5px;
+}
+
+#side {
+    border-left: none;
+    border-right: none;
+    transition: all 500ms ease;
+    display: table-cell;
+    width: 200px;
+    height: 1159px;
+    vertical-align: top;
+    z-index: 2;
+}
+
+#side .side_warp {
+    padding: 0;
+    transition: all 500ms ease;
+    display: block;
+    position: relative;
+    width: 200px;
+    margin: 0;
+}
+
+.inner_wrap {
+    width: 180px;
+    min-width: 180px;
+    max-width: 180px;
+    margin: 0 20px 0 0;
+    transition: all 500ms ease;
+    padding: 0;
+    position: relative;
+    height: 1159px;
+}
+
+#side .lnb {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.mypage-lnb {
+    padding: 90px 0 100px;
+}
+
+div {
+	display: block;
+}
+
+#side .mypage-lnb h2 {
+    font-size: 22px;
+    font-family: "notokrB";
+    font-weight: bold;
+    line-height: 24px;
+
+}
+
+#side h2 {
+    display: block;
+    position: relative;
+    margin: 0 auto 10px;
+    color: #222222;
+    text-align: left;
+}
+
+h2 {
+	margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+#side .mypage-lnb h3 {
+    display: block;
+    position: relative;
+    padding: 0 0 15px 0;
+    line-height: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: "notokrM";
+    letter-spacing: 1px;
+    text-align: left;
+    background: none;
+}
+
+.mypage-lnb h3 {
+    margin: 32px 0 0;
+    color: #222;
+}
+
+h3 {
+	margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+#side .mypage-lnb ul {
+    padding: 0 0 0 8px;
+    
+}
+
+.mypage-lnb ul {
+    line-height: 24px;
+}
+
+ul {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;	
+}
+
+ul, li {
+    margin: 0;
+    list-style: none;
+}
+
+#side .mypage-lnb li {
+    line-height: 28px;
+}
+
+.mypage-lnb ul li {
+    
+}
+
+ul, li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+
+#side .mypage-lnb li a {
+    color: #8f8f8f;
+}
+
+#side a {
+    transition: all 0.20s ease-in-out;
+}
+
+a {
+	text-decoration: none;
+}
+
+</style>
+
+
+
+<div id="side">
+    <div class="side_wrap -moslow">
+        <div class="inner_wrap -moslow">
+			<div class="lnb mypage-lnb">
+				<h2>마이페이지</h2>
+				<h3>쇼핑정보</h3>
+				<ul>
+					<li>
+					  <a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp">주문목록/배송조회</a></li>
+					<li>
+					  <a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp">취소/반품/교환내역</a></li>
+					<li>
+					  <a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp">환불/입금리스트</a></li>
+				</ul>
+				<h3>고객센터</h3>
+				<ul>
+					<li>
+					  <a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp">공지사항</a></li>
+					<li>
+					  <a href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=board/QnA&work=QnA_list';">1:1문의</a></li>
+					<li>
+					  <a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp">FAQ</a></li>
+				</ul>
+				<h3>회원정보</h3>
+				<ul>
+					<li>
+					  <a href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=changeUser_confirm';">회원정보
+							변경</a></li>
+					<li>
+					  <a href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=deleteUser';">회원
+							탈퇴</a></li>
+				</ul>
+			</div>
+        </div>
+    </div>
+</div>

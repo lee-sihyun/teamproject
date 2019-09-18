@@ -1,0 +1,628 @@
+
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
+<%@page import="site.itwill.dto.testDTO"%>
+<%@page import="site.itwill.dao.testDAO"%>
+<%@page import="java.util.List"%>
+<%@page import="site.itwill.dto.ProductDTO"%>
+
+<%@page import="site.itwill.dao.ProductDAO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<%
+	String search = request.getParameter("search");
+	if (search == null)
+		search = "";
+	String keyword = request.getParameter("keyword");
+	if (keyword == null)
+		keyword = "";
+
+	int pageNum = 1;
+	if (request.getParameter("pageNum") != null) {
+		pageNum = Integer.parseInt(request.getParameter("pageNum"));
+
+	}
+
+	int pageSize = 10;
+
+	int totalProduct = ProductDAO.getDAO().getProductTotal(search, keyword);
+
+	int totalPage = (int) Math.ceil((double) totalProduct / pageSize);
+
+	if (pageNum <= 0 || pageNum > totalPage) {
+		pageNum = 1;
+	}
+
+	int startRow = (pageNum - 1) * pageSize + 1;
+
+	int endRow = pageNum * pageSize;
+
+	if (endRow > totalProduct) {
+		endRow = totalProduct;
+	}
+
+	List<ProductDTO> productList = ProductDAO.getDAO().getProductList(startRow, endRow, search, keyword);
+
+	int number = totalProduct - (pageNum - 1) * pageSize;
+
+	//	noticeDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
+	//String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+	
+
+	
+	
+ 
+%>
+<jsp:include page="/admin/header.jsp" />
+<!-- <link href="css/product_list.css" rel="stylesheet" type="text/css"> -->
+
+<!--본문내용역역 시작 content로 잡으면 됩니다  -->
+
+<!--본문내용역역 시작 content로 잡으면 됩니다  -->
+
+<style type="text/css">
+
+/*본문영역시작*/
+#content {
+	width: 1280px;
+	height: 919px;
+	padding: 0 40px 40px 40px;
+	box-sizing: border-box;
+	vertical-align: top;
+}
+
+.headingArea {
+	width: 1280px;
+	height: 30px;
+	position: relative;
+	margin: 0 0 38px;
+}
+
+form {
+	width: 1280px;
+	height: 821px;
+	display: block;
+}
+
+.optionArea {
+	width: 1238px;
+	height: 265px;
+	padding: 20px 20px 20px 20px;
+	margin: 0 0 30px 0;
+	border: 1px solid #ddd;
+	border-radius: 2px;
+	clear: both;
+	background: #fff;
+	box-shadow: 0px 2px 1px 0px rgba(205, 211, 222, 1);
+	clear: both;
+	border-radius: 2px;
+	border: 1px solid #ddd;
+}
+
+.mOption {
+	width: 1238px;
+	height: 50px;
+}
+
+#table1 {
+	width: 1237px;
+	height: 188px;
+	height: 50px;
+	table-layout: fixed;
+	border: 0;
+	border-spacing: 0;
+	border-collapse: collapse;
+	line-height: 1.5;
+	background-color: #fff;
+}
+
+tr {
+	width: 1237px;
+	height: 49px;
+	display: table-row;
+	vertical-align: inherit;
+	border-color: inherit;
+}
+
+.type {
+	width: 135px;
+	height: 32x;
+	padding: 9px 9px 7px 9px;
+	background-color: #f3f3f3;
+	display: table-cell;
+	border: 1px solid #dedede;
+	/*vertical-align: top;
+
+   word-wrap: break-word;
+   font-weight: bold;*/
+}
+
+#pname {
+	width: 135px;
+	height: 32px;
+	padding: 9px 9px 7px 9px;
+	border: 1px solid #dedede;
+}
+
+.fTexteSearchText {
+	width: 280px;
+	height: 28px;
+	padding: 0px 9px 2px 9px;
+	border: 1px solid #d4d4d4;
+}
+/*
+td {
+	width: 1064px;
+	height: 32px;
+	padding: 9px 9px 7px;
+	border: 1px solid #dedede;
+	text-align: left;
+	word-wrap: break-word;
+	display: table-cell;
+	vertical-align: inherit;
+}
+*/
+tbody {
+	width: 1237px;
+	/* height: 188px;*/
+	height: 50px;
+	height: 50px;
+	display: table-row-group;
+	vertical-align: middle;
+	border-color: inherit;
+	    text-align: center;
+}
+
+.mButtongCenter {
+	width: 1234px;
+	height: 36x;
+	position: relative;
+	text-align: center;
+	margin: 20px 0;
+	padding: 0 4px 0 0;
+}
+
+.mButton a:first-child {
+	margin-left: 0;
+}
+
+.btnSearch {
+	width: 42px;
+	height: 34px;
+	padding: 0 20px 0 20px;
+	color: #fff;
+	line-height: 34px;
+	border: 1px solid transparent;
+	background-color: #55a0ff;
+	margin:0px 20px 0px 0px;
+}
+
+.btnSearchreset {
+	/*
+	color: #55a0ff;
+	border-color: #55a0ff;
+	background-color: #fff;
+	
+	*/
+		width: 42px;
+	height: 34px;
+	padding: 0 20px 0 20px;
+	color: #fff;
+	line-height: 34px;
+	border: 1px solid transparent;
+	background-color: #55a0ff;
+}
+
+.section {
+	width: 1238px;
+	height: 1000px;
+	margin: 0 0 30px 0;
+	padding: 80px 20px 30px 20px;
+	border-radius: 2px;
+	border: 1px solid #ddd;
+	background: #fff;
+	box-shadow: 0px 2px 1px 0px rgba(205, 211, 222, 1);
+}
+
+.mBoardtypeListgScrollgCell {
+	width: 1236px;
+	height: 700px;
+	position: relative;
+	border: 1px solid #dedede;
+	/*overflow: auto;
+
+   border-right: 1px solid #d9dadc;
+   border-left: 1px solid #d9dadc;
+   */
+}
+
+.eChkColor {
+	width: 1236px;
+	height: 234px;
+	border-top: 1px solid #dedede;
+	background-color: #fff;
+	line-height: 1.5;
+	/*
+   table-layout: fixed;
+   width: 100%;
+   border: 0;
+   border-spacing: 0;
+   border-collapse: collapse;
+   */
+}
+
+colgroup {
+	display: table-column-group;
+}
+
+thead {
+	width: 1252px;
+	height: 38px;
+	display: table-header-group;
+	vertical-align: middle;
+	border-color: inherit;
+}
+
+input[type="checkbox"] {
+	width: 18px;
+	height: 18px;
+	position: relative;
+	opacity: 1;
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+	font-size: 14px;
+	color: #2e3039;
+	border: 1px solid #d4d4d4;
+	background: #fff;
+	outline: 0;
+}
+
+.gLeft {
+	float: left;
+	text-align: center;
+}
+
+.mBoardtypeListgScrollgCell thead th {
+	width: 1206px;
+	height: 28px;
+	padding-left: 4px;
+	padding-right: 4px;
+	border-right-width: 0;
+	padding: 8px 5px;
+	border: 1px solid #dedede;
+	text-align: center;
+	vertical-align: middle;
+	color: #2e3039;
+	background-color: #f3f3f3;
+	word-wrap: break-word;
+}
+
+.mCtrltypeFooter {
+	width: 1206px;
+	height: 28px;
+	margin: -1px 0 0 0;
+	padding: 7px 15px 7px 15px;
+	border: 1px solid #dedede;
+	line-height: 21px;
+	text-align: center;
+	background: #fff;
+}
+
+.txtLess {
+	vertical-align: middle;
+	font-size: 13px;
+}
+
+.btnNormaldelete {
+	/*width: 50px;*/
+	/*height: 50px;*/
+	padding: 0 10px;
+	color: #1c1c1c;
+	font-size: 13px;
+	font-weight: normal;
+	line-height: 26px;
+	border: 1px solid #98989b;
+	background-color: #fff;
+	position: relative;
+	text-align: center;
+	/* display: inline-block;*/
+	transition: .2s ease-out;
+	vertical-align: middle;
+	text-decoration: none;
+	white-space: nowrap;
+	box-sizing: border-box;
+	/*
+   */
+}
+
+.btnNormalmodify {
+	/*width: 50px;*/
+	/*height: 50px;*/
+	padding: 0 10px;
+	color: #1c1c1c;
+	font-size: 13px;
+	font-weight: normal;
+	line-height: 26px;
+	border: 1px solid #98989b;
+	background-color: #fff;
+	transition: .2s ease-out;
+	vertical-align: middle;
+	text-decoration: none;
+	white-space: nowrap;
+	box-sizing: border-box;
+}
+</style>
+<div id="content">
+	<form method="post" name="productform" id="productform">
+		<div class="mTitle">
+			<h1>상품관리</h1>
+		</div>
+
+		<!--<div class="optionArea" id="QA_list1">
+					
+
+					</div> -->
+		<!-- QA_list1종료 -->
+		<div class="section" id="QA_list2">
+
+
+			<div class="mOption">
+				<table>
+					<tr>
+
+						<th scope="row">상품명</th>
+
+						<td colspan="1">
+							<div id="testfiled">
+
+								<select name="search">
+									<option value="name" selected="selected">&nbsp;상품명&nbsp;</option>
+									<option value="item_no">&nbsp;상품코드&nbsp;</option>
+
+								</select> <input type="text" name="keyword" id="keyword"
+									class="fTexteSearchText">
+
+							</div>
+
+						</td>
+					</tr>
+
+
+
+
+
+				</table>
+
+			</div>
+
+			<!-- 검색영역 종료 -->
+			<div class="mButtongCenter">
+				<button type="submit" class="btnSearch" id="searchBtn">검색</button>
+
+
+
+
+
+
+			</div>
+
+			<!-- 표영역 -->
+
+			<div class="mBoardtypeListgScrollgCell">
+
+				<table class="eChkColor">
+
+					<tr>
+
+						<td class="type"><input type="checkbox" name="allCheck" id="allCheck"></td>
+						<td class="type">번호</td>
+						<td class="type">카테고리</td>
+						<td class="type">상품코드</td>
+						<td class="type">상품명</td>
+						<td class="type">상품가격</td>
+						<td class="type">상품재고수량</td>
+						<td class="type">상품이미지</td>
+						<%-- <td class="type"> 상품설명</td>--%>
+
+
+					</tr>
+
+
+					<%
+						if (totalProduct == 0) {
+					%>
+					<tr>
+						<td>등록된 상품이 존재하지 않습니다.</td>
+					</tr>
+					<%
+						} else {
+					%>
+					<%
+						for (ProductDTO product : productList) {
+					%>
+					<tr>
+
+
+						<td><input type="checkbox" name="checkName" id="checkName"
+							value="<%=product.getName()%>" class="check"></td>
+						<td><%=number%></td>
+
+						<td>
+							<%
+								if (Integer.parseInt(product.getMainCategory()) == 1) {
+							%> 배쓰 <%
+								} else if (Integer.parseInt(product.getMainCategory()) == 2) {
+							%> 샤워 <%
+								} else if (Integer.parseInt(product.getMainCategory()) == 3) {
+							%> 보디 <%
+								}
+							%>
+						</td>
+
+
+						<td><a
+							href="<%=request.getContextPath()%>
+                     /admin/index.jsp?workgroup=product&work=product_detail&num=
+                     <%=product.getNum()%>&pageNum=<%=pageNum%>&search=<%=search%>&keyword=
+                     <%=keyword%>"><%=product.getItemNo()%></a></td>
+
+
+
+						<td><%=product.getName()%></td>
+						<td><%=product.getPrice()%></td>
+						<td><%=product.getStock()%></td>
+						<td><img
+							src="<%=request.getContextPath()%>/admin/product_image/<%=product.getImage()%>"
+							width="200"></td>
+						<%--    <td> <%=product.getImageDetail() %></td>--%>
+					</tr>
+					<%
+						number--;
+					%>
+					<%
+						}
+					%>
+					<%
+						}
+					%>
+
+
+				</table>
+
+				<%
+					int blockSize = 5;
+
+					int startPage = (pageNum - 1) / blockSize * blockSize + 1;
+
+					int endPage = startPage + blockSize - 1;
+
+					if (endPage > totalPage) {
+						endPage = totalPage;
+					}
+				%>
+
+			
+
+			</div>
+
+			<div class="mCtrltypeFooter">
+				<div class="gLeft">
+					<span class="txtLess">선택상품을 </span>
+
+					<button type="submit" class="btnNormaldelete" name="removeBtn"
+						id="removeBtn">삭제</button>
+				
+
+
+
+
+				</div>
+				
+				<!-- 여기 -->
+	<%-- 페이지 번호 출력 및 하이퍼 링크 --%>
+				<div>
+					<%
+						if (startPage > blockSize) {
+					%>
+					<a
+						href="<%=request.getContextPath()%>/admin/index.jsp?workgroup=product&work=product_list&pageNum=1&search=<%=search%>&keyword=<%=keyword%>">[처음]</a>
+					<a
+						href="<%=request.getContextPath()%>/admin/index.jsp?workgroup=product&work=product_list&pageNum=<%=startPage - blockSize%>&search=<%=search%>&keyword=<%=keyword%>">[이전]</a>
+					<%
+						} else {
+					%>
+					[처음][이전]
+					<%
+						}
+					%>
+
+					<%
+						for (int i = startPage; i <= endPage; i++) {
+					%>
+					<%
+						if (pageNum != i) {
+					%>
+					<a
+						href="<%=request.getContextPath()%>/admin/index.jsp?workgroup=product&work=product_list&pageNum=<%=i%>&search=<%=search%>&keyword=<%=keyword%>">[<%=i%>]
+					</a>
+					<%
+						} else {
+					%>
+					<span style="font-weight: bold; color: red;">[<%=i%>]
+					</span>
+					<%
+						}
+					%>
+					<%
+						}
+					%>
+
+					<%
+						if (endPage != totalPage) {
+					%>
+					<a
+						href="<%=request.getContextPath()%>/index.jsp?workgroup=board&work=board_list&pageNum=<%=startPage + blockSize%>&search=<%=search%>&keyword=<%=keyword%>">[다음]</a>
+					<a
+						href="<%=request.getContextPath()%>/index.jsp?workgroup=board&work=board_list&pageNum=<%=totalPage%>&search=<%=search%>&keyword=<%=keyword%>">[마지막]</a>
+					<%
+						} else {
+					%>
+					[다음][마지막]
+					<%
+						}
+					%>
+				</div>
+				<br>
+
+
+			</div>
+
+
+		</div>
+
+
+
+
+	</form>
+
+</div>
+<!--content 영역종료 -->
+
+
+</div>
+<!-- container 영역종료 -->
+</div>
+<!-- wrap영역종료 -->
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+
+$("#allCheck").change(function() {
+   if($(this).is(":checked")) {
+      $(".check").prop("checked",true);
+   } else {
+      $(".check").prop("checked",false);
+   }   
+});
+    
+$("#searchBtn").click(function() {
+    
+    $("#productform").attr("action", "<%=request.getContextPath()%>/admin/index.jsp?workgroup=product&work=product_list");
+    $("#productform").submit();
+ 
+});
+$("#removeBtn").click(function() {
+	   if(confirm("삭제 하시겠습니까?")) {
+	      $("#productform").attr("action", "<%=request.getContextPath()%>/admin/product/product_check_remove_action.jsp");
+	      $("#productform").submit();
+	   }
+	});
+
+</script>
+
+

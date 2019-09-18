@@ -1,0 +1,144 @@
+package site.itwill.dto;
+
+/*
+이름          널?       유형           
+----------- -------- ------------ 
+ORDER_NO        NOT NULL VARCHAR2(30)  
+ID              NOT NULL VARCHAR2(20)  
+NAME            NOT NULL VARCHAR2(20)  
+POSTCODE        NOT NULL VARCHAR2(30)  
+ADDRESS1        NOT NULL VARCHAR2(400) 
+ADDRESS2        NOT NULL VARCHAR2(400) 
+PHONE           NOT NULL NUMBER(20)    
+MESSAGE                  VARCHAR2(50)  
+PAY_CHOICE      NOT NULL VARCHAR2(20)  
+ORDER_DATE      NOT NULL DATE          		: SYSDATE
+ORDER_STATUS    NOT NULL NUMBER(10)    		: 1 = 완료 / 2 = 환불요청 / 3 = 환불완료 / 4=교환요청 / 5=교환완료 >취소가 없는 이유는 주문과 동시에 결제가 되기 때문에 취소 불가  (우리는 환불이 취소임) 
+DELIVERY_STATUS NOT NULL NUMBER(10) 		: 1 = 배송전 / 2 = 배송중 / 3 = 배송완료
+PRODUCT_SUM              NUMBER(20) 
+*/   
+public class OrderDTO {
+	private String orderNo;
+	private String id;
+	private String name;
+	private String postcode;
+	private String address1;
+	private String address2;
+	private String phone;
+	private String message;
+	private String payChoice;
+	private String orderDate;
+	private int orderStatus;
+	private int deliveryStatus;
+	private int productSum;
+	
+	public OrderDTO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public String getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPostcode() {
+		return postcode;
+	}
+
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
+	}
+
+	public String getAddress1() {
+		return address1;
+	}
+
+	public void setAddress1(String address1) {
+		this.address1 = address1;
+	}
+
+	public String getAddress2() {
+		return address2;
+	}
+
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getPayChoice() {
+		return payChoice;
+	}
+
+	public void setPayChoice(String payChoice) {
+		this.payChoice = payChoice;
+	}
+
+	public String getOrderDate() {
+		return orderDate;
+	}
+
+	public void setOrderDate(String orderDate) {
+		this.orderDate = orderDate;
+	}
+
+	public int getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(int orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+	public int getDeliveryStatus() {
+		return deliveryStatus;
+	}
+
+	public void setDeliveryStatus(int deliveryStatus) {
+		this.deliveryStatus = deliveryStatus;
+	}
+
+	public int getProductSum() {
+		return productSum;
+	}
+
+	public void setProductSum(int productSum) {
+		this.productSum = productSum;
+	}
+	
+		
+}

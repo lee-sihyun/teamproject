@@ -1,0 +1,625 @@
+@charset "UTF-8";
+
+/**
+ * 공통 스타일 선언 css 입니다.
+ */
+
+/** 프린트용 스타일 선언 */
+@media print {
+    ::-webkit-input-placeholder { /* WebKit browsers */
+        color: transparent;
+    }
+
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: transparent;
+    }
+
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: transparent;
+    }
+
+    :-ms-input-placeholder { /* Internet Explorer 10+ */
+        color: transparent;
+    }
+}
+
+/** 텍스트박스용 비활성화 */
+.txt-field.disabled {
+    background-color:#dfdfdf;
+}
+.txt-field.disabled .text {
+    border: 0;
+    background-color:#dfdfdf;
+    color: #9f9f9f;
+    text-shadow: 1px 1px #fff;
+    -webkit-text-shadow: 1px 1px #fff;
+    -moz-text-shadow: 1px 1px #fff;
+}
+
+/** 체크박스용 비활성화 **/
+.form-element.disabled label.check-s,
+.form-element label.check-s.disabled {
+    background-image: url('../img/etc/check-dis-s.png');
+}
+.form-element.disabled label.check,
+.form-element label.check.disabled {
+    background-image: url('../img/etc/check-dis.png');
+}
+
+/** 자동완성 활성화된 텍스트박스에 백그라운드컬러 하얗게 처리 */
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+/** 폰트 볼드체 */
+.f-bold {
+    font-weight: bold;
+}
+
+/** 포인터 표시 */
+.hand {
+    cursor: pointer;
+}
+
+/**	페이징 공통 */
+.pagination {
+    padding: 20px 0 0;
+    text-align: center;
+}
+
+.pagination li {
+    display: inline-block;
+    border: 1px solid #fff;
+    margin: 0 2px;
+}
+
+.pagination li a,
+.pagination li span {
+    height: 21px;
+    padding: 4px 10px 1px;
+    text-align: center;
+    display: block;
+}
+
+.pagination .active {
+    border: 1px solid #fff;
+	text-decoration:underline;
+    color: #3e3d3c;
+}
+
+.pagination .front-page {
+    width: 27px;
+    border: 1px solid #e0e0e0;
+    background: #ffffff;
+    text-indent: -9999px;
+}
+
+.pagination .front-page-first {
+    background: url('../img/btn/paging-first.png') no-repeat center center;
+}
+
+.pagination .front-page-prev {
+    background: url('../img/btn/paging-prev.png') no-repeat center center;
+}
+
+.pagination .front-page-next {
+    background: url('../img/btn/paging-next.png') no-repeat center center;
+}
+
+.pagination .front-page-last {
+    background: url('../img/btn/paging-last.png') no-repeat center center;
+}
+
+/** 최근본 상품 */
+.recent-list em {
+    display: block;
+    width: 85px;
+    height: 24px;
+    padding: 7px 0 0;
+    background: #969696;
+    color: #fff;
+    font-size: 11px;
+    text-align: center;
+}
+
+.recent-list div.list {
+    width: 63px;
+    padding: 0 10px 10px;
+    background: #fff;
+    border: 1px solid #d2d2d2;
+    border-top: none;
+}
+
+.recent-list div.list ul {
+    padding: 2px 0 0;
+}
+
+.recent-list div.list ul li {
+    position: relative;
+    padding: 9px 0 0;
+}
+
+.recent-list div.list ul li  p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 라인수 */
+    -webkit-box-orient: vertical;
+    word-wrap:break-word;
+    line-height: 17px;
+    height:33px;
+}
+
+.recent-list div.list ul li > a {
+    display: block;
+	width:61px;
+    height:61px;
+    background-size: 61px 61px;
+    background-repeat: no-repeat;
+	background-position:center;
+    border: 1px solid #eae9e9;
+}
+
+.recent-list div.list ul li > a span {
+    display: none;
+}
+
+
+.recent-list div.list ul li:hover > a {
+    border: 1px solid #3e3d3c;
+    border-left: 1px solid #eae9e9;
+}
+
+.recent-list div.list ul li div {
+    display: none;
+    position: absolute;
+    top: 9px;
+    left: -130px;
+    width: 130px;
+    height: 61px;
+    background: #fff;
+    border: 1px solid #3e3d3c;
+    border-right: none;
+}
+
+.recent-list div.list ul li div p {
+    padding: 5px 0 0 6px;
+    font-size: 11px;
+    line-height: 15px;
+}
+
+.recent-list div.list ul li div p a {
+    color: #8f8f8f;
+}
+
+.recent-list div.list ul li div span a {
+    display: inline-block;
+    padding: 3px 0 0 6px;
+    color: #2a2a2a;
+    font-size: 12px;
+}
+
+.recent-list div.list ul li div span strong {
+    font-size: 13px;
+}
+
+.recent-list div.list ul li button {
+    display: none;
+    position: absolute;
+    top: 9px;
+    right: 0px;
+    width: 15px;
+    height: 15px;
+    background: url('../img/side/btn-close.png') no-repeat left top;
+    text-indent: -9999px;
+}
+
+.recent-list div.list ul li.hover {
+}
+
+.recent-list div.list ul li.hover a img {
+    border: 1px solid #3e3d3c;
+    border-left: 1px solid #fff;
+}
+
+.recent-list div.list ul li.hover div,
+.recent-list div.list ul li.hover button {
+    display: block;
+}
+
+.recent-list .paging {
+    overflow: hidden;
+    padding: 12px 0 0;
+}
+
+.recent-list .paging span {
+    float: left;
+    width: 33px;
+    color: #939393;
+    text-align: center;
+}
+
+.recent-list .paging span strong {
+    color: #3e3d3c;
+}
+
+.recent-list .paging button {
+    float: left;
+    width: 15px;
+    height: 15px;
+    text-indent: -9999px;
+}
+
+.recent-list .paging button.prev {
+    background: url('../img/side/btn-prev.png') no-repeat left top;
+}
+
+.recent-list .paging button.next {
+    background: url('../img/side/btn-next.png') no-repeat left top;
+}
+
+.recent-list div.top {
+    padding: 10px 0 0;
+    text-align: center;
+}
+
+/** 게시판 평가(별) */
+.board-write table td .choice-rating {
+    overflow: hidden;
+    padding: 3px 0 5px;
+}
+
+.board-write table td .choice-rating li {
+    float: left;
+    position: relative;
+    margin: 0 11px 0 0;
+}
+
+.board-write table td .choice-rating li label {
+    display: inline-block;
+    min-height: 22px;
+    padding: 2px 0 0 20px;
+    background: url('../img/etc/radio-off-s.png') no-repeat left 4px;
+}
+
+.board-write table td .choice-rating li label:hover {
+    background: url('../img/etc/radio-ov-s.png') no-repeat left 4px;
+}
+
+.board-write table td .choice-rating li label.on {
+    padding: 2px 0 0 20px;
+    background: url('../img/etc/radio-on-s.png') no-repeat left 4px;
+}
+
+.board-write table td .rating {
+    display: inline-block;
+    width: 88px;
+    height: 15px;
+    background: url('../img/etc/star-bg-88x15.png') no-repeat left top;
+    vertical-align: middle;
+    text-indent: -9999px;
+}
+
+.board-write table td .rating span {
+    display: block;
+    background: url('../img/etc/star-fill-88x15.png') no-repeat left top;
+}
+
+.board-write table td .choice-rating li .radio {
+    position: absolute;
+    left: 0;
+    top: 7px;
+    z-index: -1;
+}
+
+/** 게시판 댓글 */
+.comment-wrap .comment-item .reply {
+    padding-left: 14px;
+    background: url('../img/icon/comment-reply.png') no-repeat left 3px;
+}
+
+.comment-wrap > ul > li .comment-reply {
+    overflow: hidden;
+    padding: 18px 10px;
+}
+
+.comment-wrap > ul > li .comment-reply div .ctt .text {
+    width: 420px;
+!important;
+}
+
+.comment-wrap > ul > li .comment-reply .skinbtn {
+    float: right;
+}
+
+.comment-wrap > ul > li .comment-reply {
+    overflow: hidden;
+    padding: 0 15px 15px;
+}
+
+/*.comment-wrap > ul > li .comment-reply div.ctts .text {
+    width: 430px !important;
+}*/
+
+.comment-wrap > ul > li .comment-reply .skinbtn {
+    float: right;
+}
+
+/**
+ * 게시판 리스트 검색 부분 날짜 픽커 출력 오류 수정
+ */
+.date-check {
+    overflow: inherit;
+}
+
+.date-check:after {
+    content: " ";
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
+}
+
+/**
+ * 레이아웃 side 수정
+ * 레이아웃 구성 엘리먼트 id="side" 에 직접 스타일을 구현해놨다.
+ * 이부분을 class="lnb"에 적용시킴
+ */
+body.body-mypage #side,
+body.body-my-page-password #side,
+body.body-my-page #side,
+body.body-service #side,
+body.body-goods-search #side {
+    border-left: none;
+    border-right: none;
+}
+
+/**
+ * 장바구니 간편결제 버튼노출
+ */
+.easy-payment-right {
+    padding: 20px 0 0;
+    text-align: center;
+}
+.easy-payment-right .npay_type_A_1{width:360px  !important;height:58px !important;}
+.easy-payment-right .npay_button_box{border-top:0 !important;}
+
+/**
+ * 상품상세 후기작성 시 상품평가 별 간격
+**/
+.review-write-layer .wrap .board-write table td .choice-rating li {
+    float: left;
+    position: relative;
+    margin: 0 10px 0 0;
+}
+
+.review-board td .comment-wrap .head .comment-count span {
+    background: none;
+    float: left;
+    margin: 0 0 0 10px;
+    padding: 0 0 0 10px;
+}
+
+.comment-wrap > ul > li .comment-reply .txt .text {
+    width: 490px !important;
+    height: 31px;
+    padding: 0 14px;
+    border: 1px solid #ccc;
+    color: #666;
+    line-height: 31px;
+}
+
+/**
+qna-write-pop 대체
+**/
+.write-pop {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+}
+
+.item-display .list ul li .txt img {
+    vertical-align: middle;
+}
+
+/* 상품 상세 배송비 */
+.goods-view .goods .info .item ul li.delivery .delivery-layer {
+    position: absolute;
+    top: 23px;
+    left: 55px;
+    z-index: 10;
+    width: 307px;
+    height: 279px;
+    background: #fff;
+}
+
+.goods-view .goods .info .item ul li.delivery .delivery-layer .wrap {
+    position: relative;
+    width: 305px;
+    height: 277px;
+    border: 1px solid #555;
+}
+
+.goods-view .goods .info .item ul li.delivery .delivery-layer .wrap > strong {
+    display: block;
+    height: 27px;
+    padding: 13px 0 0 17px;
+    background: #f4f4f4;
+    color: #222;
+}
+
+.goods-view .goods .info .item ul li.delivery .delivery-layer .wrap div {
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin: 9px 9px 0 0;
+    padding: 0 0 0 19px;
+    height: 219px;
+}
+
+.goods-view .goods .info .item ul li.delivery .delivery-layer .wrap div table {
+    width: 250px;
+}
+
+.goods-view .goods .info .item ul li.delivery .delivery-layer .wrap div table th {
+    padding: 0 5px 0 3px;
+    border-bottom: 1px solid #e8e8e8;
+    color: #444;
+    font-size: 11px;
+    text-align: left;
+}
+
+.goods-view .goods .info .item ul li.delivery .delivery-layer .wrap div table td {
+    padding: 8px 0 8px 12px;
+    color: #666;
+    font-size: 11px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.goods-view .goods .info .item ul li.delivery .delivery-layer .wrap .close {
+    display: block;
+    position: absolute;
+    top: 11px;
+    right: 12px;
+    width: 18px;
+    height: 18px;
+    text-indent: -9999px;
+    background: url('../img/btn/layer-close.png') no-repeat left top;
+}
+
+ 
+
+
+.board-view-attach {
+    padding:10px 0 10px;
+}
+
+/*
+	PG 결제창 레이어
+*/
+.pg-layer {
+    width:400px;
+    height:265px;
+}
+.pg-layer .view h3 {
+    color: #000000;
+    font-size: 20px;
+    text-align: center;
+    padding:0;
+    border:none;
+}
+.pg-layer .table {
+    margin:5px 0 10px 0;
+    padding:10px 0 5px 0;
+    line-height: 20px;
+    height:100%;
+    width:100%;
+    border-top:1px solid #dbdbdb;
+    text-align: center;
+}
+
+/*
+	에스크로 구매확인창 레이어
+*/
+.escrow-layer {
+    width:460px;
+    height:180px;
+}
+.escrow-layer .view h3 {
+    color: #000000;
+    font-size: 20px;
+    text-align: center;
+    padding:0;
+    border:none;
+}
+.escrow-layer .table {
+    margin:5px 0 10px 0;
+    padding:10px 0 5px 0;
+    line-height: 25px;
+    height:100%;
+    width:100%;
+    border-top:1px solid #dbdbdb;
+    text-align: center;
+}
+
+.comment-wrap  {
+    /*  border-bottom: 1px solid #dbdbdb; */
+ }
+
+.wrap .comment-wrap  {
+    border-bottom: none;
+}
+
+#top.header .top-service .notice #js-notice-list {
+    height:25px;
+    overflow:hidden;
+}
+
+div .no-data {
+    height:86px;
+    line-height:60px;
+    text-align:center;
+}
+
+
+#cart-tab-option .chosen-container .chosen-drop {
+    border-bottom: 0;
+    top: auto;
+    bottom: 40px;
+}
+
+#cart-tab-option select {
+    height:30px;
+}
+
+#cart-tab-option div.detail .order-goods {
+    border-bottom:0px;
+}
+
+
+#cart-tab-option div.detail .this {
+    background:#fff;
+    border-top:1px solid #dbdbdb;
+}
+
+#cart-tab-option div.detail .optionKey_0.this {
+    border-top:none;
+}
+
+#cart-tab-option div.detail .add {
+    clear:both;
+    background-color:#fff;
+    background-image:url('../img/etc/dotted-1x3-b4b4b4.png') repeat-x left bottom;
+    border-top:0px;
+    border-bottom:0px;
+}
+
+/* 상품 상세 최대 넓이 높이 지정 */
+#mainImage  img {
+    max-width:400px;
+}
+
+/* 마우스오버 레이어 */
+.layer-box-content {
+    position:absolute;
+    z-index:9999;
+    background:#fff;
+    border:1px solid #555;
+}
+.layer-box-content  > strong  {
+    display:block;
+    height:16px;
+    padding:5px;
+    background:#f4f4f4;
+    color:#222;
+}
+
+.layer-box-content  div table td  {
+    padding:5px;
+    color:#666;
+    font-size:11px;
+    border-bottom:1px solid #e8e8e8;
+}

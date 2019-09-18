@@ -1,0 +1,170 @@
+
+<%@page import="site.itwill.dao.ReviewDAO"%>
+<%@page import="site.itwill.dto.ReviewDTO"%>
+<%@page import="site.itwill.dto.LushUserDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@include file="/security/login_status.jspf" %>
+<%-- 게시글 번호를 전달받아 Review 테이블에 저장된 게시글을 검색하여 응답하는 JSP 문서 --%>
+<%-- => [글삭제]를 클릭한 경우 게시글 삭제 처리페이지(Review_remove_action.jsp)로 이동 --%>
+<%-- => [글변경]을 클릭한 경우 게시글 변경 입력페이지(Review_modify.jsp)로 이동 --%>
+<%-- => [답글쓰기]를 클릭한 경우 게시글 입력페이지(Review_write.jsp)로 이동 --%>
+<%-- => [게시글목록]을 클릭한 경우 게시글 목록 출력페이지(Review_list.jsp)로 이동 --%>
+<%
+//POST 방식으로 요청되어 전달된 값들에 대한 캐릭터셋 변경
+	request.setCharacterEncoding("UTF-8");
+
+	LushUserDTO loginUser1=(LushUserDTO)session.getAttribute("loginUser");
+
+	//비정상적인 요청에 대한 응답 처리
+	// => 전달값이 존재하지 않을 경우	
+	if(request.getParameter("num")==null) {
+		out.println("<script>");
+		out.println("location.href='"+request.getContextPath()+"/index.jsp?workgroup=board/Review&work=Review_list';");
+		out.println("</script>");
+		return;
+	}
+	
+	//전달값을 반환받아 저장
+	int num=Integer.parseInt(request.getParameter("num"));
+	String pageNum=request.getParameter("pageNum");
+	
+	//게시글 번호를 전달하여 Review 테이블에 저장된 게시글을 검색하여 반환하는 DAO 클래스의 메소드 호출
+	ReviewDTO Review=ReviewDAO.getDAO().getReview(num);
+	
+	//비정상적인 요청에 대한 응답 처리
+	// => 검색된 게시글이 없거나 삭제된 게시글인 경우
+	if(Review==null || Review.getStatus()==9) {
+		out.println("<script>");
+		out.println("location.href='"+request.getContextPath()+"/index.jsp?workgroup=board/Review&work=Review_list';");
+		out.println("</script>");
+		return;
+	}
+
+	//세션으로 공유된 인증정보를 반환받아 저장
+	//LushUserDTO loginUser1=(LushUserDTO)session.getAttribute("loginUser1");
+	
+	//검색되어 반환된 게시글이 비밀글인 경우
+	if(Review.getStatus()==1) {
+		//비정상적인 요청에 대한 응답 처리
+		// => 현재 로그인 사용자가 작성자가 아니거나 관리자인 아닌 경우
+		if(loginUser1==null || !loginUser1.getId().equals(Review.getId()) && loginUser1.getStatus()!=9) {
+			out.println("<script>");
+			out.println("location.href='"+request.getContextPath()+"/index.jsp?workgroup=board/Review&work=Review_list';");
+			out.println("</script>");
+			return;			
+		}
+	}
+%> 
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<style type="text/css">
+#wrapper {
+	width: 500px;
+	margin: 100px 15px;
+}
+
+.h2 {
+	padding: 0 0 15px 0;
+	margin: 0 0 15px 0;
+}
+
+table {
+	border: 1px solid black;
+	border-collapse: collapse; 
+}
+
+th, td {
+	border: 1px solid black;
+	padding: 5px;
+}
+
+th { width: 100px; }
+
+td { width: 400px; }
+
+.subject, .content { text-align: left; }
+
+.content {
+	height: 100px;
+	vertical-align: middle;
+}
+
+#Review_menu {
+	text-align: right;
+	margin: 5px;
+}
+</style>
+
+<div id="wrapper">
+	<h2>게시글</h2>
+	<br>
+	<table>
+		<tr>
+			<th>상품명</th>
+			<td>
+				<%=Review.getName() %>
+								
+			</td>
+		</tr>
+		<tr>
+			<th>작성일</th>
+			<td><%=Review.getRegDate().substring(0, 19) %></td>
+		</tr>
+		<tr>
+			<th>별점</th>
+			<td><%=Review.getRating() %></td>
+		</tr>
+		<tr>
+			<th>작성자</th>
+			<td class="category">
+				<%=loginUser1.getName() %>
+			</td>
+		</tr>
+		<tr>
+			<th>내용</th>
+			<td class="content">
+				<%=Review.getContent().replace("\n", "<br>") %>
+			</td>
+		</tr>
+	</table>
+	
+	<div id="Review_menu">
+	
+	<% if(loginUser1 != null && loginUser1.getId().equals(Review.getId())) { %>
+		<button type="button" id="removeBtn">글삭제</button>
+		<button type="button" id="modifyBtn">글변경</button>
+		
+	<% } %>	
+	<!-- <button type="button" id="replyBtn">답글쓰기</button> -->
+	<button type="button" id="listBtn">게시글목록</button>
+	</div>
+</div>
+
+<form id="ReviewForm" method="post">
+	<input type="hidden" name="num" value="<%=num%>">
+	<input type="hidden" name="pageNum" value="<%=pageNum%>">
+</form>
+
+<script type="text/javascript">
+$("#removeBtn").click(function() {
+	if(confirm("정말로 삭제 하시겠습니까?")) {
+		$("#ReviewForm").attr("action", "<%=request.getContextPath()%>/board/Review/Review_remove_action.jsp");
+		$("#ReviewForm").submit();
+	}
+});
+
+$("#modifyBtn").click(function() {
+	$("#ReviewForm").attr("action", "<%=request.getContextPath()%>/index.jsp?workgroup=board/Review&work=Review_modify&num=<%=num%>&pageNum=<%=pageNum%>");
+	$("#ReviewForm").submit();
+});
+
+$("#replyBtn").click(function() {
+	$("#ReviewForm").attr("action", "<%=request.getContextPath()%>/index.jsp?workgroup=board/Review&work=Review_write&");
+	$("#ReviewForm").submit();
+});
+
+$("#listBtn").click(function() {
+	$("#ReviewForm").attr("action", "<%=request.getContextPath()%>/index.jsp?workgroup=board/Review&work=Review_list");
+	$("#ReviewForm").submit();
+});
+</script>

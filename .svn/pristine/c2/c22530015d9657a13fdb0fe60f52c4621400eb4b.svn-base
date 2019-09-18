@@ -1,0 +1,231 @@
+package site.itwill.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import site.itwill.dto.testDTO;
+
+public class testDAO  extends JdbcDAO{
+
+	/*
+	 *   private int num;
+    private String id;
+    private String passwd;
+    private String name;
+    private String nickname;
+    private String email;
+    private String phone;
+    private String postcode;
+    private String address1;
+    private String address2;
+    private int status;
+    private String lastday;
+	 * 
+	 * 
+	 * 
+	 * */
+	private static testDAO _dao;
+	
+	
+	public testDAO() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+	
+	static {
+		
+		_dao=new  testDAO();
+		
+	}
+	
+	
+	public static testDAO getDAO() {
+		
+		return _dao;
+	}
+	
+	public int getTestTotal(String search, String keyword) {
+
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		int rows=0;
+		try {
+			con=getConnection();
+			if (keyword.equals("")) {
+				String sql="select count(*) from lushuser";
+				
+				pstmt = con.prepareStatement(sql);
+
+			} else {
+			
+			
+			String sql="select count(*) from lushuser where "+ search +" like '%'||?||'%'";
+			
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, keyword);
+			}
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				rows=rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("[에러]getTestTotal() SQL 오류=" + e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return rows;
+
+	}
+	
+	
+	//자동증가값 반환
+	public int getTestNum() {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		int num=0;
+
+		try {
+
+			con=getConnection();
+
+			String sql="select lushuser_seq.nextval from dual";
+			pstmt =con.prepareStatement(sql);
+
+			rs =pstmt.executeQuery();
+
+			if(rs.next()) {
+				num = rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+
+			System.out.println("[에러] getTestNum() 메소드 SQL오류 =" + e.getMessage());
+
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return num;
+
+	}
+	
+	//페이지처리
+	public List<testDTO> getTestList(int startRow, int endRow, String search, String keyword) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<testDTO> testList = new ArrayList<testDTO>();
+		try {
+			con = getConnection();
+
+			if (keyword.equals("")) {
+				String sql = "select * from (select rownum rn, temp.* from (select * from lushuser order by num desc) temp) where rn between ? and ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, startRow);
+				pstmt.setInt(2, endRow);
+
+			} else {
+				String sql = "select * from (select rownum rn, temp.* from (select * from lushuser where " + search
+						+ " like '%'||?||'%'  order by num desc) temp) where rn between ? and ?";
+
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, keyword);
+				pstmt.setInt(2, startRow);
+				pstmt.setInt(3, endRow);
+
+			}
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				/*
+				
+NUM	NUMBER(4,0)
+ID	VARCHAR2(20 BYTE)
+PASSWD	VARCHAR2(1000 BYTE)
+NAME	VARCHAR2(20 BYTE)
+NICKNAME	VARCHAR2(20 BYTE)
+EMAIL	VARCHAR2(30 BYTE)
+PHONE	NUMBER(20,0)
+MAINADDRSS	VARCHAR2(400 BYTE)
+ADDRESS1	VARCHAR2(400 BYTE)
+ADDRESS2	VARCHAR2(400 BYTE)
+STATUS	NUMBER(1,0)
+LOGDATE	DATE;
+*/
+				testDTO test = new testDTO();
+				
+				test.setNum(rs.getInt("num"));
+				test.setId(rs.getString("id"));
+				test.setPasswd(rs.getString("passwd"));
+				test.setName(rs.getString("name"));
+				test.setNickname(rs.getString("nickname"));
+				test.setEmail(rs.getString("email"));
+				test.setPhone(rs.getString("phone"));
+				test.setMainaddrss(rs.getString("mainaddrss"));
+				test.setAddress1(rs.getString("address1"));
+				test.setAddress2(rs.getString("address2"));
+				test.setStatus(rs.getInt("status"));
+				test.setLogdate(rs.getString("logdate"));
+				testList.add(test);
+
+			}
+
+		} catch (SQLException e) {
+	System.out.println("[에러] getTestList() 메소드 sql오류="+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return testList;
+
+	}
+	
+	public testDTO getTest(int num) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		testDTO test = null;
+		try {
+			con = getConnection();
+
+			String sql = "select * from lushuser where num=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				test= new testDTO();
+				
+				test.setNum(rs.getInt("num"));
+				test.setId(rs.getString("id"));
+				test.setPasswd(rs.getString("passwd"));
+				test.setName(rs.getString("name"));
+				test.setNickname(rs.getString("nickname"));
+				test.setEmail(rs.getString("email"));
+				test.setPhone(rs.getString("phone"));
+				test.setMainaddrss(rs.getString("mainaddrss"));
+				test.setAddress1(rs.getString("address1"));
+				test.setAddress2(rs.getString("address2"));
+				test.setStatus(rs.getInt("status"));
+				test.setLogdate(rs.getString("logdate"));
+
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]getNotice() 메소드의 SQL 오류 = " + e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return test;
+	}
+	
+}
+

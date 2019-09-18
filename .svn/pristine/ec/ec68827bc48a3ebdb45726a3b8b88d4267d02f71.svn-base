@@ -1,0 +1,301 @@
+<%@page import="site.itwill.utill.Utility"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@include file="/security/login_status.jspf" %>
+<%
+   
+   String passwd=Utility.encrypt(request.getParameter("pass"), "SHA-256");
+   
+   String message= (String)session.getAttribute("message");
+   if(message==null){
+       message="";
+   } else {
+       session.removeAttribute("message");
+   }
+
+   if(!passwd.equals(loginUser.getPasswd())){
+       session.setAttribute("message", "비밀번호가 맞지 않습니다.");
+       out.println("<script type='text/javascript'>");
+       out.println("location.href='"+request.getContextPath()+"/index.jsp?workgroup=lushuser&work=changeUser_confirm';");
+       out.println("</script>");
+       return;
+   }
+
+%>
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
+<style>
+
+/* Style the body */
+body {
+  font-family: Noto Sans KR;
+}
+
+p{
+    margin: 0;
+}
+
+/* Header/logo Title */
+.header {
+  padding: 80px;
+  text-align: center;
+  background: #1abc9c;
+  color: white;
+}
+
+/* Column container */
+.content {  
+  width: 1180px;
+  margin: 0 auto;
+  height: 100%;
+}
+
+/* Sidebar/left column */
+.side {
+  width: 200px;
+  height: 100%;
+  float: left;
+}
+
+.side ul li {
+    list-style-type: none;
+    color: gray;
+}
+.side li a:visited{
+    text-decoration: none;
+}
+
+/* Main column */
+.main {   
+  width: 880px;
+  height: 100%;
+  float: left;
+  margin: 0 50px;
+}
+
+.mypage{
+    width: 100%;
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
+#mygrade {
+}
+
+#message {
+    color: blue;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#ordering {
+    border-collapse: collapse;
+}
+
+#deleteInfor {
+    border: 1px solid gray;
+    text-align: left;
+}
+
+.section-header {
+    text-align: left;
+    display: inline;
+}
+
+.thclass {
+    text-align: left;
+    margin: 40px;
+}
+
+
+.spanclass {
+    margin-right: 80px;
+}
+
+.click {
+    display: none;
+    position: relative;
+}
+
+.error{
+    color: red;
+    position: relative;
+    display: none;
+}
+
+/* Footer */
+.footer {
+  padding: 20px;
+  text-align: center;
+  background: #ddd;
+}
+
+/* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 700px) {
+  .content {   
+    flex-direction: column;
+  }
+}
+
+</style>
+<!-- content -->    
+<div class="content">
+        <!-- side -->
+          <div class="side">
+            <h2>마이페이지</h2>
+            <h3>쇼핑정보</h3>
+            <ul>
+              <li><a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp">주문목록/배송조회</a></li>
+              <li><a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp">취소/반품/교환내역</a></li>
+              <li><a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp">환불/입금리스트</a></li>
+            </ul>
+            <h3>고객센터</h3>
+            <ul>
+              <li><a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp">공지사항</a></li>
+              <li><a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp">1:1문의</a></li>
+              <li><a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp">FAQ</a></li>
+            </ul>
+            <h3>회원정보</h3>
+            <ul>
+              <li><a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp'">회원정보 변경</a></li>
+              <li><a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/deleteUser.jsp">회원 탈퇴</a></li>
+            </ul>
+          </div>
+        
+        <!-- main -->  
+          <div class="main">
+            <div class="mypage" id="mygrade">
+            <h2>회원정보 변경</h2>
+            <hr>
+            </div>
+            <div class="mypage" id="ordering">
+	            <div>
+	               <h3>개인회원 정보입력</h3>
+	               <p>표시는 반드시 입력하셔야 하는 항목입니다.</p>
+	            </div>
+	            <hr>
+            </div>
+            <form name="changeForm" id="change" action="<%=request.getContextPath() %>/lushuser/changeUser_action.jsp" method="post">
+                <div class="mypage" id="orderlist">
+                    <table>
+			            <tr>
+			                <th>아이디</th>
+			                <td>
+			                <input type="text" name="id" id="id" value="<%=loginUser.getId() %>">
+			                </td>
+			            </tr>
+			            <tr>
+			                <th>비밀번호</th>
+			                <td>
+			                <button type="button" id="changeBtn">비밀번호 변경</button>
+				                <div id="btnClick" class="click">
+				                    <label class="newPw">새 비밀번호</label>
+				                    <input type="password" name="pass" id="pass" required>
+				                    <br>
+				                    <label class="newPw">새 비밀번호 확인</label>
+				                    <input type="password" name="repass" id="repass" required>
+				                </div>
+				                <div id="passwdRegMsg" class="error">비밀번호는 영문자,숫자,특수문자가 반드시 하나이상 포함된 6~20 범위의 문자로만 작성 가능합니다.</div>
+				                <div id="repasswdMatchMsg" class="error">변경 비밀번호와 비밀번호 확인이 서로 다릅니다.</div>
+			                </td>
+			            </tr>
+			            <tr>
+			                <th>이름</th>
+			                <td>
+			                <input type="text" name="name" id="name" value="<%=loginUser.getName() %>" required>
+			                </td>
+			            </tr>
+			            <tr>
+			                <th>닉네임</th>
+			                <td>
+			                <input type="text" name="nickName" id="nickName">
+			                </td>
+			            </tr>
+			            <tr>
+			                <th>이메일</th>
+			                <td>
+			                <input type="email" name="email" id="email" value="<%=loginUser.getEmail() %>" >
+			                <select name="choice" id="choice">
+			                    <option value="" selected>직접입력</option>
+			                    <option value="@naver.com">naver.com</option>
+			                    <option value="@daum.net">daum.net</option>
+			                    <option value="@gmail.com">gmail.com</option>
+			                    <option value="@nate.com">nate.com</option>
+			                </select>
+			                </td>
+			            </tr>
+			            <tr>
+			                <th>휴대폰번호</th>
+			                <td>
+			                <input type="number" name="phone" id="phone" value="0<%=loginUser.getPhone() %>" placeholder="-없이입력하세요." required>
+			                <div id="phoneRegMsg" class="error">전화번호는 - 없이 숫자로만 입력해 주세요.</div>
+			                </td>
+			            </tr>
+			             <tr>
+			                <th>주소</th>
+			                <td>
+			                <input type="text" name="postcode" id="addr"  readonly>
+			                <span id="postAddress">우편번호검색</span><br>
+			                <input type="text" name="address1" id="address1" readonly> <input type="text" name="address2" id="address2">
+			                </td>
+			            </tr>
+			        </table>
+                </div>
+            <div class="mypage" id="choicelist">
+            </div>
+            <div class="mypage" id="choicelist">
+              <div class="btn" id="">
+                  <a href="javascript:<%=request.getContextPath()%>/index.jsp?workgroup=lushuser&work=mypage">취소</a>
+              </div>
+              <div class="btn" id="">
+                  <button type="submit" class="btn" id="submitBtn">정보수정</button>
+              </div>
+              <div id="message"><%=message %></div>
+            </div>
+            </form>
+        </div>
+</div>
+
+<script type="text/javascript">
+$("#changeBtn").click(function() {
+	$("#btnClick").css("display", "block");
+});
+
+$("#insert").submit(function() {
+    var submitResult=true;
+    
+    $(".error").css("display","none");
+
+    var idReg=/^[a-zA-Z]\w{5,19}$/g;
+    if(!idReg.test($("#id").val())) {
+        $("#idRegMsg").css("display","block");
+        submitResult=false;
+    }
+        
+    var passwdReg=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*_-]).{6,20}$/g;
+    if(!passwdReg.test($("#pass").val())) {
+        $("#passwdRegMsg").css("display","block");
+        submitResult=false;
+    } 
+    
+    if($("#pass").val()!=$("#repass").val()) {
+        $("#repasswdMatchMsg").css("display","block");
+        submitResult=false;
+    }
+
+    var phoneReg=/^\d{11}$/;
+    if(!phoneReg.test($("#phone").val())) {
+        $("#phoneRegMsg").css("display","block");
+        submitResult=false;
+    }
+    
+    return submitResult;
+    
+});
+
+
+$("#postAddress").click(function() {
+    window.open("<%=request.getContextPath() %>/lushuser/postaddress_search.jsp","우편번호검색","width=500,height=400,left=400,top=350");
+});
+</script>

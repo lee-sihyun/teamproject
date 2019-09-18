@@ -1,0 +1,754 @@
+<%@page import="site.itwill.dto.QnADTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%-- 게시글(새글 또는 답글)을 입력하기 위한 JSP 문서 --%>
+<%-- => 로그인 상태의 사용자만 글쓰기 기능 제공 --%>    
+<%-- => [글저장]을 클릭한 경우 게시글 처리페이지(QnA_write_action.jsp)로 이동 --%>    
+<%@include file="/security/login_status.jspf" %>
+
+<%
+	request.setCharacterEncoding("UTF-8");
+	LushUserDTO loginUser1=(LushUserDTO)session.getAttribute("loginUser");
+
+	
+	//부모글의 전달값을 저장하기 위한 변수
+	// => 부모글이 없는 경우 초기값 저장
+	String ref="0",refStep="0",refLevel="0";
+	String pageNum="1";//요청 페이지 번호
+	String category="";
+	String content="";
+	String title="";
+
+			
+	//부모글의 전달값을 반환받아 저장
+	if(request.getParameter("ref")!=null) {//답글인 경우
+		ref=request.getParameter("ref");
+		/* refStep=request.getParameter("refStep");
+		refLevel=request.getParameter("refLevel"); */
+		pageNum=request.getParameter("pageNum");
+
+	}
+	
+/*
+	//세션으로 공유된 인증정보를 반환받아 저장
+	LushUserDTO loginUser1 = (LushUserDTO)session.getAttribute("loginUser1");
+*/
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Anton|Archivo+Black&display=swap" rel="stylesheet">
+
+
+<style type="text/css">
+
+#content {  
+    width: 1500px;
+    height: 1300px;
+
+    margin: 0 auto;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+div {
+	display: block;
+}
+
+body {
+	color: #333333;
+	font-family: "notokrR";
+	font-size: 14px;
+	line-height: 19.6px;
+	letter-spacing: -0.5px;
+}
+
+.section m2 {
+	width: 70%;
+	height: 1150.76px;
+}
+
+.section-header {
+	overflow: hidden;
+	margin: 0;
+	padding: 0 0 40px;
+	position: relative;
+	
+	height: 78.89px;
+}
+
+.section-header h2 {
+	float: left;
+	font-size: 28px;
+	color: #000000;
+	font-family: "notokrB";
+}
+
+p {
+	display: block;
+	margin-block-start: 1em;
+	margin-block-end: 1em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+}
+
+.mt50 {
+	margin-top: 50px;
+}
+
+.form {
+	display: block;
+}
+
+fieldset {
+	border: 0;
+}
+
+fieldset {
+	display: block;
+	margin-inline-start: 2px;
+	margin-inline-end: 2px;
+	padding-block-start: 0.35em;
+	padding-block-end: 0.625em;
+	padding-inline-start: 0.75em;
+	padding-inline-end: 0.75em;
+	min-inline-size: min-content;
+}
+
+legend {
+	width: 0;
+	height: 0;
+	visibility: hidden;
+	font-size: 0;
+	line-height: 0;
+	text-indent: -9999px;
+}
+
+.table1>table {
+	width: 100%;
+	border-top: 1px solid #000000;
+}
+
+.table {
+	border-top: 1px solid #ffffff;
+}
+
+table, th, td {
+	margin: 0;
+	padding: 0;
+	border-spacing: 0;
+	border: 0;
+	border-collapse: collapse;
+	vertical-align: middle;
+}
+
+table {
+	display: table;
+}
+
+tbody {
+
+	height: 888.89px;
+	display: table-row-group;
+	vertical-align: middle;
+	border-color: inherit;
+}
+
+tr {
+	width: 1000
+	px;
+	height: 78.89px;
+	display: table-row;
+	vertical-align: inherit;
+	border-color: inherit;
+}
+
+.board-write.table1>table>tbody>tr>tr {
+	padding: 18px 0 18px 30px;
+	background: none;
+	color: #8f8f8f;
+	font-weight: normal;
+}
+
+.table1>table>tbody>tr>th {
+	border-bottom: 1px solid #e7e7e7;
+}
+
+.st-hs {
+	text-align: left;
+}
+
+.tune {
+	width: 260px;
+	height: 45px; 
+}
+
+select {
+	outline: none;
+	vertical-align: top;
+	color: #717171;
+}
+select:not(:-internal-list-box) {
+    overflow: visible !important;
+}
+select {
+    -webkit-writing-mode: horizontal-tb !important;
+    text-rendering: auto;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    text-align: start;
+    -webkit-appearance: menulist;
+    box-sizing: border-box;
+    align-items: center;
+    white-space: pre;
+    -webkit-rtl-ordering: logical;
+    background-color: white;
+    cursor: default;
+    font: 400 13.3333px Arial;
+    border-radius: 0px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(169, 169, 169);
+    border-image: initial;
+}
+option {
+    font-weight: normal;
+    display: block;
+    white-space: pre;
+    min-height: 1.2em;
+}
+.tabel1>table tbody td .chosen-container {
+	margin: 0;
+}
+.table1 > table tbody td .chosen-container {
+    margin: 0;
+}
+.chosen-container {
+    font-size: 14px;
+}
+.chosen-container {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    zoom: 1;
+    user-select: none;
+}
+.board-write .chosen-container-single .chosen-sch {
+    width: 240px;
+    height: 40px;
+    line-height: 38px;
+}
+.chosen-container-single .chosen-sch {
+    border: 1px solid #ccc;
+	margin: 0 !important;
+    background: none;
+}
+.chosen-container-single .chosen-single {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    padding: 0 0 0 8px;
+    color: #333;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.chosen-container a {
+    cursor: pointer;
+}
+.chosen-container-single .chosen-single span {
+    display: block;
+    overflow: hidden;
+    margin-right: 26px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.chosen-container * {
+    box-sizing: border-box;
+}
+.chosen-container-single .chosen-single div b {
+    background: url(../img/etc/select-arrow-down-11x7.png) no-repeat left 50%;
+}
+.ta-1 {
+	text-align: left;
+}
+
+.board-wrtie.table1>table>tbody>tr>td {
+	padding: 18px 0;
+}
+
+.table1>table>tbody>tr>td {
+	border-bottom: 1px solid #e7e7e7;
+	width: 1046.67px;
+	height: 78.65px;
+	display: table-cell;
+}
+
+.txt-field.hs {
+	width: 1046.67px;
+	height: 41.98px;
+}
+
+.txt-field {
+	position: relative;
+	width: auto;
+	padding: 0 10px;
+	background: #ffffff;
+	border: 1px solid #ccc;
+	vertical-align: middle;
+}
+
+.txt-field.hs .text {
+	width: 100%;
+	height: 36px;
+	padding: 0;
+	border: 1px solid #fff;
+	color: #333;
+	line-height: 36px;
+}
+
+input.text, input.password, input.edit {
+	outline: none;
+	font-size: 14px;
+}
+
+div.file-upload {
+	overflow: hidden;
+	width: 100%;
+}
+
+div.file-upload label {
+	float: left;
+}
+
+label {
+	cursor: pointer;
+	vertical-align: top;
+}
+
+div.file-upload label input.text {
+	width: 280px;
+	height: 40px;
+	padding: 0 15px;
+	border: 1px solid #cccccc;
+	line-height: 40px;
+	box-sizing: border-box;
+}
+
+.upload-btn {
+	overflow: hidden;
+	position: relative;
+	float: left;
+	padding-left: 6px;
+}
+
+.boardwrite-uploadfile {
+	width: 120px;
+	height: 40px;
+	line-height: 40px;
+	border: 1px solid #000000;
+	color: #000000;
+	background: #ffffff;
+	font-family: 'notokrR';
+	font-size: 13px;
+}
+
+.boardwrite-uploadfile {
+	display: inline-block;
+	padding: 0 5px;
+	text-align: center;
+	vertical-align: top;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+
+.skinbtn * {
+	font-size: 100%
+}
+
+button em {
+	font-family: "notokrR";
+}
+
+em {
+	font-style: normal;
+}
+
+.file {
+	position: abosolute;
+	top: 0;
+	right: 56px;
+	height: 25px;
+	cursor: pointer;
+	opacity: 0;
+	background: white;
+}
+
+.boardwrite-addupload {
+	width: 80px;
+	height: 40px;
+	line-height: 40px;
+	border: 1px solid #000000;
+	color: #000000;
+	background-color: white;
+	font-size: 13px !important;
+}
+
+.m1 {
+	margin .top: 10px !important;
+}
+
+#board_notice {
+	margin: 10px 0 10px 0;
+}
+.buttons {
+	width: 980px;
+	height: 63px;
+	vertical-align: middle;
+	text-align: center;
+	
+}
+
+.cancellation {
+    border: 1px solid #000000;
+    background: #ffffff;
+    color: #000000;
+    height: 63px;
+    line-height: 60px;
+    font-size: 16px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+
+
+.icon {
+	margin: 0 10px;
+	width: 280px;
+	border: 1px solid #000;
+    background: #fff;
+    color: #000;
+    height: 63px;
+    line-height: 60px;
+    font-size: 16px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.save {
+    margin: 0 10px;
+    width: 280px;
+    border: 1px solid #000;
+    background: #000;
+    color: #fff;
+    height: 63px;
+    line-height: 60px;
+    font-size: 16px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.ta-l {
+	padding: 18px 0 18px 0;
+	text-align: left;
+}
+
+
+/* Column container */
+#side1 {
+	display: inline;
+	width: 20%;
+	float: left;
+	height: 80%;
+}
+
+#side1 .side2 {
+	padding: 0;
+	width: 200px;
+	margin: 0;
+}
+
+#side1 .lnb {
+	width: 100%;
+	margin: 0 auto;
+	position: relative;
+	z-index: 2;
+}
+
+.side4 {
+    padding: 90px 0 100px;
+}
+
+#side1 .side4 h2 {
+	font-size: 22px;
+	font-family: "notokrB";
+	font-weight: bold;
+	line-height: 24px;
+}
+
+#side1 h2 {
+	position: relative;
+	margin: 0 auto 10px;
+	text-align: left;
+}
+
+h2 {
+	margin-block-start: 0.83em;
+	margin-block-end: 0.83em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+}
+
+#side1 .side4 h3 {
+	position: relative;
+	padding: 0 0 15px 0;
+	line-height: 20px;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: "notokrM";
+	letter-spacing: 1px;
+	text-align: left;
+	background: none;
+}
+
+.side4 h3 {
+	margin: 32px 0 0;
+	color: #222;
+}
+
+h3 {
+	margin-block-start: 1em;
+	margin-block-end: 1em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+}
+
+#side1 .side4 ul {
+	padding: 0 0 0 8px;
+}
+
+.mypageUser {
+	margin-top: 50px;
+	margin-bottom: 100px;
+}
+
+.lnb .side4 ul {
+	line-height: 24px;
+	text-align: center;
+}
+
+ul {
+	margin-block-start: 1em;
+	margin-block-end: 1em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+	padding-inline-start: 40px;
+}
+
+ul, li {
+	margin: 0;
+	list-style: none;
+}
+
+#side1 .side4 li {
+	line-height: 28px;
+}
+
+
+ul, li {
+	margin: 0 auto;
+	padding: 0;
+	list-style: none;
+}
+
+li {
+	display: list-item;
+}
+
+#side1 .side4 li a {
+	color: #8f8f8f;
+}
+
+a {
+	text-decoration: none;
+}
+
+.content {
+	width: 1200px;
+	height: 1200px;
+	margin: 0 auto;
+}
+
+</style>
+</head>
+<body>
+<div id="header">
+		<jsp:include page="/header.jsp"/>
+	</div>
+<div id="content">
+	<!-- sidebar -->
+	<div id="side1">
+		<div class="side2">
+			<div class="side3">
+				<div class="side4">
+					<h2>마이페이지</h2>
+					<h3>쇼핑정보</h3>
+					<ul>
+						<li><a
+							href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=order_search';">주문목록/배송조회</a></li>
+						<li><a
+							href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=order_cancel';">취소/반품/교환내역</a></li>
+						<li><a
+							href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=order_refund';">환불/입금리스트</a></li>
+					</ul>
+					<h3>고객센터</h3>
+					<ul>
+
+						<li><a
+							href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=board/QnA&work=QnA_list';">1:1문의</a></li>
+						<li><a
+							href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=board/FAQ&work=FAQ_List';">FAQ</a></li>
+					</ul>
+					<h3>회원정보</h3>
+					<ul>
+						<li><a
+							href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=changeUser_confirm';">회원정보변경</a></li>
+						<li><a
+							href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=deleteUser';">회원탈퇴</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="section m2">
+		<div class="section-header">
+			<% if(ref.equals("0")) {//새글인 경우  %>
+			<h2 class="h2">1:1문의</h2>
+			<% } else {//답글인 경우 %>
+			<h2>1:1 문의 답글쓰기</h2>
+			<% } %>
+		</div>
+		<div class="section-body">
+			<p>LUSH에 궁금한 내용을 등록해 주세요. 담당자가 확인 후 빠르게 답변해 드리겠습니다.</p>
+			<div class="join-form mt50">
+				<form action="<%=request.getContextPath()%>/board/QnA/FAQ_write_action.jsp" method="post" id="boardForm">
+					
+					<input type="hidden" name="user_name" value="<%=loginUser1.getName()%>"> 
+					<input type="hidden" name="ref" value="<%=ref%>">
+					<input type="hidden" name="refStep" value="<%=refStep%>">
+					<input type="hidden" name="refLevel" value="<%=refLevel%>">
+					<input type="hidden" name="pageNum" value="<%=pageNum%>"> 
+		<%-- 			<input type="hidden" name="category" value="<%=category%>">
+					<input type="hidden" name="title" value="<%=title%>">
+					<input type="hidden" name="content" value="<%=content%>"> --%>
+					<fieldset>
+						<legend>게시판 글쓰기</legend>
+						<div class="table1 board-write">
+							<table>
+								<colgroup>
+									<col style="width: 133px;">
+									<col>
+								</colgroup>
+								<tbody>
+									<tr>
+										<th class="ta-1">제목</th>
+										<td>
+											<div class="txt-field hs">
+												<input type="text" name="title" class="text" />
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="ta-1">말머리</th>
+										<td><span class="st-hs"> 
+											<select class=" tune"
+												id="category" name="category"
+												style="width: 260px;">
+													<option value="배송 문의" selected>배송 문의</option>
+													<option value="상품 문의">상품 문의</option>
+													<option value="기타 문의">기타 문의</option>
+													<option value="오프라인 문의">오프라인 문의</option>
+											</select>
+											</span></td>
+									</tr>
+									<tr>
+										<th class="ta-1">작성자</th>
+										<td>
+									<span class="user_name"><%=loginUser1.getName()%></span>
+							
+										</td>
+									</tr>
+									
+									<tr>
+										<th class="ta-l v_top">본문</th>
+										<td style="width: 300px;">
+											<div  id="board_notice">
+												<span class="form-element"> 해당글은 비밀글로만 작성이 됩니다. </span>
+											</div>
+											<div>
+											<textarea rows="7" cols="100" name="content" id="board_content"></textarea>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th colspan="2" id="buttons" style="height: 150px;">
+											<div class="ta-l buttons">
+												<a class="icon" id="cancellation">취소</a>
+												<button type="submit" class="save" id="completeModification" value="작성완료" >작성 완료</button>
+											</div>											
+										</th>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+</div>
+	</div>
+	<div id="message" style="color: red;"></div>
+</body>
+</html>
+<script type="text/javascript">
+$("#title").focus();
+
+$("#boardForm").submit(function() {
+	if($("#title").val()=="") {
+		$("#message").text("제목을 입력해 주세요.");
+		$("#title").focus();
+		return false;
+	}
+	
+	if($("#board_content").val()=="") {
+		$("#message").text("내용을 입력해 주세요.");
+		$("#board_content").focus();
+		return false;
+	}
+});
+
+
+    if($("#completeModification").click(function() {
+    	location.href="<%=request.getContextPath()%>/index.jsp?workgroup=board/QnA&work=FAQ_write_action";
+    }));
+    if($("#cancellation").click(function() {
+    	location.href="<%=request.getContextPath()%>/index.jsp?workgroup=board/QnA&work=FAQ_List";
+    }));
+    
+//};	
+</script>

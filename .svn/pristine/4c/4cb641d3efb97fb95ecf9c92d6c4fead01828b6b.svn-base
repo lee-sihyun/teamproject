@@ -1,0 +1,278 @@
+<%@page import="java.util.List"%>
+<%@page import="site.itwill.dao.LushUserDAO"%>
+<%@page import="site.itwill.dto.LushUserDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+    String message=(String)session.getAttribute("message");
+
+	if(message==null) {
+	message="";
+	} else {
+	session.removeAttribute("message");
+	}
+%>
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<style type="text/css">
+body {
+    font-family: "Noto Sans KR";
+}
+
+#main{
+    width: 1180px;
+    margin: 100px auto;
+}
+
+.userJoin {
+    text-align: center;
+    padding: 15px 0 0 0;
+}
+
+.userJoin h1 {
+    padding-bottom: 15px;
+}
+
+#infor {
+    width: 800px;
+    margin: 0 auto;
+    padding: 15px 30px 30px 30px;
+}
+
+table {
+    border-collapse: collapse;
+    margin-left: 0;
+}
+th,td {
+    text-align: left;
+    padding-right: 50px;
+    padding-top: 20px;
+}
+
+th{
+    font-size: 13px;
+    padding-top: 10px;
+}
+
+#id,#pass,#repass,#name,#nickName,#phone{
+    width: 300px;
+    height: 20px;
+}
+
+#choice {
+    height: 20px;
+}
+
+#email,#addr{
+    width: 200px;
+    height: 20px;
+}
+
+.loghead {
+    text-align: left;
+    padding: 0 50px;
+    padding-bottom: 10px;
+}
+
+.pTag {
+    text-align: right;
+}
+
+#addr_ad1,#addr_ad2{
+    width: 210px;
+    height: 20px;
+}
+
+.check {
+    font-size: 8px;
+}
+
+#submitBtn{
+    width: 150px;
+    height: 20px;
+    background-color: black;
+    color: white;
+}
+
+#postAddress {
+    border: 1px solid black;
+    font-size: 13px;
+}
+
+#message {
+    color: red;
+}
+
+.error{
+    color: red;
+    position: relative;
+    display: none;
+}
+
+#fs {
+    text-align: center;
+}
+
+.tableBox {
+    padding: 0 100px;
+}
+
+#checkId {
+    border: 1px solid gray;
+}
+
+
+</style>
+    <div id="main">
+        <div class="userJoin">
+		    <h1>JOIN US</h1>
+		    <p>
+		        약관동의> <span style="color: black; font-weight: bold;">정보입력</span> > 가입완료
+		    </p>
+	    </div>
+    <form id="insert" name="insertForm" method="post" action="<%=request.getContextPath() %>/lushuser/insertUser_action.jsp" onsubmit="return IdCheck();">
+    <input type="hidden" name="idCheckSc" id="idCheckSc" value="0">
+        <div id="infor">
+        <div class="loghead">
+            <h2>기본정보</h2>
+            <p class="pTag">*  표시는반드시입력하셔야하는항목입니다.</p>
+        </div>
+        <div class="tableBox">
+        <table>
+            <tr>
+                <th>*   아이디</th>
+                <td>
+                <input type="text" name="id" id="id" required> &nbsp;&nbsp;&nbsp;&nbsp;
+                <span id="checkId">아이디 중복검사</span>               
+                <div id="idRegMsg" class="error">아이디는 영문자로 시작되는 영문자,숫자,_의 5~15범위의 문자로만 작성 가능합니다.</div>
+                </td>
+            </tr>
+            <tr>
+                <th>*   비밀번호</th>
+                <td>
+                <input type="password" name="pass" id="pass" required>
+                <div id="passwdRegMsg" class="error">비밀번호는 영문자,숫자,특수문자가 반드시 하나이상 포함된 6~20 범위의 문자로만 작성 가능합니다.</div>
+                </td>
+            </tr>
+            <tr>
+                <th>*   비밀번호확인</th>
+                <td>
+                <input type="password" name="repass" id="repass" required>
+                <div id="repasswdMatchMsg" class="error">비밀번호가 일치하지 않습니다.</div>
+                </td>
+            </tr>
+            <tr>
+                <th>*   이름</th>
+                <td>
+                <input type="text" name="name" id="name" required>
+                </td>
+            </tr>
+            <tr>
+                <th>닉네임</th>
+                <td>
+                <input type="text" name="nickName" id="nickName">
+                </td>
+            </tr>
+            <tr>
+                <th>*   이메일</th>
+                <td>
+                <input type="text" name="email" id="email" required>
+                <select name="choice" id="select">
+                    <option value="1" selected>직접입력</option>
+                    <option value="@naver.com">네이버</option>
+                    <option value="@daum.net">다음</option>
+                    <option value="@gmail.com">구글</option>
+                    <option value="@nate.com">네이트</option>
+                </select>
+                <div id="emailRegMsg" class="error">입력한 이메일이 형식에 맞지 않습니다.</div>
+                </td>
+            </tr>
+            <tr>
+                <th>*   휴대폰번호</th>
+                <td>
+                <input type="number" name="phone" id="phone" placeholder="-없이입력하세요." required>
+                <div id="phoneRegMsg" class="error">전화번호는 - 없이 숫자로만 입력해 주세요.</div>
+                </td>
+            </tr>
+             <tr>
+                <th>주소</th>
+                <td>
+                <input type="text" name="postcode" id="addr" readonly>
+                <span id="postAddress">우편번호검색</span><br>
+                <input type="text" name="address1" id="address1" readonly> <input type="text" name="address2" id="address2">
+                </td>
+            </tr>
+        </table>
+        </div>
+        </div>
+        <div id="fs">
+            <button type="submit" id="submitBtn" style="width: 300px; height: 40px;">회원가입</button>
+        </div>
+    </form>
+    </div>
+<script type="text/javascript">
+$("#insert").submit(function() {
+    var submitResult=true;
+    
+    $(".error").css("display","none");
+    
+    var idReg=/^[a-zA-Z]\w{4,14}$/g;
+    if(!idReg.test($("#id").val())) {
+        $("#idRegMsg").css("display","block");
+        submitResult=false;
+    }
+    
+    var passwdReg=/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*_-]).{6,20}$/g;
+    if(!passwdReg.test($("#pass").val())) {
+        $("#passwdRegMsg").css("display","block");
+        submitResult=false;
+    } 
+    
+    if($("#pass").val()!=$("#repass").val()) {
+        $("#repasswdMatchMsg").css("display","block");
+        submitResult=false;
+    }
+    
+    if($("#nickName").val()==null) {
+        $("#nickName").val()="";
+    }
+    
+    
+    var phoneReg=/^\d{11}$/;
+    if(!phoneReg.test($("#phone").val())) {
+        $("#phoneRegMsg").css("display","block");
+        submitResult=false;
+    }
+    
+    var emailReg=/^([a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+(\.[-a-zA-Z0-9]+)+)*$/g;
+    if(!emailReg.test($("#email").val())) {
+        $("#emailRegMsg").css("display","block");
+        submitResult=false;
+    } else if(document.getElementById("select").value="1") {
+        $("#emailMsg").css("display","block");
+        submitResult=false;
+    }
+    
+    return submitResult;
+    
+});
+
+
+$("#postAddress").click(function() {
+	window.open("<%=request.getContextPath() %>/lushuser/postaddress_search.jsp","우편번호검색","width=500,height=400,left=400,top=350");
+});
+
+$("#checkId").click(function() {
+    $("#idRegMsg").css("display","none");
+    
+    var idReg=/^[a-zA-Z]\w{4,14}$/g;
+    if(!idReg.test($("#id").val())) {
+        $("#idRegMsg").css("display","block");
+        return;
+    }
+    
+    window.open("<%=request.getContextPath()%>/lushuser/idCheck.jsp?id="+$("#id").val(),"중복아이디검사","width=300,height=150,left=450,top=250");
+    
+});
+
+</script>

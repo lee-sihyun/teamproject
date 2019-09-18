@@ -1,0 +1,171 @@
+package site.itwill.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import site.itwill.dto.noticeDTO;
+import site.itwill.dto.testDTO;
+
+public class testDAO  extends JdbcDAO{
+
+	
+	private static testDAO _dao;
+	
+	
+	public testDAO() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+	
+	static {
+		
+		_dao=new  testDAO();
+		
+	}
+	
+	
+	public static testDAO getDAO() {
+		
+		return _dao;
+	}
+	
+	public int getTestTotal(String search, String keyword) {
+
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		int rows=0;
+		try {
+			con=getConnection();
+			if (keyword.equals("")) {
+				String sql="select count(*) from test";
+				
+				pstmt = con.prepareStatement(sql);
+
+			} else {
+			
+			
+			String sql="select count(*) from test where "+ search +" like '%'||?||'%'";
+			
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, keyword);
+			}
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				rows=rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("[에러]getTestTotal() SQL 오류=" + e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return rows;
+
+	}
+	
+	
+	//자동증가값 반환
+	public int getTestNum() {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		int num=0;
+
+		try {
+
+			con=getConnection();
+
+			String sql="select test_seq.nextval from dual";
+			pstmt =con.prepareStatement(sql);
+
+			rs =pstmt.executeQuery();
+
+			if(rs.next()) {
+				num = rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+
+			System.out.println("[에러] getTestNum() 메소드 SQL오류 =" + e.getMessage());
+
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return num;
+
+	}
+	
+	//페이지처리
+	public List<testDTO> getTestList(int startRow, int endRow, String search, String keyword) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<testDTO> noticeList = new ArrayList<testDTO>();
+		try {
+			con = getConnection();
+
+			if (keyword.equals("")) {
+				String sql = "select * from (select rownum rn, temp.* from (select * from notice order by num desc) temp) where rn between ? and ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, startRow);
+				pstmt.setInt(2, endRow);
+
+			} else {
+				String sql = "select * from (select rownum rn, temp.* from (select * from notice where " + search
+						+ " like '%'||?||'%'  order by num desc) temp) where rn between ? and ?";
+
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, keyword);
+				pstmt.setInt(2, startRow);
+				pstmt.setInt(3, endRow);
+
+			}
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				/*
+				
+				ID          VARCHAR2(20)   
+				PASSWD      VARCHAR2(1000) 
+				NAME        VARCHAR2(20)   
+				NICKNAME    VARCHAR2(20)   
+				EMAIL       VARCHAR2(30)   
+				PHONE       NUMBER(20)     
+				POSTCODE    VARCHAR2(400)  
+				ADDRESS1    VARCHAR2(400)  
+				ADDRESS2    VARCHAR2(400)  
+				STATUS      NUMBER(1)      
+				LOGDATE     DATE    
+*/
+				testDTO test = new testDTO();
+				
+				test.setNum(rs.getInt("num"));
+				test.setId(rs.getString("id"));
+				test.setPasswd(rs.getString("passwd"));
+				test.setName(rs.getString("name"));
+				test.setNickname(rs.getString("nickname"));
+				test.setEmail(rs.getString("email"));
+				test.
+				noticeList.add(notice);
+
+			}
+
+		} catch (SQLException e) {
+			// TODO: handle exception
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return noticeList;
+
+	}
+	
+}
+

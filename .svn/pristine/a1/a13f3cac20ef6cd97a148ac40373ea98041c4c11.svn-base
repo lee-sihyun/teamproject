@@ -1,0 +1,220 @@
+<%@page import="site.itwill.dao.OrderDAO"%>
+<%@page import="site.itwill.dto.OrderDTO"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+
+<%
+	List<OrderDTO> orderList1 = OrderDAO.getOrderDAO().getStaus1();
+	List<OrderDTO> orderList2 = OrderDAO.getOrderDAO().getStaus2();
+	List<OrderDTO> orderList3 = OrderDAO.getOrderDAO().getStaus3();
+		
+
+
+%>
+<jsp:include page="/admin/header.jsp" />
+<link href="css/admin_delivery.css" rel="stylesheet" type="text/css">
+
+
+
+<!--본문내용역역 시작 content로 잡으면 됩니다  -->
+
+<div id="content">
+
+	<form action="" method="post"  name="deliveryform" id="deliveryform">
+
+		<div class="headingArea">
+			<div class="mTitle">
+				<h1>배송관리</h1>
+			</div>
+
+
+		</div>
+
+		<div class="mTabtypeOrderdelivery">
+
+			<ol class="tab" style="margin-bottom: 0px; margin-top: 0px;">
+				<!-- 	<li id="ship_tab_no_pay_cnt"><a href="admin_delivery.jsp"
+								id="no_pay_cnt" style="width: 206px;"><span
+									class="thumb deposit"><strong class="title">입금확인</strong><span
+										class="count" id="no_pay_cnt_value">0</span></span></a></li> -->
+
+
+
+
+
+				<li id="ship_tab_is_shipped_f"><a
+					href="<%=request.getContextPath()%>/admin/index.jsp?workgroup=order&work=delivery"
+					id="is_shipped_f" style="width: 206px;"><span
+						class="thumb ready"><strong class="title">배송대기</strong><span
+							class="count" id="is_shipped_f_value"><%=orderList1.size() %></span></span></a></li>
+							
+
+
+				<li id="ship_tab_is_shipped_w"><a
+					href="<%=request.getContextPath()%>/admin/index.jsp?workgroup=order&work=delivery2"
+					id="is_shipped_w" style="width: 206px;"><span
+						class="thumb delivery"><strong class="title">배송중</strong><span
+							class="count" id="is_shipped_m_value"><%=orderList2.size() %></span></span></a></li>
+
+				<li id="ship_tab_is_shipped_m"><a
+					href="<%=request.getContextPath()%>/admin/index.jsp?workgroup=order&work=delivery3"
+					id="is_shipped_m" style="width: 206px;"><span
+						class="thumb delivery"><strong class="title">배송완료</strong><span
+							class="count" id="is_shipped_m_value"><%=orderList3.size() %></span></span></a></li>
+
+			</ol>
+		</div>
+		<!-- 상단탭완료 -->
+
+
+
+
+
+
+		<div class="section" id="QA_deposit2"
+			style="margin-left: -50; height: 800px;">
+
+			<div class="mTitle" style="display: none;"></div>
+
+			<div class="mTab typeTab eTab"></div>
+			<div id="tabNumber" class="tabCont" style="display: block;">
+
+
+				<div class="mCtrltypeHeadersetting" style="width: 250px;">
+					<div class="test">
+						<table>
+							<tr>
+
+								<th scope="row">상품명</th>
+
+								<td colspan="1">
+									<div id="testfiled">
+
+										<input type="text" class="fText sBaseSearchBox">
+									</div>
+
+								</td>
+							</tr>
+
+
+
+
+
+						</table>
+
+						<div class="mButtongCenter">
+
+							<a href="#none" id="eBtnSearch" class="btnSearch"><span>검색</span></a>
+							<a href="#none" id="eBtnInit" class="btnSearch reset"><span>초기화</span></a>
+
+
+						</div>
+
+					</div>
+
+					<div class="gLeft">
+
+
+					<button  type="submit"id="delivery" class="btnCtrl" >배송</button>	
+						
+					</div>
+
+				</div>
+				<div class="mBoardtypeOrdergScrollgCellSingle"
+					style="height: 550px; margin-top: 200px;">
+
+					<table id="searchResultList" border="1" class="eChkTr"
+						style="height: 500px;">
+
+
+						<tr>
+
+							<th scope="col" style="width: 30px;" id="check">
+							<input type="checkbox" name="allCheck" id="allCheck"></th>
+
+	
+							<th scope="col" >주문번호</th>
+							<th scope="col">상품명</th>
+							<th scope="col">주문일자</th>
+							<th scope="col" >상태</th>
+							<!-- <th scope="col" style="widht: 50px;">상태</th> -->
+							<!--<th scope="col" style="widht: 50px; ">메모</th>
+											  -->
+						</tr>
+						<%
+							for (OrderDTO order : orderList1) {
+						%>
+						<tr>
+							<td><input type="checkbox" name="checkNo" id="checkNo"
+							value="<%=order.getOrderNo()
+							%>" class="check"></td>
+							
+							<td><%=order.getOrderNo()%> </td>
+							<td><%=order.getName()%></td>
+							<td><%=order.getOrderDate().substring(0, 19)%></td>
+							<td>
+								<%
+									if (order.getDeliveryStatus() == 1) {
+								%> 배송전 <%
+									} else if (order.getDeliveryStatus() == 2) {
+								%>
+								배송중 <%
+									} else if (order.getDeliveryStatus() == 3) {
+								%> 배송완료 <%
+									}
+								%>
+							</td>
+						</tr>
+						<%
+							}
+						%>
+
+
+
+
+
+					</table>
+				</div>
+
+
+			</div>
+
+
+
+		</div>
+
+	</form>
+</div>
+<!--content 영역종료 -->
+
+
+</div>
+<!-- container 영역종료 -->
+</div>
+<!-- wrap영역종료 -->
+
+</body>
+</html>
+
+<script type="text/javascript">
+$("#allCheck").change(function() {
+   if($(this).is(":checked")) {
+      $(".check").prop("checked",true);
+   } else {
+      $(".check").prop("checked",false);
+   }   
+});
+
+$("#delivery").click(function () {
+	
+	$("#deliveryform").attr("action","<%=request.getContextPath()%>/admin/order/order_delivery_action.jsp");
+	$("#deliveryform").submit();
+	
+	
+});
+
+
+    
+    </script>

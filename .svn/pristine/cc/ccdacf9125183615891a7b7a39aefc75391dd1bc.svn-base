@@ -1,0 +1,28 @@
+<%@page import="site.itwill.dao.LushUserDAO"%>
+<%@page import="site.itwill.dto.LushUserDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+    if(request.getMethod().equals("GET")){
+        response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+        return;
+    }
+    
+    request.setCharacterEncoding("UTF-8");
+    
+    String name=request.getParameter("name");
+    String email=request.getParameter("email");
+    
+    String id=LushUserDAO.getDao().findId(name, email);
+    
+    if(id==null) {
+        session.setAttribute("message", "해당정보의 아이디가 존재하지 않습니다.");
+        response.sendRedirect(request.getContextPath()+"/index.jsp?workgroup=lushuser&work=findUser_confirm");
+        return;
+    }
+    
+    session.setAttribute("name", name);
+    session.setAttribute("id", id);
+    
+    response.sendRedirect(request.getContextPath()+"/index.jsp?workgroup=lushuser&work=findUser");
+%>

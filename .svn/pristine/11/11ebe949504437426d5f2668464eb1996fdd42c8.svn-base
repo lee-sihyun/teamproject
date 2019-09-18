@@ -1,0 +1,84 @@
+<%@page import="site.itwill.dao.ZipcodeDAO"%>
+<%@page import="site.itwill.dto.ZipcodeDTO"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+	request.setCharacterEncoding("UTF-8");
+	 
+	List<ZipcodeDTO> addressList=null;
+	if(request.getParameter("dong")!=null){ 
+    String dong=request.getParameter("dong");
+
+    addressList=ZipcodeDAO.getDao().getZipcodeList(dong);
+}
+%>
+
+<style type="text/css">
+#all {
+    margin: 0 auto;
+    width: 400px;
+    text-align: center;
+}
+
+#ad {
+    font-size: 15px;
+}
+
+table {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+tr td {
+	border: 1px solid black;
+}
+
+.post {
+    width: 100px;
+}
+
+.address {
+    width: 300px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    color: red;
+    cursor: pointer;
+}
+
+</style>
+
+<div id="all">
+    <form method="post" name="addressForm" id="addressForm">
+        <input type="text" name="dong" required>
+        <button type="submit">주소검색</button>
+    </form>
+    
+    <%if(addressList!=null) { %>
+	    <table id="ad">
+	        <tr>
+	            <td class="post">우편번호</td>
+	            <td class="address" style="text-align: center;">상세주소</td>
+	        </tr>
+	        <%for (ZipcodeDTO address:addressList) { %> 
+	        <tr>
+	            <td class="post"><%=address.getZipcode() %></td>
+	            <td class="address"><a href="javascript:sendClose('<%=address.getZipcode() %>','<%=address.getAddress() %>');"><%=address.getAddress() %></a></td>
+	        </tr>
+	        <%} %>
+	    </table>
+	 <%} %>
+</div>
+
+<script type="text/javascript">
+function sendClose(code,addr) {
+    opener.insertForm.addr.value=code;
+    opener.insertForm.addr_ad1.value=addr;
+    window.close();
+}
+</script>

@@ -1,0 +1,77 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+<jsp:include page="/admin/header.jsp"/>
+<link href="css/admin_board_enroll.css" rel="stylesheet" type="text/css">
+
+
+			<!--본문내용역역 시작 content로 잡으면 됩니다  -->
+
+
+			<div id="content">
+				<div class="headingArea"></div>
+
+				<form action="<%=request.getContextPath() %>/admin/board/board_write_action.jps
+				" method="post" id="ec-influencer-product-register">
+					<!--  <input type="text" name="product_no"> <input type="text"
+						name="product_no"> 얜뭐지-->
+					<div class="mToggleBar eToggle selected ec-product-register-toggle">
+						<h2>공지사항</h2>
+
+					</div>
+					<div class="toggleArea" style="display: block">
+						<div class="mBoadrtypeWrite">
+							<table border="1">
+								<colgroup>
+									<col style="width: 190px;">
+									<col style="width: 308px;">
+									<col style="width: auto;">
+								</colgroup>
+								<tbody>
+
+									<tr>
+
+										<th scope="row" id="code">제목</th>
+										<td colspan="2"><input type="text"
+											placeholder="제목을 입력하세요. " name="product_tax_type"
+											style="width: 500px; height: 20px;"></td>
+
+									</tr>
+
+
+									<tr style="height: 750px;">
+
+										<th scope="row" id="price">내용</th>
+										<td colspan="2"><textarea cols="100"
+												placeholder="내용을 입력하세요. " name="product_tax_type"
+												style="height: 700px; width: 950px;"></textarea></td>
+
+									</tr>
+
+
+
+
+
+
+								</tbody>
+							</table>
+						</div>
+						<!-- mBoadrtypeWrite종료 -->
+					</div>
+					<!-- toggleArea 종료 -->
+				</form>
+				<!-- 표 헤더 -->
+				<div class="mButtongCenter">
+					<a href=# class="btn"><span>등록</span></a>
+
+				</div>
+			</div>
+
+		</div>
+		<!-- container 영역종료 -->
+	</div>
+	<!-- wrap영역종료 -->
+
+
+</body>
+</html>

@@ -1,0 +1,69 @@
+<%-- 입력페이지(board_modify.jsp)에서 전달된 게시글을 반환받아 BOARD 테이블에 
+저장된 게시글을 변경하고 게시글 상세 출력페이지(board_detail.jsp)로 이동하는 JSP 문서 --%>
+<%@page import="site.itwill.utill.Utility"%>
+<%@page import="java.net.URLEncoder"%>
+<%@page import="site.itwill.dao.QnADAO"%>
+<%@page import="site.itwill.dto.QnADTO"%>
+<%@include file="/security/login_status.jspf" %>
+
+<%
+	request.setCharacterEncoding("UTF-8");
+	LushUserDTO loginUser1=(LushUserDTO)session.getAttribute("loginUser");
+
+	//비정상적인 요청에 대한 응답 처리
+	if(request.getMethod().equals("GET")) {
+		response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+		return;
+	}
+	
+	//전달된 입력값을 반환받아 저장
+	int num=Integer.parseInt(request.getParameter("num"));
+	String pageNum=request.getParameter("pageNum");
+	System.out.println("modify_action num 확인  : "+num);
+	//XSS(입력값으로 태그를 입력하는 기술)에 대한 처리
+	// => 태그 관련 문자를 Escape 문자로 변환하거나 제거
+	//String title=Utility.stripTag(request.getParameter("title"));
+	String title=request.getParameter("title");
+	String content=request.getParameter("content");
+	String category=request.getParameter("category");
+	System.out.println("action 확인 : "+title);
+	System.out.println("action 확인 : "+content);
+	System.out.println("action 확인 : "+category); 
+	
+	int status=0;
+	/*
+	if(request.getParameter("secret")!=null) {
+		status=Integer.parseInt(request.getParameter("secret"));
+	}*/
+	
+/*
+	//태그 제거에 의해 입력값이 없을 경우에 대한 처리
+	if(title==null|| title.equals("") || content==null || content.equals("")) {
+		response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+		return;
+	}
+	*/
+	//DTO 인스턴스 생성 후 필드값 변경
+	QnADTO QnA=new QnADTO();
+	QnA.setNum(num);
+	QnA.setTitle(title);
+	QnA.setContent(content);
+	QnA.setCategory(category);
+	//QnA.setStatus(status);
+	
+	//게시글을 전달하여 QnA 테이블에 저장된 게시글을 변경하는 DAO 클래스의 메소드 호출
+	QnADAO.getDAO().modifyQnA(QnA);
+	//게시글 상세 출력페이지 이동
+	response.sendRedirect(request.getContextPath()+"/index.jsp?workgroup=board/QnA&work=QnA_detail&num="+num+"&pageNum="+pageNum);
+%>
+
+
+
+
+
+
+
+
+
+
+

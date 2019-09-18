@@ -1,0 +1,42 @@
+<%@page import="site.itwill.dao.noticeDAO"%>
+<%@page import="site.itwill.dto.noticeDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+    
+    
+    
+    
+   <%
+   
+request.setCharacterEncoding("UTF-8");
+   
+   
+   
+   int num=Integer.parseInt(request.getParameter("num"));
+   String pageNum=request.getParameter("pageNum");
+   String search=request.getParameter("search");
+   String keyword=request.getParameter("keyword");
+
+   
+  String title=request.getParameter("title");
+  String content=request.getParameter("content");
+  
+  
+  noticeDTO notice=new noticeDTO();
+  
+  notice.setNum(num);
+  notice.setTitle(title);
+  notice.setContent(content);
+  
+  
+  noticeDAO.getDAO().modifyNotice(notice);
+  
+	response.sendRedirect(request.getContextPath()+"/admin/index.jsp?workgroup=board&work=board_detail&num="+num+"&pageNum="+pageNum+"&search="+search+"&keyword="+keyword);
+   
+   
+   
+   
+   %>
+   
+ 

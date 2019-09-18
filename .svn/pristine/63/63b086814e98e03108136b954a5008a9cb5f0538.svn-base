@@ -1,0 +1,133 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+	<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<jsp:include page="/admin/header.jsp" />
+
+
+<link href="css/product.css" rel="stylesheet" type="text/css">
+
+
+<!--본문내용역역 시작 content로 잡으면 됩니다  -->
+
+<div id="content">
+	<div class="headingArea"></div>
+
+
+
+
+	<form
+		action="<%=request.getContextPath()%>/admin/product/product_action.jsp"
+	
+		method="post" id="admit" name="admitForm">
+			<div class="headline">
+			<h2>기본정보</h2>
+
+		</div>
+		<div class="tableArea" >
+			<div>
+				<table>
+
+
+					<tr>
+
+						<th>상품코드</th>
+						<td colspan="2"><input type="text" name="code" id="code">
+							<div id="codeMsg" class="error">코드를 입력해주세요</div></td>
+
+					</tr>
+
+					<tr>
+						<th>상품명</th>
+						<td colspan="2"><input type="text" name="name" id="name">
+							<div id="nameMsg" class="error">상품명을 입력해주세요</div></td>
+					</tr>
+
+					<tr>
+
+						<th>상품가격</th>
+						<td colspan="2"><input type="text" name="price" id="price">
+							<span>원</span>
+
+							<div class="priceMsg" class="error">상품가격을 입력해주세요</div></td>
+					</tr>
+
+
+					<tr>
+						<th>상품재고수량</th>
+						<td colspan="2"><input type="text" name="stock" class="stock">
+							<span>개</span>
+							<div class="stockMsg" class="error">상품재고수량을 입력해주세요</div></td>
+
+
+					</tr>
+					<tr>
+
+						<th>상품이미지</th>
+						<td colspan="2"><input type="file" name="image" id="image">
+							<div class="imageMsg" class="error">상품이미지를 등록해주세요</div></td>
+
+					</tr>
+
+
+					<tr>
+
+						<th scope="row" >상품설명</th>
+						<td colspan="2"><input type="file" name="imagedetail"
+							id="imagedetail">  </td>
+							
+					</tr>
+
+				</table>
+			</div>
+
+		</div>
+		
+		
+
+	</form>
+	<!-- 표 헤더 -->
+	<div class="mButtongCenter">
+		<button type="submit" class="btn">등록</button>
+	</div>
+</div>
+
+<!-- container 영역종료 -->
+
+<!-- wrap영역종료 -->
+<script type="text/javascript">
+	$("code").focus();
+
+	$("admit").submit(function() {
+		var submitResult = true;
+
+		$(".error").css("display", "none");
+
+		if ($("#code").val() == "") {
+			$("#codeMsg").css("display", "block");
+			submitResult = false;
+		}
+		if ($("#name").val() == "") {
+			$("#nameMsg").css("display", "block");
+			submitResult = false;
+		}
+		if ($("#price").val() == "") {
+			$("#priceMsg").css("display", "block");
+			submitResult = false;
+		}
+		if ($("#stock").val() == "") {
+			$("#stockMsg").css("display", "block");
+			submitResult = false;
+		}
+		if ($("#image").val() == "") {
+			$("#imageMsg").css("display", "block");
+			submitResult = false;
+		}
+
+		return submitResult;
+
+	});
+</script>
+
+</body>
+</html>

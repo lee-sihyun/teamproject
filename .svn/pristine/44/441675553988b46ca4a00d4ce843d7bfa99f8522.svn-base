@@ -1,0 +1,303 @@
+package site.itwill.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import site.itwill.dto.CartDTO;
+
+public class CartDAO extends JdbcDAO {
+	private static CartDAO _dao;	
+	
+	private CartDAO() {
+		
+	}
+	
+	static {
+		_dao=new CartDAO();
+	}
+	
+	public static CartDAO getCartDAO() {
+		return _dao;
+	}
+	
+	//장바구니번호를 전달받아 CART 테이블의 행을 삭제하고 삭제행의 갯수를 반환하는 메소드 : 단일행
+	public int deleteCart(int cartNo) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		int rows=0;
+		try {
+			con=getConnection();
+			
+			String sql="delete from cart where cart_no=?";
+			
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, cartNo);
+			
+			rows=pstmt.executeUpdate();
+			
+		
+		} catch (SQLException e) {
+			System.out.println("[에러]deleteCart() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt);
+		}
+		return rows;
+	}
+	
+	
+	//장바구니의 상품 수량을 클릭할 때마다 1씩 늘거나 줄어들기
+	// => 동적 sql 구현 : ◁버튼을 누르면 1씩 줄어들고 ▷버튼을 누르면 1씩 늘어남 : 버튼 상태값까지 파라메터 2개 주기
+	// => 수량을 변경하면 총가격도 변경
+	
+	//장바구니번호를 전달받아 CART 테이블의 해당 행의 수량 속성값을 변경하고 변경행의 갯수를 반환하는 메소드
+	public int modifyCart(int btnStatus,int cartNo,String id) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		int rows=0;
+		try {
+			con=getConnection();
+			
+			//동적 sql 구현
+			if(btnStatus==0) { 		  // -버튼을 눌렀을 경우
+				String sql="update cart set volume=volume-1, total_price=total_price-price where id=? and cart_no=?";
+				pstmt=con.prepareStatement(sql);
+				pstmt.setString(1, id);
+				pstmt.setInt(2, cartNo);
+			} else if(btnStatus==1) { // +버튼을 눌렀을 경우
+				String sql="update cart set volume=volume+1, total_price=total_price+price where id=? and cart_no=?";
+				pstmt=con.prepareStatement(sql);
+				pstmt.setString(1, id);
+				pstmt.setInt(2, cartNo);
+			}
+			
+			rows=pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[에러]modifyCart() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt);
+		}
+		
+		return rows;
+	}
+	
+	//상품 정보를 전달받아 CART 테이블에 저장하고 저장행의 갯수를 반환하는 메소드
+	// => 상품페이지에서 바로 주문할 때 정보를 장바구니에 잠시 저장하는 목적으로 사용됨
+	public int addCart(CartDTO cart) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		int rows=0;
+		
+		try {
+			con=getConnection();
+			
+			String sql="insert into cart values(?,?,?,?,?,?)";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, cart.getCartNo());
+			pstmt.setString(2, cart.getId());
+			pstmt.setInt(3, cart.getItemNo());
+			pstmt.setInt(4, cart.getVolume());
+			pstmt.setInt(5, cart.getPrice());
+			pstmt.setInt(6, cart.getTotalPrice());
+			
+			rows=pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("[에러]addCart() 메소드의 SQL 오류 = "+e.getMessage());			
+		} finally {
+			close(con, pstmt);
+		}
+		return rows;
+	}
+	
+	//상품코드를 반환하는 메소드
+	public int getitemNo(int cartNo) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		int itemNo=0;
+		
+		try {
+			con=getConnection();
+			
+			String sql="select item_no from cart where cartNo=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, cartNo);
+			
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				itemNo=rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]getCart() 메소드의 SQL 오류 = "+e.getMessage());			
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return itemNo;
+	}
+	
+	//아이디와 장바구니번호를 전달받아 CART 테이블의 행을 검색하여 반환하는 메소드
+	@SuppressWarnings("null")
+	public List<CartDTO> getCart(String[] cartNoList) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List<CartDTO> cartList=new ArrayList<CartDTO>();
+		
+		try {
+			con=getConnection();
+			
+			for(String cartNo:cartNoList) {
+				String sql="select * from cart where cart_no=?";
+				pstmt=con.prepareStatement(sql);
+				pstmt.setInt(1, Integer.parseInt(cartNo));
+				
+				rs=pstmt.executeQuery();
+				
+				if(rs.next()) {
+					CartDTO cart=new CartDTO();
+					cart.setCartNo(rs.getInt("cart_no"));
+					cart.setId(rs.getString("id"));
+					cart.setItemNo(rs.getInt("item_no"));
+					cart.setVolume(rs.getInt("volume"));
+					cart.setPrice(rs.getInt("price"));
+					cart.setTotalPrice(rs.getInt("total_price"));
+					cartList.add(cart);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]getCart() 메소드의 SQL 오류 = "+e.getMessage());			
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return cartList;
+	}
+	
+	//CART 테이블의 모든 저장행을 검색하여 반환하는 메소드
+	public List<CartDTO> getCartList(String id) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List<CartDTO> cartList=new ArrayList<CartDTO>();
+		try {
+			con=getConnection();
+			
+			String sql="select * from cart where id=? order by cart_no desc";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			rs=pstmt.executeQuery();
+			
+			while(rs.next()) {
+				CartDTO cart=new CartDTO();
+				cart.setCartNo(rs.getInt("cart_no"));
+				cart.setId(rs.getString("id"));
+				cart.setItemNo(rs.getInt("item_no"));
+				cart.setVolume(rs.getInt("volume"));
+				cart.setPrice(rs.getInt("price"));
+				cart.setTotalPrice(rs.getInt("total_price"));
+				cartList.add(cart);
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("[에러]getCartList() 메소드의 SQL 오류 = "+e.getMessage());						
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return cartList;
+	}
+	
+	//아이디를 전달받아 CART 테이블의 행 갯수를 반환하는 메소드 
+	public int getCartNumber(String id) {
+		Connection con=null; 
+		PreparedStatement pstmt=null; 
+		ResultSet rs=null; 
+		int rows=0;
+	 
+		try { 
+			con=getConnection();
+		  
+			String sql="select count(*) from cart where id=?";
+			pstmt=con.prepareStatement(sql); pstmt.setString(1, id);
+		 
+			rs=pstmt.executeQuery();
+		  
+			if(rs.next()) { 
+				rows=rs.getInt(1); 
+			}
+		  
+		 } catch (SQLException e) {
+			 System.out.println("[에러]getCartNumber() 메소드의 SQL 오류 = "+e.getMessage()); 
+		 } finally { 
+		  	close(con, pstmt, rs); 
+		 } 
+		 return rows; 
+	}
+	
+	//CART_SEQ 시퀀스의 자동 증가값을 검색하여 반환하는 메소드
+	public int getCartNum() {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		int num=0;
+		
+		try {
+			con=getConnection();
+			
+			String sql="select cart_seq.nextval from dual";
+			pstmt=con.prepareStatement(sql);
+			
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				num=rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]getCartNumber() 메소드의 SQL 오류 = "+e.getMessage()); 			
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return num;
+	}
+	
+	//수량 추가 메소드 (변경)
+	public int addVolume(int vol,int cartNo) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		int rows=0;
+		
+		try {
+			con=getConnection();
+			
+			String sql="update cart set volume=volume+?, total_price=(volume+?)*price where cart_no=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, vol);
+			pstmt.setInt(2, vol);
+			pstmt.setInt(3, cartNo);
+			
+			rows=pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[에러]addVolume() 메소드의 SQL 오류 = "+e.getMessage()); 			
+		}
+		return rows;
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

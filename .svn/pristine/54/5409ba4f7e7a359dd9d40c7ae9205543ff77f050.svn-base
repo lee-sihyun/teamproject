@@ -1,0 +1,293 @@
+@charset "UTF-8";
+<style type="text/css">
+
+/*본문영역시작*/
+#content {
+	width: 1280px;
+	height: 919px;
+	padding: 0 40px 40px 40px;
+	box-sizing: border-box;
+	vertical-align: top;
+}
+
+.headingArea {
+	width: 1280px;
+	height: 30px;
+	position: relative;
+	margin: 0 0 38px;
+}
+
+form {
+	width: 1280px;
+	height: 821px;
+	display: block;
+}
+
+.optionArea {
+	width: 1238px;
+	height: 265px;
+	padding: 20px 20px 20px 20px;
+	margin: 0 0 30px 0;
+	border: 1px solid #ddd;
+	border-radius: 2px;
+	clear: both;
+	background: #fff;
+	box-shadow: 0px 2px 1px 0px rgba(205, 211, 222, 1);
+	clear: both;
+	border-radius: 2px;
+	border: 1px solid #ddd;
+}
+
+.mOption {
+	width: 1238px;
+	height: 50px;
+}
+
+#table1 {
+	width: 1237px;
+	height: 188px;
+	height: 50px;
+	table-layout: fixed;
+	border: 0;
+	border-spacing: 0;
+	border-collapse: collapse;
+	line-height: 1.5;
+	background-color: #fff;
+}
+
+tr {
+	width: 1237px;
+	height: 49px;
+	display: table-row;
+	vertical-align: inherit;
+	border-color: inherit;
+}
+
+th {
+	width: 135px;
+	height: 32x;
+	padding: 9px 9px 7px 9px;
+	background-color: #f3f3f3;
+	display: table-cell;
+	border: 1px solid #dedede;
+	/*vertical-align: top;
+
+   word-wrap: break-word;
+   font-weight: bold;*/
+}
+
+#pname {
+	width: 135px;
+	height: 32px;
+	padding: 9px 9px 7px 9px;
+	border: 1px solid #dedede;
+}
+
+.fTexteSearchText {
+	width: 280px;
+	height: 28px;
+	padding: 0px 9px 2px 9px;
+	border: 1px solid #d4d4d4;
+}
+
+td {
+	width: 1064px;
+	height: 32px;
+	padding: 9px 9px 7px;
+	border: 1px solid #dedede;
+	text-align: left;
+	word-wrap: break-word;
+	display: table-cell;
+	vertical-align: inherit;
+}
+
+tbody {
+	width: 1237px;
+	/* height: 188px;*/
+	height: 50px;
+	height: 50px;
+	display: table-row-group;
+	vertical-align: middle;
+	border-color: inherit;
+}
+
+.mButtongCenter {
+	width: 1234px;
+	height: 36x;
+	position: relative;
+	text-align: center;
+	margin: 20px 0;
+	padding: 0 4px 0 0;
+}
+
+.mButton a:first-child {
+	margin-left: 0;
+}
+
+.btnSearch {
+	width: 42px;
+	height: 34px;
+	padding: 0 20px 0 20px;
+	color: #fff;
+	line-height: 34px;
+	border: 1px solid transparent;
+	background-color: #55a0ff;
+	margin:0px 20px 0px 0px;
+}
+
+.btnSearchreset {
+	/*
+	color: #55a0ff;
+	border-color: #55a0ff;
+	background-color: #fff;
+	
+	*/
+		width: 42px;
+	height: 34px;
+	padding: 0 20px 0 20px;
+	color: #fff;
+	line-height: 34px;
+	border: 1px solid transparent;
+	background-color: #55a0ff;
+}
+
+.section {
+	width: 1238px;
+	height: 1000px;
+	margin: 0 0 30px 0;
+	padding: 80px 20px 30px 20px;
+	border-radius: 2px;
+	border: 1px solid #ddd;
+	background: #fff;
+	box-shadow: 0px 2px 1px 0px rgba(205, 211, 222, 1);
+}
+
+.mBoardtypeListgScrollgCell {
+	width: 1236px;
+	height: 700px;
+	position: relative;
+	border: 1px solid #dedede;
+	/*overflow: auto;
+
+   border-right: 1px solid #d9dadc;
+   border-left: 1px solid #d9dadc;
+   */
+}
+
+.eChkColor {
+	width: 1236px;
+	height: 234px;
+	border-top: 1px solid #dedede;
+	background-color: #fff;
+	line-height: 1.5;
+	/*
+   table-layout: fixed;
+   width: 100%;
+   border: 0;
+   border-spacing: 0;
+   border-collapse: collapse;
+   */
+}
+
+colgroup {
+	display: table-column-group;
+}
+
+thead {
+	width: 1252px;
+	height: 38px;
+	display: table-header-group;
+	vertical-align: middle;
+	border-color: inherit;
+}
+
+input[type="checkbox"] {
+	width: 18px;
+	height: 18px;
+	position: relative;
+	opacity: 1;
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+	font-size: 14px;
+	color: #2e3039;
+	border: 1px solid #d4d4d4;
+	background: #fff;
+	outline: 0;
+}
+
+.gLeft {
+	float: left;
+	text-align: center;
+}
+
+.mBoardtypeListgScrollgCell thead th {
+	width: 1206px;
+	height: 28px;
+	padding-left: 4px;
+	padding-right: 4px;
+	border-right-width: 0;
+	padding: 8px 5px;
+	border: 1px solid #dedede;
+	text-align: center;
+	vertical-align: middle;
+	color: #2e3039;
+	background-color: #f3f3f3;
+	word-wrap: break-word;
+}
+
+.mCtrltypeFooter {
+	width: 1206px;
+	height: 28px;
+	margin: -1px 0 0 0;
+	padding: 7px 15px 7px 15px;
+	border: 1px solid #dedede;
+	line-height: 21px;
+	text-align: center;
+	background: #fff;
+}
+
+.txtLess {
+	vertical-align: middle;
+	font-size: 13px;
+}
+
+.btnNormaldelete {
+	/*width: 50px;*/
+	/*height: 50px;*/
+	padding: 0 10px;
+	color: #1c1c1c;
+	font-size: 13px;
+	font-weight: normal;
+	line-height: 26px;
+	border: 1px solid #98989b;
+	background-color: #fff;
+	position: relative;
+	text-align: center;
+	/* display: inline-block;*/
+	transition: .2s ease-out;
+	vertical-align: middle;
+	text-decoration: none;
+	white-space: nowrap;
+	box-sizing: border-box;
+	/*
+   */
+}
+
+.btnNormalmodify {
+	/*width: 50px;*/
+	/*height: 50px;*/
+	padding: 0 10px;
+	color: #1c1c1c;
+	font-size: 13px;
+	font-weight: normal;
+	line-height: 26px;
+	border: 1px solid #98989b;
+	background-color: #fff;
+	transition: .2s ease-out;
+	vertical-align: middle;
+	text-decoration: none;
+	white-space: nowrap;
+	box-sizing: border-box;
+}
+</style>

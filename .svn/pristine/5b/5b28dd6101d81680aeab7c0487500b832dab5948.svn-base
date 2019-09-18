@@ -1,0 +1,162 @@
+package site.itwill.dto;
+
+public class testDTO {
+
+	/*
+	 * NUM         NUMBER(20)     
+ID          VARCHAR2(20)   
+PASSWD      VARCHAR2(1000) 
+NAME        VARCHAR2(20)   
+NICKNAME    VARCHAR2(20)   
+EMAIL       VARCHAR2(30)   
+PHONE       NUMBER(20)     
+POSTCODE    VARCHAR2(400)  
+ADDRESS1    VARCHAR2(400)  
+ADDRESS2    VARCHAR2(400)  
+STATUS      NUMBER(1)      
+LOGDATE     DATE     
+	 * 
+	 * */
+	private int num;
+	private String id ;
+	private String passwd;
+	private String name;
+	private String nickname;
+	private String email;
+	private String phone;
+	private String postcode;
+	private String address1;
+	private String address2;
+	private int status;
+	private String longdate;
+	
+	
+	public testDTO() {
+		// TODO Auto-generated constructor stub
+	}
+
+
+	public int getNum() {
+		return num;
+	}
+
+
+	public void setNum(int num) {
+		this.num = num;
+	}
+
+
+	public String getId() {
+		return id;
+	}
+
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+
+	public String getPasswd() {
+		return passwd;
+	}
+
+
+	public void setPasswd(String passwd) {
+		this.passwd = passwd;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	public String getNickname() {
+		return nickname;
+	}
+
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+	public String getPhone() {
+		return phone;
+	}
+
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+
+	public String getPostcode() {
+		return postcode;
+	}
+
+
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
+	}
+
+
+	public String getAddress1() {
+		return address1;
+	}
+
+
+	public void setAddress1(String address1) {
+		this.address1 = address1;
+	}
+
+
+	public String getAddress2() {
+		return address2;
+	}
+
+
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
+
+
+	public int getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+
+	public String getLongdate() {
+		return longdate;
+	}
+
+
+	public void setLongdate(String longdate) {
+		this.longdate = longdate;
+	}
+
+
+
+	
+	
+}

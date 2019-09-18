@@ -1,0 +1,54 @@
+<%@page import="site.itwill.dao.LushUserDAO"%>
+<%@page import="site.itwill.dto.LushUserDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@include file="/security/login_status.jspf" %>
+<%
+    String message=(String)session.getAttribute("message");
+
+    if(message==null) {
+        message="";
+    } else {
+        session.getAttribute("message");
+    }
+    
+%>
+<style type="text/css">
+
+
+
+</style>
+
+
+<div>
+<h2>회원정보변경</h2>
+<hr>
+	<div>
+	   <p>회원님의 정보를 안전하게 보호하기 위해 비밀번호를 다시 한번 확인해 주세요.</p>
+	   <div>
+	   <form name="confrimForm" action="<%=request.getContextPath() %>/lushuser/index.jsp?workgroup=lushuser&work=changeUser" method="post"
+	   onsubmit="">
+       <p>아이디 <%=loginUser.getId() %> <span>비밀번호 <input type="password" name="pass" required></span> </p>
+       <div>
+        <button type="submit" id="backBtn">취소</button>
+        <button type="submit" id="submitBtn">인증하기</button>
+       </div>
+       <p id="message" style="color: red;"><%=message%></p>
+	   </form>
+	   </div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+$("#backBtn").click(function() {
+    location.href="<%=request.getContextPath()%>/index.jsp?workgroup=lushuser&work=mypage";
+});
+    
+$("#submitBtn").click(function() {
+    location.href="<%=request.getContextPath()%>/index.jsp?workgroup=lushuser&work=changeUser";
+});
+
+</script>
+
+    

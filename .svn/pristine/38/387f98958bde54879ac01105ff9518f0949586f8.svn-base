@@ -1,0 +1,51 @@
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="site.itwill.dao.ProductDAO"%>
+<%@page import="site.itwill.dto.ProductDTO"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<link href="/teamproject/resources/eee.css" rel="stylesheet">
+<%-- PRODUCT 테이블에 저장된 모든 제품정보를 검색하여 응답하는 JSP 문서 --%>
+<%
+	//PRODUCT 테이블에 저장된 모든 제품정보를 검색하여 반환하는 DAO 클래스의 메소드 호출
+	List<ProductDTO> productList=ProductDAO.getDAO().getProductList1("ALL");%>
+<style type="text/css">
+#productListDiv {
+	width: 1000px;
+	margin: 0 auto;
+}
+
+.productDiv {
+	padding: 10px 5px;
+	border: 1px solid black;
+	width: 300px;
+	margin: 10px;
+	text-align: center;
+	float: left;
+}
+</style>
+<div style="height:500px;background:url('/SemiProject/resources/bathbanner.jpg') no-repeat 50% 0;">
+<p class="subv_txt01" style="padding-top:190px;">BATH</p>
+<p class="subv_txt02">당신에게 향기로운 입욕을 선물합니다.</p>
+</div>
+<div class="view">
+<div id="productListDiv">
+<% for(ProductDTO product:productList) { %>	
+	<div class="productDiv">
+		<div><%=product.getName() %></div>
+		<div>[<%=product.getMainCategory()%>]</div>
+		<div>
+			<a href="">
+			<img src="<%=request.getContextPath()%>/product_image/<%=product.getImage() %>" width="280" height="280">
+			</a>
+		</div>
+		<div><%=DecimalFormat.getCurrencyInstance().format(product.getPrice()) %></div>
+	</div>
+<% } %>
+</div>    
+    </div>
+
+<div style="clear: both;"></div>
+
+
+

@@ -1,0 +1,54 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+    <div id="footer" style="border-top-width: 0px;">
+<div class="footer">
+
+
+	<div class="inner_wrap">
+
+		<div class="servicewrap">
+
+			<div class="subwrap">
+				<div class="subinfo">
+					<div class="flogo"><a href="rush.html"><img src="<%=request.getContextPath() %>/main/resources/1bb87d41d15fe27b500a4bfcde01bb0e_24213.png" alt="하단 로고" title="하단 로고"></a></div>
+			
+					<dl>
+						<dt>고객센터</dt>
+						<dd>Tel : 1644-2357</dd>
+						<dd>Fax : 02-795-7516</dd>
+						<dd>월~금 10:00 ~ 17:00 <br>(점심시간 12:00 ~ 13:00)</dd>
+						<dd class="mail">문의메일 :<br>webmaster@lush.co.kr</dd>
+					</dl>
+				</div>
+			</div>
+
+			<div class="subwrapR">
+				<div class="subinfo">
+					<ul class="foot_menu">
+						<li><a href="http://www.lush.co.kr/service/company.php">회사소개</a></li><!-- 바꿔야함 -->
+						<li class="f_bd"><a href="http://www.lush.co.kr/service/private.php">개인정보처리방침</a></li><!-- 바꿔야함 -->
+						<li><a href="http://www.lush.co.kr/service/agreement.php">이용약관</a></li><!-- 바꿔야함 -->
+						<li><a href="http://www.lush.co.kr/service/notice.php">고객센터</a></li><!-- 바꿔야함 -->
+					</ul>
+					<div class="copyright">
+						<address>서울특별시 서초구  서운로 138 (서초동아타워) 6층
+						| 사이트 운영자 : 러쉬코리아
+						| 대표이사 : 우미령
+						 </address>
+						사업자 등록번호 : 201-81-77964  <a onclick="popup_bizInfo(&#39;2018177964&#39;);" alt="사업자정보확인">사업자정보확인</a> 
+						| 통신판매업 신고번호 : 2012-서울서초-0647
+						| 개인정보보호책임자 : 우승용
+						<div class="copy">Copyright © LUSHKOREA co., Ltd. All rights reserved.</div>
+						<!--<div class="framework">
+							<span class="made">DESIGNED BY <a href="http://www.miiu.co.kr" target="_blank">MIIU</a>.</span>
+							<span class="system">SYSTEM BY <span>NHN <a href="http://www.godo.co.kr" target="_blank">godo<b>:</b></a></span></span>
+						</div>-->
+
+					</div> 
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+    </div>

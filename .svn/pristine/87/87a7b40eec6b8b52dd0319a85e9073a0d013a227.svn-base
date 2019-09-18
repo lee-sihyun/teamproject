@@ -1,0 +1,528 @@
+<%@page import="site.itwill.dao.ProductDAO"%>
+<%@page import="site.itwill.dto.ProductDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+	String name=request.getParameter("name");
+	ProductDTO product=ProductDAO.getDAO().getProduct1(name);
+	
+	//상품 재고에 대한 변수 생성
+	int stock=product.getStock();
+%> 
+<!DOCTYPE html>
+<html lang="ko"><head>
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/boxslider.css">
+    <link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/gd_common.css">
+    <link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/gd_item-display.css">
+    <link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/gd_goods-view.css">
+    <link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/gd_contents.css">
+    <link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/gd_share.css">
+    <link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/gd_custom.css">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <!--{ ? }-->
+
+    <style type="text/css">
+        body {
+        }
+
+        /* body > #wrap > #top : 상단 영역 */
+        #top {
+        }
+
+        /* body > #wrap > #container : 메인 영역 */
+        #container {
+        }
+
+        /* body > #wrap > #footer : 하단 영역 */
+        #footer {
+        }
+        
+        #soldout {
+        	font-size: 28px;
+        	color: blue;
+        	font-weight: bold;
+        	letter-spacing: 2px;
+        }
+    </style>
+<link href="<%=request.getContextPath() %>/resources/product_list.css" rel="stylesheet">
+<link href="<%=request.getContextPath() %>/resources/detail.css" rel="stylesheet">
+
+<script>
+function f_amount_add(){
+	var amount = $("#amount").val();
+	var price = $("#price").val();
+	
+	amount = Number(amount);
+	price = Number(price);
+	
+	amount = amount + 1;
+	$("#amount").val(amount);
+	
+	var totalPrice = price * amount;
+	
+	$(".goods_total_price").html(totalPrice);
+	$(".total_price").html(totalPrice);
+	return;
+}
+
+function f_amount_minus(){
+	var amount = $("#amount").val();
+	var price = $("#price").val();
+	
+	amount = Number(amount);
+	price = Number(price);
+	
+	if(amount == 1) {
+		alert("수량을 1개 이하로 하실 수 없습니다.");
+		return;
+	} else {
+		amount = amount -1;
+		$("#amount").val(amount);
+		
+		var totalPrice = price * amount;
+		
+		$(".goods_total_price").html(totalPrice);
+		$(".total_price").html(totalPrice);
+		return;
+	}
+	
+}
+</script>
+</head>
+
+<body class="body-goods body-goods-view pc" ondragstart="return false" onselectstart="return false" oncontextmenu="return false">
+
+<div class="top-area"></div>
+<div id="wrap">
+    <div id="container" class="goodsv_container">
+        <!-- 본문 시작 : start -->
+        <div id="content">
+<div class="goods-view">
+    <div class="location">
+		<div class="path">
+			<h3 class="dn">현재 위치</h3>
+			<span>홈</span>
+				<div class="navi">
+					<div class="this">
+						<a href="#">러쉬</a>
+						<div>
+							<a href="./goods_list.php?cateCd=001">러쉬</a>
+						</div>
+					</div>
+				</div>
+				<div class="navi">
+					<div class="this">
+						<a href="index.jsp?workgroup=rush&work=bath">배쓰</a>
+						<div>
+							<a href="index.jsp?workgroup=rush&work=bath">배쓰</a>
+							<a href="index.jsp?workgroup=rush&work=shower">샤워</a>
+							<a href="./goods_list.php?cateCd=001003">보디</a>
+						</div>
+					</div>
+				</div>
+		</div>
+    </div>
+
+	<form name="team" id="team" method="post">
+	<input type="hidden" name="itemNo" value="<%=product.getItemNo()%>">
+	<input type="hidden" name="price" id="price" value="<%=product.getPrice() %>">
+    <div class="goods" style="padding-bottom: 0px;">
+        <div class="image">
+            <div class="thumbnail">
+                <a href="#zoom-layer" class="zoom-layer-open btn-open-layer" id="mainImage"><img src="<%=request.getContextPath()%>/admin/product_image/<%=product.getImage() %>" width="380" class="middle"></a>
+            </div>
+            <!--<div class="zoom">
+                <a href="#zoom-layer" class="zoom-layer-open btn-open-layer">확대보기</a>
+            </div>-->
+            <div class="more-thumbnail">
+                <div class="slide">
+                    <div class="slider-wrap cycle slider-image-thumbnail slick-initialized slick-slider">
+                        <div aria-live="polite" class="slick-list"><div class="slick-track" role="listbox" style="opacity: 1; width: 80px; transform: translate3d(0px, 0px, 0px);"><span class="swiper-slide slick-slide slick-current slick-active" data-slick-index="0" aria-hidden="false" tabindex="-1" role="option" aria-describedby="slick-slide10" style="width: 80px;"> <a href="javascript:change_image('0','detail');" tabindex="0"><img src="<%=request.getContextPath()%>/admin/product_image/<%=product.getImage() %>" width="68" class="middle"></a></span></div></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+            <div class="info">
+				<div class="info_wrap">
+					<div class="goods-header">
+						<div class="top">
+							<div class="tit">
+								<h2 style="display: inline-block; padding-right: 30px;"> <%=product.getName() %></h2>
+								<a id="soldout"></a> 
+							</div>
+						</div>
+					</div>
+					<div class="item">
+						<ul>
+							<li class="price ">
+								<strong> 판매가</strong>
+								<div>
+									<strong><%=product.getPrice()%></strong><span>원</span>
+								</div>
+							</li>					
+						</ul>
+					</div>
+
+					<div class="order-goods option_display_area">
+						<div id="option_display_item_0">
+							<div class="check optionKey_0">
+								<span class="name"><!--<strong>섹스 밤</strong>-->구매수량
+									
+									<span id="option_text_display_0"></span>
+								</span>
+
+								<div class="price">
+							
+								<input type=text name="amount" id="amount" value=1> 
+								<input type=button value="증가" onClick="javascript:f_amount_add();" style="padding: 2px; margin: 0 5px 0 5px;"> 
+								<input type=button value="감소" onClick="javascript:f_amount_minus();" style="padding: 2px;"> 
+							
+
+						<em>
+	<input type="hidden" value="0" name="optionPriceSum[]"> 
+	<input type="hidden" value="0.00" name="option_price_0"><%-- ￦<strong class="option_price_display_0"><%=product.getPrice() %></strong> --%>
+	<a id="stock" style="color: gray;"></a>
+						</em>
+
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="end-price">
+					
+						<ul>
+							<li class="price">
+								<span>총 제품 금액 ￦</span>
+								<strong class="goods_total_price"><%=product.getPrice() %><b></b></strong>
+							</li>
+							<li class="total">
+								<span>총 합계 금액 ￦</span>
+								<strong class="total_price"><%=product.getPrice() %><b></b></strong>
+							</li>
+						</ul>
+					</div>
+					<div class="btn">
+ 
+						<a onclick="plusCart();" id="cartBtn" class="skinbtn point1 btn-add-cart"><em>장바구니</em></a>
+						
+						<a onclick="getOrder();" class="skinbtn point2 btn-add-order"><em>주문하기</em></a>
+					</div>
+
+
+					
+
+				</div>
+            </div>
+    </div>
+    </form>
+    
+    
+    
+    <div class="multiple-topics">
+        <div id="detail">
+			<div class="in_width_wrap">
+				<div class="tab">
+					<a href="#detail" class="on">상품상세정보</a><a href="#delivery">배송/교환 및 반품안내</a>
+				</div>
+			</div>
+
+            <h3>상품상세정보</h3>
+
+
+
+            <div class="image-manual">
+                <!-- 이미지 -->
+            </div>
+            <div class="txt-manual">
+                <!-- 상품상세 공통정보 관리를 상세정보 상단에 노출-->
+                
+                <p align="center" style="text-align: center;">
+                <img src=" <%=request.getContextPath()%>/admin/product_image/<%=product.getImageDetail() %>">
+                <br style="clear:both;">
+                <br style="clear:both;">&nbsp;</p>
+            </div>
+			<div class="related-goods">
+				
+				<div class="item-display type-gallery type-gallery_widget">
+    <div class="list">
+    
+	</div>
+</div>
+
+
+<form id="frmCartTemplateView" method="post">
+    <input type="hidden" name="mode" value="get_benefit">
+    <input type="hidden" name="cartMode" value="">
+	<input type="hidden" name="optionFl" value="n">
+</form>
+
+<form id="frmWishTemplateView" method="post">
+	<input type="hidden" name="mode" value="get_benefit">
+	<input type="hidden" name="cartMode" value="">
+	<input type="hidden" name="optionFl" value="">
+</form>
+
+
+<script type="text/javascript">
+	$("#stock").text("남은 수량    :    <%=stock%>");
+
+	function plusCart() {
+		if(<%=stock%>==0) {
+			alert("해당 상품이 일시 품절인 상태로 장바구니에 담을 수 없습니다. 불편을 드려 죄송합니다.");
+			return;
+		} else {
+			var amount=team.amount.value;
+			$("#team").attr("action","<%=request.getContextPath() %>/cart/cart_add_action2.jsp?itemNo=<%=product.getItemNo()%>&amount="+amount);
+			$("#team").submit();			
+		}
+		
+	}
+	
+	function getOrder() {
+		if(<%=stock%>==0) {
+			alert("해당 상품이 일시 품절인 상태로 주문 하실 수 없습니다. 불편을 드려 죄송합니다.");
+			return;
+		} else if(<%=stock%> < team.amount.value) {
+			alert("원하는 수량이 현재 재고 수량보다 많아 주문 하실 수 없습니다.");
+			return;
+		} else {
+			var amount=team.amount.value;
+			$("#team").attr("action","<%=request.getContextPath() %>/cart/cart_add_action.jsp?itemNo=<%=product.getItemNo()%>&amount="+amount);
+			$("#team").submit();			
+		}
+	}
+	
+	if(<%=stock%>==0) {
+		$("#soldout").text("일시품절");
+	} else {
+		$("#soldout").text("");
+	}
+</script>
+				</div>
+
+			</div>
+           <div class="tab">
+					<a href="#detail">상품상세정보</a><a href="#delivery" class="on">배송/교환 및 반품안내</a> 
+				</div>
+        </div>
+        <div id="delivery">
+			<div class="in_width_wrap">
+				<h3>배송안내</h3>
+				<div class="admin-msg"><p><span style="color: rgb(134, 134, 134); font-family: 나눔고딕, NanumGothic; font-size: 9pt;">■&nbsp;</span><span style="font-family: 나눔고딕, NanumGothic; font-size: 9pt;">배송비&nbsp;:&nbsp;기본배송료는&nbsp;2,500원&nbsp;입니다.&nbsp;(도서,산간,오지&nbsp;일부지역은&nbsp;배송비가&nbsp;추가될&nbsp;수&nbsp;있습니다)&nbsp; 회원가입 후&nbsp;30,000원&nbsp;이상&nbsp;구매시&nbsp;무료배송입니다.</span></p><p><span style="color: rgb(134, 134, 134); font-family: 나눔고딕, NanumGothic; font-size: 9pt;">■</span><span style="font-family: 나눔고딕, NanumGothic; font-size: 9pt;">&nbsp;택배사 : 우체국 택배를 이용합니다. </span></p><p><span style="color: rgb(134, 134, 134); font-family: 나눔고딕, NanumGothic; font-size: 9pt;">■&nbsp;</span><span style="font-family: 나눔고딕, NanumGothic; font-size: 9pt;">배송가능지역 : 국내 배송, 해외 배송은 불가 합니다.</span></p><p><span style="font-family: 나눔고딕, NanumGothic; font-size: 9pt;"><span style="color: rgb(134, 134, 134); font-family: 나눔고딕, NanumGothic; font-size: 9pt;">■</span><span style="font-family: 나눔고딕, NanumGothic; font-size: 9pt;">&nbsp;묶음 배송 : 여러 주문번호로 주문하더라도 동일 주문자, 수령인, 주소, 연락처가 기재되어 있다면 묶음 배송 됩니다. 묶음 배송을 원치 않으신다면&nbsp;고객센터로 연락 부탁드립니다.</span><br><span style="font-family: 나눔고딕, NanumGothic; font-size: 9pt;">* 비회원 주문건의 경우 묶음배송이 진행되지 않습니다.&nbsp;</span><br><span style="color: rgb(134, 134, 134); font-family: 나눔고딕, NanumGothic;"></span><span style="font-family: 나눔고딕, NanumGothic; font-size: 10pt;">&nbsp;</span></span></p></div>
+			</div>
+        
+			<div class="in_width_wrap">
+            <h3>교환 및 반품안내</h3>
+            <div class="admin-msg">
+                <p>&nbsp;</p>
+            </div>
+            </div>
+			<div class="in_width_wrap">
+            <h3>환불안내</h3>
+            <div class="admin-msg">
+                <p><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;"><span style="color: rgb(134, 134, 134);">■&nbsp;</span>전국 러쉬 매장에서 구매한 경우&nbsp;</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">상품 및 서비스를 공급 받으신 날로부터 14일 이내 가능하며, 미 개봉 제품만 가능합니다.</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">구매 영수증 및 결제수단(신용카드인 경우 결제한 카드)을 지참하여 구입처로 방문 바랍니다.</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><br><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;"><span style="color: rgb(134, 134, 134);">■&nbsp;</span>홈페이지에서 구매한 경우&nbsp;</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">러쉬코리아 홈페이지에서 구매한 제품은 홈페이지를 통해서만 교환이 가능합니다.</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">고객님의 변심에 의한 반품인 경우 상품 및 서비스를 공급 받은 날로부터 7일 이내 가능하며, 미 개봉 제품만 가능합니다.</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">고객센터(1644-2357)로 반품 접수를 받고 있으며,&nbsp;</span><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">지정 택배사를 이용하여 상품 회수 후 교환/반품 여부에 관한 안내가 이루어집니다.&nbsp;</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">*고객변심으로 인한 교환시 초도 택배 비용을 포함한 반품 택배 비용이 부과됩니다.&nbsp;</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">*상품결함으로 인한 교환의 경우 러쉬코리아에서 택배비용을 부담합니다.</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">*택배 비용은 무통장 입금을 통해서만 결제 가능합니다.</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">*교환 상품에 증정 제품이 있는 경우, 증정 제품도 함깨 반품하여야 교환이 진행됩니다.</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">* 프레쉬 마스크를 포함하여 냉장배송을 받은 제품은 교환이 불가합니다.&nbsp;</span><span style="font-family: 나눔고딕, NanumGothic;">&nbsp;</span>&nbsp;</p>
+            </div>
+			</div>
+			<div class="in_width_wrap">
+            <h3>AS안내</h3>
+            <div class="admin-msg">
+                <p><span style="font-size: 10pt; font-family: 나눔고딕, NanumGothic;">﻿고객센터 1644-2357</span>&nbsp;</p>
+            </div>
+            </div>
+
+			
+			<div class="in_width_wrap">
+            <h3>상품필수 정보</h3>
+            <table class="type-col " cellspacing="0" border="1" style="margin-top:50px;">
+                <colgroup>
+                    <col width="20%">
+                    <col>
+                </colgroup>
+                <tbody>
+                <tr>
+                    <th style="width:20%">
+                        사용 방법
+                    </th>
+                    <td colspan="3" style="width:80%">욕조속에 풍덩, 알록달록 배쓰밤에 듬뿍 담긴 섬세한 오일과 매혹적인 향기는 당신을 행복의 나라로 데려다줄 거예요.</td>
+                </tr>
+                <tr>
+                    <th style="width:20%">
+                        보관 시 유의사항
+                    </th>
+                    <td colspan="3" style="width:80%">물기와 직사광선을 피해 서늘한 곳에 보관해 주세요.</td>
+                </tr>
+                <tr>
+                    <th style="width:20%">
+                        사용상의 주의사항
+                    </th>
+                    <td colspan="3" style="width:80%">1. 화장품 사용 시 또는 직사광선에 의하여 사용부위가 붉은 반점, 부어오름, 가려움증 등의 이상 증상이나 부작용 우려 등이 있는 경우 전문의 등과 상담할 것  2. 상처가 있는 부위 등에는 사용을 자제할 것  3. 보관 및 취급 시의 주의사항  가) 어린이의 손이 닿지 않는 곳에 보관할 것  나) 직사광선을 피해서 보관할 것  본 제품은 사용 및 보관 시 이염 가능성이 있습니다.  4. 러쉬의 모든 제품은 손으로 직접 만드는 특성상 보이는 이미지와 제품의 모양 또는 색상이 상이할 수 있습니다.</td>
+                </tr>
+                <tr>
+                    <th style="width:20%">
+                        제조일 및 사용기한
+                    </th>
+                    <td colspan="3" style="width:80%">이 제품의 최적의 사용기한은 제조일자로부터 14개월입니다.  당사의 쇼핑몰에서는 제조년월일이 가장 빠른 상품부터 선출고 진행되고 있으며,  제품의 입출고가 빈번하여 온라인상에 상세 제조년월일 기재가 어려운 점 양해 바랍니다. 수령하신 상품에 부착된 라벨에 제조일자가 년/월/일의 순으로 기재되어 개별 확인이 가능합니다. 추가 문의는 고객센터 1644-2357로 문의주시면 상세히 안내 드리겠습니다.</td>
+                </tr>
+                <tr>
+                    <th style="width:20%">
+                        기능성 제품 식약청 심사 필 유무
+                    </th>
+                    <td colspan="3" style="width:80%">식품의약품안전처 심사 대상 아님</td>
+                </tr>
+                <tr>
+                    <th style="width:20%">
+                        품질 보증 기준
+                    </th>
+                    <td colspan="3" style="width:80%">공정거래위원회 고시 소비자분쟁해결기준에 의거 교환 또는 보상 받을 수 있습니다</td>
+                </tr>
+                <tr>
+                    <th style="width:20%">
+                        제조국 / 제조 판매업자
+                    </th>
+                    <td colspan="3" style="width:80%">- 제조원: LUSH JAPAN CO.,LTD. 4027-3, NAKATSU, AIKAWA, AIKO, KANAGAWA, JAPAN - 제조판매업자: ㈜ 러쉬코리아 서울특별시 서초구 서운로 138  www.lush.co.kr</td>
+                </tr>
+                <tr>
+                    <th style="width:20%">
+                        전성분
+                    </th>
+                    <td colspan="3" style="width:80%">상세페이지 참조</td>
+                </tr>
+                <tr>
+                    <th style="width:20%">
+                        용량 또는 중량
+                    </th>
+                    <td colspan="3" style="width:80%">200g</td>
+                </tr>
+                <tr>
+                    <th style="width:20%">
+                        제품 주요 사양
+                    </th>
+                    <td colspan="3" style="width:80%">모든 피부용</td>
+                </tr>
+
+                </tbody>
+			</table>
+			</div>
+        </div>
+        
+        <div id="qna" style="display: none;">
+		<div class="in_width_wrap">
+            <div class="tab">
+				<a href="#detail">상품상세정보</a><a href="#delivery">배송/교환 및 반품안내</a>
+			</div>
+            <div class="top-reviews">
+                <div class="tit">
+                    <h3>상품Q&amp;A</h3>
+                    <p>상품에 대한 문의를 남겨주세요. 게시판의 성격과 다른 글은 임의로 삭제되거나 다른 게시판으로 이동될 수 있습니다.</p>
+                </div>
+            </div>
+            <div id="ajax-goods-goodsqa-list"></div>
+            
+        </div>
+		</div>
+    </div>
+</div>
+<hr>
+<script>
+    $(function () {
+        $('input.js-number').one('keyup', function (e) {
+            $(this).number_only();
+        });
+    });
+
+    (function($){
+        $.fn.number_only = function(stringLength, maxNum, defaultNum) {
+            /* 숫자만입력. sj */
+            var onlyDigit = false;
+            for(var i = 0; i < arguments.length; i++) {
+                if (arguments[i] == 'd') {
+                    onlyDigit = true;
+                    break;
+                }
+            }
+            return this.each(function() {
+                $(this).keydown(function(event){
+                    // 숫자만입력. sj
+                    return (keyCodeObj[event.keyCode] && (!onlyDigit || (onlyDigit && $.inArray(event.keyCode, [188, 109, 189, 110, 190]) == -1))) ? true : false;
+//				return keyCodeObj[event.keyCode] ? true : false;
+                });
+                $(this).keyup(function(event){
+                    // 해당 input text 에 기 작성된 숫자와 입력된 숫자를 비교
+                    var oldText	= $(this).val();
+                    // 숫자만입력. sj
+                    var newText	= (!onlyDigit)? oldText.replace(/[^0-9,.-]+/g,"") : oldText.replace(/[^0-9]+/g,"");
+//				var newText	= oldText.replace(/[^0-9,.-]+/g,"");
+                    if(stringLength > 0 && newText.length > stringLength){
+                        newText	= newText.substr(0,stringLength);
+                    }
+                    var chkText	= parseInt(newText.replace(/[,]+/g,""));
+                    if (chkText > maxNum) {
+                        if (defaultNum) {
+                            newText	= defaultNum;
+                        } else {
+                            newText	= 0;
+                        }
+                    }
+                    // 비교후 동일하지 않은 경우 제한 새로운 숫자로 갱신 (탭으로 이동시 블럭 해제도 해결)
+                    if (oldText != newText) {
+                        $(this).val(newText);
+                    }
+                });
+                $(this).trigger('keyup');
+            });
+        };
+
+        var keyCodeObj = {
+            8	: 'Backspace',
+            9	: 'Tab',
+            13	: 'Enter',
+            17	: 'Ctrl',
+            16	: 'Shift',
+            35	: 'End',
+            36	: 'home',
+            37	: 'Left Arrow',
+            39	: 'Right Arrow',
+            46	: 'Delete',
+            48	: '0 - 키보드',
+            49	: '1 - 키보드',
+            50	: '2 - 키보드',
+            51	: '3 - 키보드',
+            52	: '4 - 키보드',
+            53	: '5 - 키보드',
+            54	: '6 - 키보드',
+            55	: '7 - 키보드',
+            56	: '8 - 키보드',
+            57	: '9 - 키보드',
+            96	: '0 - 키패드',
+            97	: '1 - 키패드',
+            98	: '2 - 키패드',
+            99	: '3 - 키패드',
+            100	: '4 - 키패드',
+            101	: '5 - 키패드',
+            102	: '6 - 키패드',
+            103	: '7 - 키패드',
+            104	: '8 - 키패드',
+            105	: '9 - 키패드',
+            67	: 'C , Ctrl + C',
+            86	: 'V , Ctrl + V',
+            188	: ',',
+            109	: '- - 키패드',
+            189	: '- - 키보드',
+            110	: '. - 키패드',
+            190	: '. - 키보드'
+        };
+    })(jQuery);
+
+</script>
+</div>
+        <!-- 본문 끝 : end -->
+    </div>
+<style>
+.plusreview-container .reward{display:none;}
+.plusreview-container .write-form{display:none;}
+</style></body></html>

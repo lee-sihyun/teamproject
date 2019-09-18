@@ -1,0 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%-- 장바구니 정보를 전달받아 주문상세 테이블에 저장하고 장바구니 삭제 처리페이지로 이동하는 JSP 문서 --%>
+<%
+	//POST 방식으로 요청되어 전달된 값들에 대한 캐릭터셋 변경
+	request.setCharacterEncoding("UTF-8");
+
+	//장바구니 정보 전달
+	
+%>

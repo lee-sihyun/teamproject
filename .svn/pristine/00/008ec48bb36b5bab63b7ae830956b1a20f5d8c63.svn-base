@@ -1,0 +1,491 @@
+<%@page import="site.itwill.dao.ProductDAO"%>
+<%@page import="site.itwill.dto.ProductDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+    <%
+    
+int num=Integer.parseInt(request.getParameter("num"));
+String pageNum=request.getParameter("pageNum");
+String search=request.getParameter("search");
+String keyword=request.getParameter("keyword");
+
+ProductDTO product=ProductDAO.getDAO().getProduct(num);
+  
+    
+    %>
+    
+    
+    
+    
+    
+<jsp:include page="/admin/header.jsp" />
+
+<style type="text/css">
+#wrapper {
+	width: 500px;
+	margin: 0 auto;
+}
+
+table {
+	    width: 1239px;
+ /*   height: 827px;*/
+    border-top: 1px solid #dedede;
+    line-height: 1.5;
+    background-color: #fff;
+    table-layout: fixed;
+    border: 0;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+th, td {
+	border: 1px solid black;
+	padding: 5px;
+}
+
+th {
+	width: 100px;
+}
+
+td {
+	width: 400px;
+}
+
+.title, .content {
+	text-align: left;
+}
+
+.content {
+	height: 100px;
+	vertical-align: middle;
+}
+
+#board_menu {
+	text-align: right;
+	margin: 5px;
+}
+
+
+
+
+
+#content {
+	width: 1280px;
+	min-height: 750px;
+	padding: 0px 40px 130px 40px;
+	box-sizing: border-box;
+vertical-align: top;
+
+
+}
+
+
+.section {
+    width: 1238px;
+   /* height: 1000px;*/
+    margin: 0 0 30px 0;
+    padding: 30px 20px 30px 20px;
+    border-radius: 2px;
+    border: 1px solid #ddd;
+    background: #fff;
+    box-shadow: 0px 2px 1px 0px rgba(205, 211, 222, 1);
+
+
+}
+
+.mToggleBar {
+	width: 1278px;
+	height: 48px;
+	margin: 0 0 -1px 0;
+	box-sizing: border-box;
+	background-color: #8b93a9;
+	border: 1px solid #787d8f;
+}
+
+.mToggleBar h2 {
+	width: 68.625px;
+	height: 21px;
+	float: left;
+	padding: 0 0 0 20px;
+	font-size: 16px;
+	color: #535354;
+	font-weight: normal;
+}
+.toggleArea {
+	width: 1240px;
+	/*ight: 828px*/
+	display: block;
+	/*padding: 30px 20px 30px 20px;*/
+	border-radius: 2px;
+	background: #fff;
+	box-shadow: 0px 2px 1px 0px rgba(205, 211, 222, 1);
+}
+
+.type {width: 159px;
+    height: 31px;
+    padding: 11px 15px 10px 15px;
+    border: 1px solid #dedede;
+    text-align: left;
+    word-break: keep-all;
+   /* vertical-align: top;*/
+    color: #2e3039;
+    background-color: #f3f3f3;
+    font-size: 16px;
+    text-align: justify;
+    }
+    td {
+        width: 1018px;
+    height: 32px;
+    border: 1px solid #dedede;
+    padding: 10px 15px 10px 15px;
+    line-height: 24px;
+   /* vertical-align: top;*/
+    display: table-cell;
+    }
+    
+    
+    .button {
+    color: black;
+    width: 100x;
+    height: 30px;
+    background: #55a0ff;
+    
+    }
+
+.action {
+text-align: center;
+}
+
+.btn {
+
+   color: black;
+    width: 100px;
+    height: 30px;
+    background: #55a0ff;
+}
+
+
+.mButtongCenter{
+text-align: center;
+padding-top: 30px;
+}
+</style>
+
+
+
+<div id="content">
+	<div class="section">
+
+
+
+
+	<form
+		action="<%=request.getContextPath()%>/admin/product/product_modify_action.jsp"
+		method="post" id="admit" name="admitForm"
+		enctype="multipart/form-data">
+		
+		<input type="hidden" name="num" value="<%=num%>"> 
+		<input type="hidden" name="pageNum" value="<%=pageNum%>"> 
+		<input type="hidden" name="search" value="<%=search%>"> 
+		<input type="hidden" name="keyword" value="<%=keyword%>">
+<div class="mToggleBar" style="
+    width: 1238.989583px;
+    height: 41.979166px;
+    border-bottom-width: 0px;
+    border-right-width: 0px;
+">
+			<h2>상품수정</h2>
+
+		</div>
+		<div class="tableArea">
+			<div class="toggleArea">
+				<table style="padding-left: 500px;">
+
+
+
+					
+					<tr>
+
+						<td class="type" >카테고리-대분류</td>
+						<td colspan="2"><select name="mainCategory" id="mainCategory"  style="width:200px;height: 27px;">
+								<option value="">선택하세요 </option>
+						</select> </td>
+
+					</tr>
+
+
+					<tr>
+
+						<td class="type">카테고리-소분류</td>
+						<td colspan="2"><select name="subCategory" id="subCategory"  style="width:200px;height: 27px;" >
+								
+								<option value="">선택하세요 </option>
+						</select></td>
+
+
+
+
+
+					</tr>
+
+
+
+
+				
+
+
+
+
+
+					<tr>
+
+						<td class="type">상품코드</td>
+						<td colspan="2"><input type="text" name="itemNo" id="itemNo" value="<%=product.getItemNo() %>">
+						
+							<div id="itemNoMsg" class="error">코드를 입력해주세요</div></td>
+					</tr>
+
+
+
+
+
+					<tr>
+						<td class="type">상품재고수량</td>
+						<td colspan="2"><input type="text" name="stock" class="stock"
+							id="stock" value="<%=product.getStock() %>">  <span>개</span>
+							<div id="stockMsg" class="error">상품재고수량을 입력해주세요</div></td>
+
+
+					</tr>
+					<tr>
+
+						<td class="type">상품가격</td>
+						<td colspan="2"><input type="text" name="price" id="price" value="<%=product.getPrice() %>">
+							<span>원</span>
+
+							<div id="priceMsg" class="error">상품가격을 입력해주세요</div></td>
+					</tr>
+
+					<tr>
+						<td class="type">상품명</td>
+						<td colspan="2"><input type="text" name="name" id="name" value="<%=product.getName() %>"> 
+						
+						
+						
+							<div id="nameMsg" class="error">상품명을 입력해주세요</div></td>
+					</tr>
+					<tr>
+
+						<td class="type">상품이미지</td>
+						<td colspan="2">
+						
+						<img src="<%=request.getContextPath()%>/admin/product_image/<%=product.getImage() %>">
+						<input type="file" name="image"
+							id="image">
+							<div id="imageMsg" class="error">상품이미지를 등록해주세요</div></td>
+
+					</tr>
+
+
+					<tr>
+
+						<td scope="row" class="type">상품설명</td>
+						<td colspan="2"><input type="file" name="imageDetail"
+							id="imageDetail">
+							<div id="imagedetailMsg" class="error">상품이미지를 등록해주세요</div></td>
+
+					</tr>
+
+				</table>
+			</div>
+
+		</div>
+
+
+
+
+		<!-- 표 헤더 -->
+		<div class="mButtongCenter">
+			<button type="submit" class="btn">수정</button>
+
+		</div>
+	</form>
+</div>
+</div>
+
+<!-- container 영역종료 -->
+
+<!-- wrap영역종료 -->
+<script type="text/javascript">
+	$("#itemNo").focus();
+
+	$("#admit").submit(function() {
+		var submitResult = true;
+
+		$(".error").css("display", "none");
+
+		if ($("#itemNo").val() == "") {
+			$("#itemNoMsg").css("display", "block");
+			submitResult = false;
+		}
+		if ($("#name").val() == "") {
+			$("#nameMsg").css("display", "block");
+			submitResult = false;
+		}
+
+		if ($("#price").val() == "") {
+			$("#priceMsg").css("display", "block");
+			submitResult = false;
+		}
+
+		if ($("#stock").val() == "") {
+			$("#stockMsg").css("display", "block");
+			submitResult = false;
+		}
+
+		if ($("#image").val() == "") {
+			$("#imageMsg").css("display", "block");
+			submitResult = false;
+		}
+		if ($("#imagedetail").val() == "") {
+			$("#imagedetailMsg").css("display", "block");
+			submitResult = false;
+		}
+
+		return submitResult;
+
+	});
+
+					$(document).ready(function() {
+					     
+					    //Main 카테고리를 선택 할때 마다 AJAX를 호출할 수 있지만 DB접속을 매번 해야 하기 때문에 main, sub카테고리 전체을 들고온다.
+					     
+					    //****************이부분은 DB로 셋팅하세요.
+					    //Main 카테고리 셋팅 (DB에서 값을 가져와 셋팅 하세요.)
+					    var mainCategoryArray = new Array();
+					    var mainCategoryObject = new Object();
+					     
+					    mainCategoryObject = new Object();
+					    mainCategoryObject.main_category_id = "1";
+					    mainCategoryObject.main_category_name = "배쓰";
+					    mainCategoryArray.push(mainCategoryObject);
+					     
+					    mainCategoryObject = new Object();
+					    mainCategoryObject.main_category_id = "2";
+					    mainCategoryObject.main_category_name = "샤워";
+					    mainCategoryArray.push(mainCategoryObject);
+					    
+					    mainCategoryObject = new Object();
+					    mainCategoryObject.main_category_id = "3";
+					    mainCategoryObject.main_category_name = "보디";
+					    mainCategoryArray.push(mainCategoryObject);
+					     
+					    //Sub 카테고리 셋팅 (DB에서 값을 가져와 셋팅 하세요.)
+					    var subCategoryArray = new Array();
+					    var subCategoryObject = new Object();
+					     
+					    //배쓰에 해당하는 sub category 리스트
+					    subCategoryObject = new Object();
+					    subCategoryObject.main_category_id = "1";
+					    subCategoryObject.sub_category_id = "1"
+					    subCategoryObject.sub_category_name = "배쓰밤" 
+					    subCategoryArray.push(subCategoryObject);
+					     
+					    subCategoryObject = new Object();
+					    subCategoryObject.main_category_id = "1";
+					    subCategoryObject.sub_category_id = "2"
+					    subCategoryObject.sub_category_name = "버블바" 
+					    subCategoryArray.push(subCategoryObject);
+					     
+					    subCategoryObject = new Object();
+					    subCategoryObject.main_category_id = "1";
+					    subCategoryObject.sub_category_id = "3"
+					    subCategoryObject.sub_category_name = "배쓰오일" 
+					    subCategoryArray.push(subCategoryObject);
+					     
+					    //샤워에 해당하는 sub category 리스트
+					    subCategoryObject = new Object();
+					    subCategoryObject.main_category_id = "2";
+					    subCategoryObject.sub_category_id = "4"
+					    subCategoryObject.sub_category_name = "솝" 
+					    subCategoryArray.push(subCategoryObject);
+					     
+					    subCategoryObject = new Object();
+					    subCategoryObject.main_category_id = "2";
+					    subCategoryObject.sub_category_id = "5"
+					    subCategoryObject.sub_category_name = "샤워젤&젤리"
+					    subCategoryArray.push(subCategoryObject);
+					     
+					    subCategoryObject = new Object();
+					    subCategoryObject.main_category_id = "2";
+					    subCategoryObject.sub_category_id = "6"
+					    subCategoryObject.sub_category_name = "보디컨디셔너"
+					    subCategoryArray.push(subCategoryObject);
+					     
+					    subCategoryObject = new Object();
+					    subCategoryObject.main_category_id = "2";
+					    subCategoryObject.sub_category_id = "7"
+					    subCategoryObject.sub_category_name = "샤워밤"
+					    subCategoryArray.push(subCategoryObject);
+					    
+					  //보디에 해당하는 sub category 리스트
+					    subCategoryObject = new Object();
+					    subCategoryObject.main_category_id = "3";
+					    subCategoryObject.sub_category_id = "8"
+					    subCategoryObject.sub_category_name = "클렌저" 
+					    subCategoryArray.push(subCategoryObject);
+					     
+					    subCategoryObject = new Object();
+					    subCategoryObject.main_category_id = "3";
+					    subCategoryObject.sub_category_id = "9"
+					    subCategoryObject.sub_category_name = "핸드앤풋"
+					    subCategoryArray.push(subCategoryObject);
+					     
+					    subCategoryObject = new Object();
+					    subCategoryObject.main_category_id = "3";
+					    subCategoryObject.sub_category_id = "10"
+					    subCategoryObject.sub_category_name = "로션"
+					    subCategoryArray.push(subCategoryObject);
+					     
+		
+					    
+					    //****************이부분은 DB로 셋팅하세요.
+					     
+					     
+					    //메인 카테고리 셋팅
+					    var mainCategorySelectBox = $("select[name='mainCategory']");
+					     
+					    for(var i=0;i<mainCategoryArray.length;i++){
+					        mainCategorySelectBox.append("<option value='"+mainCategoryArray[i].main_category_id+"'>"+mainCategoryArray[i].main_category_name+"</option>");
+					    }
+					     
+					    //*********** 1depth카테고리 선택 후 2depth 생성 START ***********
+					    $(document).on("change","select[name='mainCategory']",function(){
+					         
+					        //두번째 셀렉트 박스를 삭제 시킨다.
+					        var subCategorySelectBox = $("select[name='subCategory']");
+					        subCategorySelectBox.children().remove(); //기존 리스트 삭제
+					         
+					        //선택한 첫번째 박스의 값을 가져와 일치하는 값을 두번째 셀렉트 박스에 넣는다.
+					        $("option:selected", this).each(function(){
+					            var selectValue = $(this).val(); //main category 에서 선택한 값
+					            subCategorySelectBox.append("<option value=''>전체</option>");
+					            for(var i=0;i<subCategoryArray.length;i++){
+					                if(selectValue == subCategoryArray[i].main_category_id){
+					                     
+					                    subCategorySelectBox.append("<option value='"+subCategoryArray[i].sub_category_id+"'>"+subCategoryArray[i].sub_category_name+"</option>");
+					                     
+					                }
+					            }
+					        });
+					         
+					    });
+					    //*********** 1depth카테고리 선택 후 2depth 생성 END ***********
+					         
+					});
+					
+					
+</script>
+</body>
+</html>

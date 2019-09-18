@@ -1,0 +1,26 @@
+<%@page import="site.itwill.dao.noticeDAO"%>
+<%@page import="site.itwill.dto.noticeDTO"%>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%
+	for (int i = 1; i <= 500; i++) {
+		noticeDTO notice = new noticeDTO();
+		int num = noticeDAO.getDAO().getNoticeNum();
+		
+		notice.setNum(num);
+		notice.setTitle("테스트-" + i);
+		notice.setContent("내용-" + i);
+		notice.setId("xyz789");
+		notice.setReadcount(num);
+		
+		
+	
+	
+		noticeDAO.getDAO().addNotice(notice);
+		
+		
+		
+	}
+%>
+<h1>500개의 테스트 게시글 저장 하였습니다.</h1>

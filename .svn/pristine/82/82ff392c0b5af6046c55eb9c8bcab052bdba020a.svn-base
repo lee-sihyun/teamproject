@@ -1,0 +1,153 @@
+<%@page import="site.itwill.dto.ProductDTO"%>
+<%@page import="site.itwill.dao.CartDAO"%>
+<%@page import="java.util.List"%>
+<%@page import="site.itwill.dto.CartDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+	String id="one";
+	List<CartDTO> cartList=CartDAO.getCartDAO().getCartList(id);
+%>
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Anton|Archivo+Black&display=swap" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<style type="text/css">
+body {
+	color: #000000;
+	font-family: "Noto Sans KR";
+	font-size: 14px;
+	line-height: 1.4;
+	letter-spacing: -0.5px;
+}
+#shoppingCart {
+	font-family: 'Archivo Black', sans-serif;
+	text-align: center;
+	font-size: 42px;
+	margin-top: 70px;
+}
+#cooc {
+	text-align: center;
+}
+tr>th {
+	margin: 15px 0;
+	height: 48px;
+	color: #8f8f8f;
+	font-weight: normal;
+	font-size: 14px;
+	text-align: center;
+}
+tr>td {
+	height: 156px;
+	border-top: 1px solid #e7e7e7; 
+}
+.btn {
+	width: 38px;
+	height: 38px;
+	border: none;
+	background: none;
+	border: 1px solid #e7e7e7;
+	
+}
+.btn:hover {
+	cursor: pointer;
+}
+#volInput {
+	width: 44px;
+	text-align: center;
+	border: none;
+}
+.totalPrice {
+	background: rgb(240, 240, 240);
+	text-align: center;
+	font-size: 20px;
+}
+#deleteBtn {
+	font-family: "Noto Sans KR";
+	font-size: 13px;
+	font-weight: bold;
+	margin-top: 20px;
+	background: none;
+	border: none;
+	outline: none;
+	border-bottom: 1px solid ;
+}
+#bottomBtn {
+	margin-top: 50px;
+	margin-bottom: 100px;
+	text-align: center;
+	
+}
+#deleteBtn,#itemCheck,#continueShopping,#getOrder:hover {
+	
+}
+*:focus {
+    outline: none;
+}
+</style>
+<form action="#" method="post" id="shoppingCartForm" style="width: 1180px; margin: 0 auto;">
+	<h2 id="shoppingCart">SHOPPING CART</h2>
+	<h4 id="cooc" style="color: rgb(168, 168, 168); font-size: 15px;">
+		<span id="order" style="color: #333">Cart</span>&nbsp;&nbsp;&nbsp;&nbsp;>&nbsp;&nbsp;&nbsp;&nbsp; Order
+		&nbsp;&nbsp;&nbsp;&nbsp;>&nbsp;&nbsp;&nbsp;&nbsp;Order confirmed</h4>
+	<h1>제품</h1>
+	<div style="border-top: 1px solid #000; border-bottom: 0.5px solid #e7e7e7;">
+		<table id="item">
+			<tr id="itemTitle">
+				<th><input type="checkbox" name="itemAllCheck" id="itemAllCheck" class="cart_check" style="text-align: left;"></th>
+				<th class="cart_name">제품 정보</th>
+				<th class="cart_volume">수량</th>
+				<th class="cart_price">금액</th>
+				<th class="cart_totalPrice">합계금액</th>
+				<th class="cart_delivery">배송비</th>
+			</tr>
+			<% for(CartDTO cart:cartList) { %>
+				<tr  style="text-align: center;">
+					<td class="cart_check"><input type="checkbox" value="<%=cart.getCartNo()%>" class="check"></td>
+					<td class="cart_name">상품테이블참조</td>
+					<td class="cart_volume">
+						<button id="minusBtn" class="btn">-</button>
+						<input type="text" id="volInput" value="<%=cart.getVolume() %>">
+						<button id="plusBtn" class="btn">+</button>
+					</td>
+					<td class="cart_price"><%=cart.getPrice() %></td>
+					<td class="cart_totalPrice"><%=cart.getTotalPrice() %></td>
+					<td class="cart_delivery">0</td>
+				</tr>
+			<% } %>
+		</table>
+	</div>
+	<div class="totalPrice" style="padding: 30px; font-size: 18px;">
+		총 <span id="itemNum"></span>개의 금액 <span id="itmePrice" style="font-weight: bold;"></span>
+		 + 배송비<span id="ShippingPay" style="font-weight: bold;"></span> = 
+		 <span style="font-weight: bold;">총 주문금액 </span><span id="totalPrice" style="font-weight: bold; font-size: 26px;"></span>
+	</div>
+	<div><button type="button" id="deleteBtn" onclick="deleteConfirm();">삭제 하기</button></div>
+	<div id="bottomBtn">
+		<button type="button" name="continueShopping" id="continueShopping" 
+			    onclick="location.href='<%=request.getContextPath()%>/index.jsp?'">쇼핑 계속하기</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button type="button" name="getOrder" id="getOrder" onclick="orderConfirm();">주문하기</button>
+	</div>
+</form>
+	
+<script type="text/javascript">
+$("#bottomBtn").children("#continueShopping").css({"width":250,"height":60,"background":"white","color":"black","font-size":"15px","border":"solid 0.5px black","font-weight":"bold"});
+$("#bottomBtn").children("#getOrder").css({"width":250,"height":60,"background":"black","color":"white","font-size":"15px","border":"none","font-weight":"bold"});
+$(".cart_check").css("width",60);
+$(".cart_name").css("width",440);
+$(".cart_volume").css("width",190);
+$(".cart_price").css("width",160);
+$(".cart_totalPrice").css("width",160);
+$(".cart_delivery").css("width",120);
+
+function orderConfirm() {
+	if(confirm("선택하신 상품을 주문합니다.")) {
+		location.href="<%=request.getContextPath()%>/index.jsp?workgroup=order&work=order_write";
+	}
+}
+	
+function deleteConfirm() {
+	if(confirm("선택하신 상품을 장바구니에서 삭제 하시겠습니까?")) {
+		location.href="<%=request.getContextPath()%>/cart/cart_remove_action.jsp";
+	}
+};
+</script>

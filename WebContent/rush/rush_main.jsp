@@ -1,0 +1,571 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<!-- saved from url=(0036)http://www.lush.co.kr/main/index.php -->
+<html lang="ko"><head>
+
+    <title>러쉬코리아(LUSH KOREA)</title>
+    <link rel="icon" href="http://www.lush.co.kr/data/common/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/boxslider.css">
+
+    <!--{ ? }-->
+
+    <style type="text/css">
+        body {
+        }
+
+        /* body > #wrap > #top : 상단 영역 */
+        #top {
+        }
+
+        /* body > #wrap > #container : 메인 영역 */
+        #container {
+        }
+
+        /* body > #wrap > #footer : 하단 영역 */
+        #footer {
+        }
+    </style>
+
+    
+
+<link href="<%=request.getContextPath() %>/resources/nanumgothic.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<link href="<%=request.getContextPath() %>/resources/themify-icons.css" rel="stylesheet">
+<link href="<%=request.getContextPath() %>/resources/ie7.css" rel="stylesheet">
+<link href="<%=request.getContextPath() %>/resources/layout.css" rel="stylesheet">
+<link href="<%=request.getContextPath() %>/resources/eee.css" rel="stylesheet">
+<link href="<%=request.getContextPath() %>/resources/side.css" rel="stylesheet">
+
+
+<style type="text/css">
+	#quickL,#quickR{top:670px }
+</style>
+
+
+        <script type="text/javascript" charset="UTF-8" src="<%=request.getContextPath() %>/resources/kp.js.다운로드"></script>
+
+	
+<!-- 
+ <script src="<%=request.getContextPath() %>/resources/7af4e74b9f" async="" type="text/javascript"></script>
+<script src="<%=request.getContextPath() %>/resources/7af4e74b9f(1)" async="" type="text/javascript"></script>
+ -->
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/grb_simplesquare.min.css">
+
+</head>
+
+<body class="body-main body-index pc" ondragstart="return false" onselectstart="return false" oncontextmenu="return false">
+
+<div class="top-area"></div>
+<div id="wrap">
+    <div id="container_main" class="">
+
+
+                <!-- 본문 시작 : start -->
+        <div id="content">
+
+
+<!-- <div class="adpicfixwrap adpic_wideslide"> -->
+<div class="contents main_wrap01">
+
+<div class="slideshow-container">
+
+<div class="mySlides fade">
+  <img src="<%=request.getContextPath() %>/resources/banner01.jpg" style="width:100%">
+</div>
+
+<div class="mySlides fade">
+  <img src="<%=request.getContextPath() %>/resources/banner02.jpg" style="width:100%">
+</div>
+
+<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+<a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+</div>
+<br>
+</div>
+
+<div class="adpic_wideslide2">
+	<div class="inner_wrap">
+
+		<div class="display_list">
+			<style>
+				
+    /*ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+
+				.mySlides {display: none}
+				img {vertical-align: middle;}
+
+				/* Slideshow container */
+				.slideshow-container {
+  				max-width: auto;
+  				position: relative;
+				  margin: auto;
+				}
+				
+				/* Next & previous buttons */
+				.prev, .next {
+  				cursor: pointer;
+  				position: absolute;
+  				top: 50%;
+  				width: auto;
+  				padding: 16px;
+  				margin-top: -22px;
+  				color: white;
+  				font-weight: bold;
+  				font-size: 18px;
+  				transition: 0.6s ease;
+  				border-radius: 0 3px 3px 0;
+  				user-select: none;
+				}
+				
+				/* Position the "next button" to the right */
+				.next {
+  				right: 0;
+  				border-radius: 3px 0 0 3px;
+				}
+				
+				/* On hover, add a black background color with a little bit see-through */
+				.prev:hover, .next:hover {
+  				background-color: rgba(0,0,0,0.8);
+				}
+				
+				
+				.text {
+  				color: #f2f2f2;
+  				font-size: 15px;
+  				padding: 8px 12px;
+  				position: absolute;
+  				bottom: 8px;
+  				width: 100%;
+  				text-align: center;
+				}
+
+				/* Number text (1/3 etc) */
+				.numbertext {
+				color: #f2f2f2;
+				font-size: 12px;
+				padding: 8px 12px;
+				position: absolute;
+				top: 0;
+				}
+
+				/* The dots/bullets/indicators */
+				.dot {
+				cursor: pointer;
+				height: 15px;
+				width: 15px;
+				margin: 0 2px;
+				background-color: #bbb;
+				border-radius: 50%;
+				display: inline-block;
+				transition: background-color 0.6s ease;
+				}
+
+				.active, .dot:hover {
+				background-color: #717171;
+				}
+
+				/* Fading animation */
+				.fade {
+				-webkit-animation-name: fade;
+				-webkit-animation-duration: 1.5s;
+				animation-name: fade;
+				animation-duration: 1.5s;
+				}
+
+				@-webkit-keyframes fade {
+				from {opacity: .4} 
+				to {opacity: 1}}
+
+				@keyframes fade {
+				from {opacity: .4} 
+				to {opacity: 1}}
+
+				/* On smaller screens, decrease text size */
+				@media only screen and (max-width: 300px) {
+  				.prev, .next,.text {font-size: 11px}}
+    
+				.adpic_wideslide2 .space{ display: block; position:relative; padding:0 5px 40px 5px; }
+				.adpic_wideslide2 .box{ display: block; position:relative; }
+				.adpic_wideslide2 .thumbnail{ position:relative; }
+				.adpic_wideslide2 .thumbnail a{display:block;}
+				.adpic_wideslide2 .thumbnail .soldout-img { display:block; position:absolute; top:0; left:0; z-index:1; width:100%; height:100%; background-color: rgba(255, 255, 255, 0.6); background-position:0 0; background-repeat:no-repeat; text-indent:-9999px; }
+				.adpic_wideslide2 .prdinfo{position:relative;display:block; padding:0 0 0 0; text-align:center; }
+				.adpic_wideslide2 .conditions {position:absolute;top:0;left:0;width:100%;  text-align:center; }
+				.adpic_wideslide2 .hot img{padding:0 5px; }
+				.adpic_wideslide2 .soldout-img{vertical-align:top;display:inline-block;margin:0 5px;font-size:0;width:42px;height:23px;background-repeat:no-repeat ;}
+				.adpic_wideslide2 .txt { display:block; padding:0 0 0 0; color:#1e1e1e; text-align:center; line-height:20px; }
+				.adpic_wideslide2 .txt a { display: block; margin: 0; text-decoration:none; }
+				.adpic_wideslide2 .txt .prdName{ display:block; padding: 0;  color:#333; line-height:22px;font-size:18px; max-height:40px; text-overflow:ellipsis; overflow:hidden;}
+				.adpic_wideslide2 .txt .shotdesc{ display:block; padding: 0; color:#8f8f8f; line-height:20px;  max-height:20px; font-size:14px; text-overflow:ellipsis; overflow:hidden; }
+				.adpic_wideslide2 .price { display:block; line-height:30px; margin-top:10px; padding: 0; text-align:center; color:#333;font-size:16px; }
+				.item-display .choice{ display: none;position: absolute;top: 40px;right: 20px; }
+				.item-display .space:hover .choice{display:block;}
+				.item-display .choice a { position: relative; height: 28px; line-height: 28px; margin-bottom:10px;color: #000000; text-align: center; }
+				.item-display .choice a{display: block; position:relative; vertical-align:middle; }
+				.item-display .choice a:before{ content: ''; display: block; clear: both; vertical-align: middle; }
+				.item-display .choice a span{display: inline-block; line-height:45px; vertical-align: middle;}
+				.item-display .choice .btn-open-win{display:none;}
+				.item-display .choice .icon-name{display:none;}
+				.adpic_wideslide2 .bx-wrapper .bx-pager.bx-default-pager a:hover{ }
+				.adpic_wideslide2 .bx-wrapper img{max-width:auto; }
+				.pop_w .pop_close{position:fixed;top:73px;right:73px;font-size:0;width:35px; height: 35px;border:0; overflow: hidden; background:url('/teamproject/resources/CLOSE_Pv_A03.png') no-repeat; z-index:9001;  }
+				.main_wrap01,
+				.main_wrap01 .slider-wrap,
+				.main_wrap01 .slider-wrap .slick-list,
+				.main_wrap01 .slider-wrap .slick-list .slick-track,
+				.main_wrap01 .slider-wrap .slick-list .slick-track .slick-slide{height:650px !important;}
+				.main_wrap01 .slick-prev{display:none !important;}
+				.main_wrap01 .slick-next{display:none !important;}
+				.main_wrap01 .slick-dots{width:12px;bottom:auto;top:40%;left:50%;margin-left:580px;}
+				.main_wrap01 .slick-dots li{display:block;margin: 0 0 10px 0; }
+				.adpic_wideslide2 {clear:both; display: block; position: relative; width: 100%; height: auto; min-width: 1000px; margin: 0 auto;  background: #fff;}
+				.adpic_wideslide2:after{display:block; content:''; clear:both;}
+				.adpic_wideslide2 .inner_wrap{height:460px;}
+				.adpic_wideslide2 h2{border:0;padding:0;margin:0 0 25px 0;font-size:42px;line-height:44px;font-family:"Noto Sans KR";color:#333;}
+				.adpic_wideslide2 h2 .desc{display:none;}
+				.adpic_wideslide2 .display_list{padding-right:280px;}
+				.adpic_wideslide2 .display_list .bx-viewport{height:390px !important;}
+
+				.adpic_wideslide2 .conditions{display:none;}
+				.adpic_wideslide2 .brand{display:none;}
+				.main_wrap03{display:table;width:100%;max-width:1400px;margin-left:auto;margin-right:auto;margin-bottom:100px;}
+				.main_wrap03 img{width:100%;}
+				.main_wrap03 .left{display:table-cell; width:43.57%;vertical-align:top;}
+				.main_wrap03 .left div{position:relative;width:100%;height:0;padding-bottom:91.7%;}
+				.main_wrap03 .left iframe{position:absolute;top:0;bottom:0;left:0;right:0;width:100% !important; height:100% !important;}
+				.main_wrap03 .right{display:table-cell; width:56.43%;vertical-align:top;}
+				.main_wrap03 .right .right2{display:table;width:100%;}
+				.main_wrap03 .right .right2 p{display:table-cell;}
+								
+				</style>
+
+			<h2><img src="/teamproject/resources/1_imageNm.png"></h2>
+			<div class="bx-wrapper" style="max-width: 900px;">
+			<div class="bx-viewport" aria-live="polite" style="width: 100%; overflow:  position:  height: 420px;">
+			<div style="float: left; list-style: none; position: relative; width: 280px; margin-right: 20px;" aria-hidden="false">
+				<div class="space">
+					<div class="box">
+							<a href="/teamproject/index.jsp?workgroup=rush&work=product_detailpage&name=섹스밤">
+							<span class="prdimg"><img src="<%=request.getContextPath()%>/admin/product_image/sexbomb_main.jpg"></span>
+							</a>
+							<div class="prdinfo">
+							<div class="txt">
+							<span class="brand">
+							<strong>[러쉬]</strong>		
+							</span>
+							<a href="/teamproject/index.jsp?workgroup=rush&work=product_detailpage&name=섹스밤">
+ 							<span class="prdName">섹스밤</span></a>
+							</div>
+							<div class="price gd-default">
+							<span class="cost">
+							<strong>￦ 12,000</strong> 			
+							</span>
+							</div>
+							</div>
+							</div>
+						</div>
+					</div>
+					
+					<div style="float: left; list-style: none; position: relative; width: 280px; margin-right: 20px;" aria-hidden="false">
+					<div class="space">
+					<div class="box">
+					<a href="/teamproject/index.jsp?workgroup=rush&work=product_detailpage&name=트와일라잇">
+					<span class="prdimg"><img src="<%=request.getContextPath()%>/admin/product_image/트와일라잇_메인.jpg">
+					</span>
+					</a>
+					<div class="prdinfo">
+					<div class="txt">
+					<span class="brand">
+					<strong>[러쉬]</strong>
+					</span>
+					<a href="/teamproject/index.jsp?workgroup=rush&work=product_detailpage&name=트와일라잇">
+ 					<span class="prdName">트와일라잇</span>
+ 					</a>
+					</div>
+					<div class="price gd-default">
+					<span class="cost">
+					<strong>￦ 15,000</strong>
+					</span>
+					</div>
+					</div>
+					</div>
+					</div>
+				</div>
+				
+				
+				<div style="float: left; list-style: none; position: relative; width: 280px; margin-right: 20px;" aria-hidden="false">
+				<div class="space">
+				<div class="box">
+				<a href="index.jsp?workgroup=rush&work=product_detailpage&name=로즈%20컨디셔너">
+				<span class="prdimg"><img src="<%=request.getContextPath()%>/admin/product_image/로즈_메인.jpg">
+				</span>
+				</a>
+				<div class="prdinfo">
+				<div class="txt">
+				<span class="brand">
+				<strong>[러쉬]</strong>
+				</span>
+				<a href="index.jsp?workgroup=rush&work=product_detailpage&name=로즈%20컨디셔너">
+ 				<span class="prdName">로즈 컨디셔너</span></a>
+				</div>
+				<div class="price gd-default">
+				<span class="cost">
+				<strong>￦ 42,000</strong>
+				</span>
+				</div>
+				</div>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>	
+	</div>
+</div>
+
+<div class="  main_wrap03">
+	<div class="left">
+		<div><iframe width="610" height="610" src="<%=request.getContextPath() %>/resources/n-XM3LxpNzA.html" frameborder="0" allowfullscreen=""></iframe></div><!-- 튜닝 : 메인동영상 -->
+	</div>
+	<div class="right">
+		<div class="right1"><a href="index.jsp?workgroup=board/Review&work=Review_list" target="_blank"><img src="<%=request.getContextPath() %>/resources/리뷰이미지.png" alt="리뷰" title="리뷰"></a></div>
+		<div class="right2"><p><a><img src="<%=request.getContextPath() %>/resources/e6cdbe549f2d0f389a057a02c8094695_36621.jpg" alt="PC_러쉬말나들이" title="PC_러쉬말나들이"></a></p>
+		<p><a><img src="<%=request.getContextPath() %>/resources/588e3e17328626517f82804e2b9c4a88_36730.gif" alt="기프트" title="기프트"></a></p></div>
+	</div>
+</div>
+
+
+
+<style>
+ 
+.main_wrap04 .inner_wrap{position:relative;}
+
+.main_wrap04 .inner_wrap .img{position:absolute;top:-40px;right:100px;width:380px;z-index:1;}
+.main_wrap04 dl{width:350px;padding-left:300px;}
+.main_wrap04 dt{padding-bottom:20px;font-size:42px; font-family :"Noto Sans KR";color:#000;}
+.main_wrap04 dd{line-height:26px;font-size:16px;}
+</style>
+<div class="contents main_wrap04">
+	<div class="inner_wrap">
+		<dl>
+			<dt>#LUSH</dt>
+			<dd>
+			러쉬는 자연으로부터 얻은 신선한 재료와<br> 동물실험을 하지 않은 정직한 재료를 사용하여<br> 모든 제품을 손으로 직접 만듭니다.<br>더불어 공정 거래, 인권 보호, 포장 최소화 등<br>다양한 캠페인 활동을 통해 기업 윤리와 신념을 알리고 있습니다. 
+			</dd>
+		</dl>
+		<p class="img" data-1600="top: -90px;" data-2000="top: -160px;" style="margin-top: -10px;"><a href=""><img src="<%=request.getContextPath() %>/resources/lush_life.jpg" alt="#브랜드" title="#브랜드2"></a></p>
+	</div>
+</div><!-- 튜닝 : BEST SELLER -->
+
+
+<style>
+.main_wrap05{height:760px;background: #000;}
+.main_wrap05 .inner_wrap{padding:147px 0 30px;}
+.main_wrap05 .sns{width:280px;position: absolute;top:600px;left:160px; text-align:center;}
+.main_wrap05 .sns img{padding:0 10px;}
+</style>
+<div class="contents main_wrap05">
+	<div class="inner_wrap">
+		<div id="instagramwrap">
+			<!--
+			https://api.instagram.com/oauth/authorize/?client_id=[CLIENT-ID]&redirect_uri=[REDIRECT-URI]&response_type=token
+			access_token=2227255662.69af6c4.b9b7e2c810e14ec19680291a1b4ad710
+			-->
+			<style type="text/css">
+                #instagramwrap  { display: block; position: relative; width:100%; padding: 0 0; text-align: center; }
+				#instagramwrap:after{content:''; display:block; clear:both;}
+
+
+				#instaPics {position: relative; display:block; width: 100%; text-align:left; }
+				#instaPics:after{clear:both;display:block;content:'';}
+				.insta-box { display:inline-block; position: relative; float:left; margin:0 10px 10px 0;  }
+				.insta-box:nth-child(1){width:220px;position: absolute;top:-90px;left:220px}
+				.insta-box:nth-child(2){width:280px;margin-top:140px;margin-left:160px;}
+				.insta-box:nth-child(3){width:280px;}
+				.insta-box:nth-child(4){width:280px;margin-top:34px;}
+				.insta-box:nth-child(5){width:280px;margin-top:-30px;}
+				.insta-box:nth-child(6){width:224px;position: absolute;top:326px;right:205px}
+				.image-layer {  width: 100%; height:0; overflow:hidden;position:relative;padding-bottom:100%; background: #333;}
+				.image-layer img {display:none;position: absolute;top: 0;left: 0;bottom: 0;right: 0; margin: auto; }
+				.image-layer span {position: absolute;top: 0;left: 0;bottom: 0;right: 0; margin: auto; display:block;background-position:50% 50% ;background-size:cover ;background-repeat:no-repeat ;}
+				.caption-layer { display: none; position: absolute; top: 0; background: #000000; height: 100%; width: 100%; box-sizing: border-box; font-size: 0.7em; color: #FFFFFF; }
+				.caption-layer.on{display:block;}
+				.caption-layer p.insta-caption{display:none; padding:10px; height:60%; overflow:hidden; }
+				.insta-likes {display:none; padding:0 10px 0 0; float: right; }
+			</style>
+			<script type="text/javascript">
+			   $(function($) {
+			   		
+				   /*
+				   	var tocken = "1144458167.aaa3c13.097057b4d853451aa61dbeb73240c1eb";
+					var count = "6";
+					$.ajax({
+						type: "GET",
+						dataType: "jsonp",
+						cache: true,
+						url: "https://api.instagram.com/v1/users/self/media/recent/?access_token=" + tocken + "&count=" + count,
+						success: function (response) {
+
+							if (typeof response.data != 'undefined' && response.data.length > 0) {
+								for (var i = 0; i < response.data.length; i++) {
+									var insta = '<div class="insta-box">';
+										insta += "<a target='_blank' href='" + response.data[i].link + "'>";
+											insta += "<div class='image-layer'>";
+												insta += '<span style="background-image:url(' + response.data[i].images.standard_resolution.url + ')"><img src="' + response.data[i].images.standard_resolution.url + '"></span>';
+											insta += "</div>";
+											if (response.data[i].caption !== null) {
+												insta += "<div class='caption-layer'>";
+
+												if (response.data[i].caption.text.length > 0) {
+													insta += "<p class='insta-caption'>" + response.data[i].caption.text + "</p>"
+												}
+												insta += "<span class='insta-likes'>" + response.data[i].likes.count + " Likes</span>";
+												insta += "</div>";
+											}
+										insta += "</a>";
+									insta += "</div>";
+									$("#instaPics").append(insta);
+								}
+							}
+
+							$(".insta-box").mouseenter(function (e) {
+								$(this).find(".caption-layer").fadeTo(100,.7);
+							}).mouseleave(function (e) {
+								$(this).find(".caption-layer").fadeTo(100, 0);
+							});
+						}
+
+					});
+					*/
+			   });
+			</script>
+
+			<div id="instaPics"><div class="insta-box"><a target="_blank" href="https://www.instagram.com/p/BzcuJIyH_L-/"><div class="image-layer"><span style="background-image:url(https://scontent.cdninstagram.com/vp/7c80d5bc2deabb4cc0a52057524b0260/5DA422D8/t51.2885-15/sh0.08/e35/s640x640/65828713_146813459727091_4361661991783292627_n.jpg?_nc_ht=scontent.cdninstagram.com)"><img src="<%=request.getContextPath() %>/resources/65828713_146813459727091_4361661991783292627_n.jpg"></span></div><div class="caption-layer"><p class="insta-caption">ㅤㅤ
+#파이러츠오브더카라기난 에는 놀라운 전설이 있답니다. 🗣👥
+ㅤㅤ
+바로 이 초록빛 배쓰 밤 안에 
+어느 해적의 놀라운 보물이 숨겨져 있다나 뭐라나..🙄
+ㅤㅤ
+샌달우드와 파촐리의 싱그러운 향기가 
+당신의 모험심을 자극할 거예요! ✨
+ㅤㅤ</p><span class="insta-likes">103 Likes</span></div></a></div><div class="insta-box"><a target="_blank" href="https://www.instagram.com/p/BzcnbsAn9Nk/"><div class="image-layer"><span style="background-image:url(https://scontent.cdninstagram.com/vp/c8e476701b11f79f13c77e167ff51f85/5DAEC320/t51.2885-15/sh0.08/e35/s640x640/66352593_450374192208473_6093632286226581513_n.jpg?_nc_ht=scontent.cdninstagram.com)"><img src="<%=request.getContextPath() %>/resources/66352593_450374192208473_6093632286226581513_n.jpg"></span></div><div class="caption-layer"><p class="insta-caption">[채러티 팟] 55번째 신규 후원 단체 – 월드키즈센터
+ㅤㅤ “칭찬할 줄 아는 아이들이 세상을 바꿉니다” 🤸
+ㅤㅤ 
+월드키즈센터는 소외 계층 아이들이 칭찬을 통해 정서적 안정과 건강한 인성을 가질 수 있도록 돕고 있습니다. 
+ㅤㅤ 
+채러티 팟은 칭찬을 주제로 한 🤹참여형 놀이교육과 칭찬 나눔 활동 등 아이들과 가정, 세상이 더욱 행복해질 수 있는 활동에 후원하였습니다.
+ㅤㅤ</p><span class="insta-likes">78 Likes</span></div></a></div><div class="insta-box"><a target="_blank" href="https://www.instagram.com/p/BzadDwDnZ1H/"><div class="image-layer"><span style="background-image:url(https://scontent.cdninstagram.com/vp/c3913add8abb66a7b4dcecb6c0164136/5DBA9611/t51.2885-15/sh0.08/e35/s640x640/65001387_2326135644312570_6601941211579894758_n.jpg?_nc_ht=scontent.cdninstagram.com)"><img src="<%=request.getContextPath() %>/resources/65001387_2326135644312570_6601941211579894758_n.jpg"></span></div><div class="caption-layer" style="opacity: 0; display: block;"><p class="insta-caption">ㅤㅤ
+"이렇게 큰 배쓰 밤도 있어요?"🤭
+ㅤㅤ
+#씨위드자이언트밤쉘 을 본다면 깜짝 놀랄 수도 있어요. ㅤㅤ
+하지만 바다의 신선함을 전부 담기엔 딱 적당하답니다.😉
+ㅤㅤ
+풍부한 해초가 부드럽게 당신의 몸을 감싸는 순간 ㅤㅤ
+인어가 된 듯한 기분을 느낄 수 있을 거예요.
+🧜‍♀️🌊🧜‍♂️🌊
+ㅤㅤ</p><span class="insta-likes">239 Likes</span></div></a></div><div class="insta-box"><a target="_blank" href="https://www.instagram.com/p/BzaKEPOneal/"><div class="image-layer"><span style="background-image:url(https://scontent.cdninstagram.com/vp/623a43c9e3da770a15b99f90b4e29d37/5DBF633F/t51.2885-15/sh0.08/e35/s640x640/64919029_357908738242086_1503820423164846373_n.jpg?_nc_ht=scontent.cdninstagram.com)"><img src="<%=request.getContextPath() %>/resources/64919029_357908738242086_1503820423164846373_n.jpg"></span></div><div class="caption-layer" style="opacity: 0; display: block;"><p class="insta-caption">ㅤㅤ
+⚠먹지 마세요⚠
+ㅤㅤ
+한 여름에도 싱그러운 
+#스트로베리즈앤드크림 배쓰 밤이랍니다.
+ㅤㅤ
+🍓❤🍓❤🍓❤🍓❤ ㅤㅤ
+부드러운 딸기 파우더 속 쉐어버터가 쏙!
+#딸기덕후 누울 곳은 바로 여기인가요?!😍
+ㅤㅤ</p>
+<span class="insta-likes">165 Likes</span></div></a></div><div class="insta-box"><a target="_blank" href="https://www.instagram.com/p/BzP0_AAn1te/"><div class="image-layer"><span style="background-image:url(https://scontent.cdninstagram.com/vp/9a5b25ae63b7e1a99eeb17a7ca293153/5DAEA483/t51.2885-15/sh0.08/e35/s640x640/64663205_2337295629821881_3631275292836122383_n.jpg?_nc_ht=scontent.cdninstagram.com)"><img src="<%=request.getContextPath() %>/resources/64663205_2337295629821881_3631275292836122383_n.jpg"></span></div><div class="caption-layer" style="opacity: 0; display: block;"><p class="insta-caption">ㅤㅤ
+신선한 장미향기의 #로즈잼? 상큼한 자몽향기의 #해피히피 ?
+국프님의 최애 향기는?
+ㅤㅤ
+로즈잼을 사랑한다면 댓글에 🌹를
+해피히피 덕후라면 🍋 를 꾹! 
+ㅤㅤ
+과연 승자는 👀 ....? (흥미진진🍿) ㅤㅤ</p><span class="insta-likes">433 Likes</span></div></a></div></div>
+		</div>
+		<div class="sns"><a href="http://www.facebook.com/lushkorea" target="_blank"><img src="<%=request.getContextPath() %>/resources/52f6c55cf891959ca65e1610428cc356_26431.gif" alt="페이스북" title="페이스북"></a><a href="https://www.instagram.com/lushkorea/" target="_blank"><img src="<%=request.getContextPath() %>/resources/208240d3f950644cbdf2ab9a477b77a6_14927.gif" alt="인스타" title="인스타"></a><a href="https://www.youtube.com/user/LUSHKOREA1" target="_blank"><img src="<%=request.getContextPath() %>/resources/d98445044659438439009d27233deaf4_95992.gif" alt="유튜브" title="유튜브"></a><a href="https://pf.kakao.com/_VEbUM" target="_blank"><img src="<%=request.getContextPath() %>/resources/221e9ec7b393fdc9a8453f6c68bc8d54_86543.gif" alt="카톡플친" title="카톡플친"></a></div>
+	</div>
+</div>
+
+<hr>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/skrollr/0.6.30/skrollr.min.js"></script>    -->
+<script>
+	//var s = skrollr.init({ forceHeight: false });
+</script>
+
+<script>
+function mainPattern() {
+
+    var scrollTop;
+    $(window).scroll(function () {
+        scrollTop = $(window).scrollTop();
+        var margin = scrollTop / -20;
+        $(".review").each(function () {
+            $(this).css("margin-top", -margin);
+        });
+        //console.log(scrollTop);
+    });
+	var scrollTop;
+    $(window).scroll(function () {
+        scrollTop = $(window).scrollTop();
+        var margin = scrollTop / 30;
+        $(".main_wrap04 .img").each(function () {
+            $(this).css("margin-top", -margin);
+        });
+        //console.log(scrollTop);
+    });
+	
+
+
+}
+</script>
+
+<style>
+.main_wrap04 .img{transition: margin 0.3s ease;}
+</style>
+<script type="text/javascript">
+	//<![CDATA[
+	//메인페이지 패턴 스크롤 움직임
+	mainPattern();
+
+	//]]>
+</script>
+
+
+</div>
+        <!-- 본문 끝 : end -->
+        </div>
+    </div>
+
+<iframe id="ne_tgmiframe_0" width="0" height="0" style="position:absolute;width:0px;height:0px;display:none;" src="<%=request.getContextPath() %>/resources/saved_resource.html"></iframe>
+<script>
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1}    
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";  
+  }
+  for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";  
+}
+</script>
+</div>
+</body>
+</html>

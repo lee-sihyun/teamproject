@@ -1,0 +1,65 @@
+(function ($) {
+	$.fn.mscsticker = function (options) {
+
+		//기본 옵션들과 전달된 옵션들을 병합
+		var opts=$.extend({
+			headerSelector: '#header',
+			navSelector: 'nav',
+			containerSelector:'#container',
+			contentSelector: '#content',
+			footerSelector: '#footer',
+			siderbarTopMargin: 0,
+			footerThreshold: 0
+		}, options);
+
+		var fixSticker = function () {
+			var siderbar = $(this);
+			var container = $(opts.containerSelector);
+			var content = $(opts.contentSelector);
+
+			var bHeight = $(window).height();									//브라우저 높이
+			var bWidth = $(window).width();										//브라우저 넓이
+			var docHeight = $(document).height();							//문서 높이
+			var headerHeight = $(opts.headerSelector).outerHeight();	//header 높이
+			var navHeight = $(opts.navSelector).outerHeight();			//nav 높이
+			var siderbarHeight = siderbar.outerHeight();						//siderbar 높이
+			var contentHeight = $(opts.contentSelector).outerHeight();//content 높이
+			var footerHeight = $(opts.footerSelector).outerHeight();		//footer 높이
+			var scroll_top = $(window).scrollTop();
+			var fixPosition = contentHeight - siderbarHeight;
+			var breakPoint1 = headerHeight;
+			var breakPoint2 = docHeight - (siderbarHeight + footerHeight + opts.footerThreshold);
+
+			if (container.width() > bWidth) {
+				siderbar.removeClass('fix');
+			} else {
+				if ((contentHeight > siderbarHeight) && (bHeight > siderbarHeight)) {
+
+					if (scroll_top < breakPoint1) {
+						siderbar.removeClass('fix');
+					} else if ((scroll_top >= breakPoint1) && (scroll_top < breakPoint2)) {
+						siderbar.addClass('fix').css('top', opts.siderbarTopMargin);
+					}
+					else {
+						var nagative = breakPoint2 - scroll_top;
+						siderbar.addClass('fix').css('top', nagative);
+
+					}
+				}
+			}
+
+		};
+
+		return this.each(function () {
+			//$(window).on('scroll', $.proxy(fixSticker, this));
+			//$(window).on('resize', $.proxy(fixSticker, this));
+			$(window).bind('scroll', $.proxy(fixSticker, this));
+			$(window).bind('resize', $.proxy(fixSticker, this));
+			$.proxy(fixSticker, this)();
+		});
+
+		//기본 옵션값
+		//$.fn.mscsticker.defaults = {
+		//};
+	};
+}(jQuery));

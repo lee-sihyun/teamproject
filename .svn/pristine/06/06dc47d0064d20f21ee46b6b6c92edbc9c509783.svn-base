@@ -1,0 +1,312 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
+<%@page import="site.itwill.dto.testDTO"%>
+<%@page import="java.util.List"%>
+<%@page import="site.itwill.dao.testDAO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+	
+
+<%
+	String search = request.getParameter("search");
+	if (search == null)
+		search = "";
+	String keyword = request.getParameter("keyword");
+	if (keyword == null)
+		keyword = "";
+
+	int pageNum = 1;
+	if (request.getParameter("pageNum") != null) {
+		pageNum = Integer.parseInt(request.getParameter("pageNum"));
+
+	}
+
+	int pageSize = 10;
+
+	int totalTest = testDAO.getDAO().getTestTotal(search, keyword);
+
+	int totalPage = (int) Math.ceil((double) totalTest / pageSize);
+
+	if (pageNum <= 0 || pageNum > totalPage) {
+		pageNum = 1;
+	}
+
+	int startRow = (pageNum - 1) * pageSize + 1;
+
+	int endRow = pageNum * pageSize;
+
+	if (endRow > totalTest) {
+		endRow = totalTest;
+	}
+
+	List<testDTO> testList = testDAO.getDAO().getTestList(startRow, endRow, search, keyword);
+
+	int number = totalTest - (pageNum - 1) * pageSize;
+
+	//	noticeDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
+	String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+%>
+
+<jsp:include page="/admin/header.jsp" />
+<link href="css/admin_member.css" rel="stylesheet" type="text/css">
+<!--본문내용역역 시작 content로 잡으면 됩니다  -->
+
+<div id="content">
+	<div class="mTitle">
+		<h1>고객관리</h1>
+	</div>
+	<form  method="post" name="eProductSearchForm"
+		id="eProductSearchForm">
+
+		<!--<div class="optionArea" id="QA_list1">
+					
+
+					</div> -->
+		<!-- QA_list1종료 -->
+		<div class="section" id="QA_list2">
+
+			<div class="mOption">
+			
+				<table>
+<form action="<%=request.getContextPath()%>/admin/index.jsp?workgroup=member&work=member_list"
+				method="post" id="searchForm">
+				
+				
+					<tr>
+
+						<th scope="row">고객명</th>
+
+						<td colspan="1">
+							<div id="testfiled">
+
+								<input type="text"  name="keyword" id="keyword">
+									<button type="submit" class="btnSearch">검색</button>
+		
+								
+							</div>
+
+					
+						</td>
+					</tr>
+
+
+
+				</table>
+
+			</div>
+</form>
+			<!-- 검색영역 종료 -->
+			<div class="mButtongCenter">
+		
+			
+
+		<%--<a href="#none" class="btnSearchreset" id="eSearchFormInit"> <span>초기화</span>	</a> --%>	 
+
+			
+
+
+
+			</div>
+
+			<!-- 표영역 -->
+
+			<div class="mBoardtypeListgScrollgCell">
+
+				<table class="eChkColor">
+
+
+					<tr>
+						<%-- <th><input type="checkbox" id="allCheck"></th>--%>
+					<th id="num">번호</th>
+						<th>구분</th>
+						<th scope="col" id="id">아이디</th>
+						<th scope="col" id="name">이름</th>
+						<th scope="col" id="email">이메일</th>
+						<th scope="col" id="phone">핸드폰번호</th>
+						<th scope="col" id="logdate">최근접속일</th>
+
+
+					</tr>
+
+
+					<!--  <tbody> </tbody>-->
+					<%
+						if (totalTest == 0) {
+					%>
+
+					<tr>
+						<td colspan="5">검색된 회원이 존재하지 않습니다
+					</tr>
+					<%
+						} else {
+							
+							
+							
+							
+							
+							/*  private int num;
+    private String id;
+    private String passwd;
+    private String name;
+    private String nickname;
+    private String email;
+    private String phone;
+    private String postcode;
+    private String address1;
+    private String address2;
+    private int status;
+    private String lastday;*/
+					%>
+					<%
+						for (testDTO test : testList) {
+					%>
+					<tr>
+						<!-- 회원수 -->
+						<%-- <td><input type="checkbox" name="checkId" value="<%=test.getId()%>"</td>--%>
+						<td><%=number%></td>
+						<td><%=test.getStatus() %></td>
+						<td class="id"><a
+							href="<%=request.getContextPath()%>
+							/admin/index.jsp?workgroup=member&work=member_detail&num=
+							<%=test.getNum()%>&pageNum=<%=pageNum%>&search=<%=search%>&keyword=
+							<%=keyword%>"><%=test.getId()%></a>
+						</td>
+
+						<td><%=test.getName()%></td>
+
+						<td><%=test.getEmail()%></td>
+						<td><%=test.getPhone()%></td>
+						<td><%=test.getLogdate().substring(0,19)%></td>
+					</tr>
+					<%
+						number--;
+					%>
+					<%
+						}
+					%>
+					<%
+						}
+					%>
+
+
+				</table>
+				<!-- 페이지이동 출력 -->
+				
+							<%
+					int blockSize = 5;
+					int startPage = (pageNum - 1) / blockSize * blockSize + 1;
+					int endPage = startPage + blockSize - 1;
+					if (endPage > totalPage) {
+						endPage = totalPage;
+					}
+				%>
+				<div class="chart">
+					<%
+						if (startPage > blockSize) {
+					%>
+					<a
+						href="<%=request.getContextPath()%>
+/admin/index.jsp?workgroup=member&work=member_list&pageNum=1
+&search=<%=search%>&keyword=<%=keyword%>">[처음]</a>
+					<a
+						href="<%=request.getContextPath()%>/admin/index.jsp?workgroup=member&work=member_list&pageNum
+=<%=startPage - blockSize%>&search=<%=search%>&keyword=<%=keyword%>">[이전]</a>
+					<%
+						} else {
+					%>
+					[처음][이전]
+					<%
+						}
+					%>
+					<%
+						for (int i = startPage; i <= endPage; i++) {
+					%>
+					<%
+						if (pageNum != i) {
+					%>
+					<a
+						href="<%=request.getContextPath()%>/admin/index.jsp?workgroup=member&work=member_list&pageNum=
+		<%=i%>&search=<%=search%>&keyword=<%=keyword%>">[<%=i%>]
+					</a>
+					<%
+						} else {
+					%>
+					<span style="font-weight: bold; color: red;">[<%=i%>]
+					</span>
+					<%
+						}
+					%>
+					<%
+						}
+					%>
+					<%
+						if (endPage != totalPage) {
+					%>
+					<a
+						href="<%=request.getContextPath()%>
+	/admin/index.jsp?workgroup=member&work=memberlist&pageNum=
+	<%=startPage + blockSize%>&search=<%=search%>&keyword=<%=keyword%>">[다음]</a>
+					<a
+						href="<%=request.getContextPath()%>/admin/index.jsp?workgroup=member&work=member_list&pageNum=
+	<%=totalPage%>&search=<%=search%>&keyword=<%=keyword%>">[마지막]</a>
+					<%
+						} else {
+					%>
+					[다음][마지막]
+					<%
+						}
+					%>
+				</div>
+				
+				
+				
+
+			</div>
+
+			<div class="mCtrltypeFooter">
+				<div class="gLeft">
+					<span class="txtLess">선택고객 </span> <a href="#none"
+						class="btnNormaldelete">확인</a> <a href="#none"
+						class="btnNormalmodify">수정</a>
+
+
+
+				</div>
+
+
+			</div>
+
+
+		</div>
+
+
+
+
+	</form>
+	
+	
+
+</div>
+<!--content 영역종료 -->
+
+
+</div>
+<!-- container 영역종료 -->
+</div>
+<!-- wrap영역종료 -->
+
+
+
+<script type="text/javascript">
+$("#allCheck").change(function() {
+	if($(this).is(":checked")) {
+		$(".check").prop("checked",true);
+	} else {
+		$(".check").prop("checked",false);
+	}	
+});
+
+</script>
+
+</body>
+</html>

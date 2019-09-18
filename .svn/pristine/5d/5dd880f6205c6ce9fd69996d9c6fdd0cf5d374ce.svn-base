@@ -1,0 +1,130 @@
+package site.itwill.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import site.itwill.dto.ProductDTO;
+import site.itwill.dto.pageDTO;
+
+public class pageDAO extends JdbcDAO {
+	private static pageDAO _dao;
+
+public pageDAO() {
+	// TODO Auto-generated constructor stub
+}
+	static {
+		_dao=new pageDAO();		
+	}
+
+	public static pageDAO getDAO() {
+		return _dao;
+	}
+	
+	
+	public List<pageDTO>getPageList(int startRow, int endRow, String search, String keyword) {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<pageDTO> pageList = new ArrayList<pageDTO>();
+
+		try {
+			
+			con = getConnection();
+			if (keyword.equals("")) {
+				String sql = "select * from (select rownum rn, temp.* from (select * from order_table order by order_no ) temp) where rn between ? and ?";
+
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, startRow);
+				pstmt.setInt(2, endRow);
+
+			} else {
+				String sql = "select * from (select rownum rn, temp.* from (select * from order_table order by order_no  where " + search+ " like '%'||?||'%' ) temp) where rn between ? and ?";
+
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, keyword);
+				pstmt.setInt(2, startRow);
+				pstmt.setInt(3, endRow);
+			}
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				pageDTO page = new pageDTO();
+				page.setOrderNo(rs.getString("order_no"));
+				page.setId(rs.getString("id"));
+				page.setName(rs.getString("name"));
+				page.setPostcode(rs.getString("postcode"));
+				page.setAddress1(rs.getString("address1"));
+				page.setAddress2(rs.getString("address2"));
+				page.setPhone(rs.getShort("phone"));
+				page.setMessage(rs.getString("message"));
+				page.setPayChoice(rs.getString("pay_choice"));
+				page.setOrderDate(rs.getString("order_date"));
+				page.setOrderStatus(rs.getInt("order_status"));
+				page.setDeliveryStatus(rs.getInt("delivery_status"));
+				pageList.add(page);
+				
+				
+				/*
+				 * 
+				 * 
+				 * */
+				
+			}
+
+		} catch (SQLException e) {
+			System.out.println("[에러]getProductList() 메소드 SQL 오류=" + e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return pageList;
+
+	}
+
+
+	
+	public int getPageTotal(String search, String keyword) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int rows = 0;
+
+		try {
+
+			con = getConnection();
+
+			if (keyword.equals("")) {
+				String sql = "select count(*) from order_table";
+				pstmt = con.prepareStatement(sql);
+			} else {
+				String sql = "select count(*) from order_table where " + search + " like '%'||?||'%'";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, keyword);
+				
+			}
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				rows = rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("[에러] getProductTotal ()SQL 오류=" + e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return rows;
+
+	}
+	
+	
+	
+	
+	
+	
+}

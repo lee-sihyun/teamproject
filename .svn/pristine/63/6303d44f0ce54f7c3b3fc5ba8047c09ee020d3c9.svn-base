@@ -1,0 +1,20 @@
+<%@page import="site.itwill.dao.OrderDAO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+request.setCharacterEncoding("UTF-8");
+
+
+
+
+String[] checkNo = request.getParameterValues("checkNo");
+
+
+for(String name:checkNo){
+	//OrderDAO.getOrderDAO().orderDelivery2(Integer.parseInt(name));
+	OrderDAO.getOrderDAO().refund(name);
+}
+
+
+response.sendRedirect(request.getContextPath()+ "/admin/index.jsp?workgroup=order&work=refund");
+%>

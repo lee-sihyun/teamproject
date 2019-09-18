@@ -1,0 +1,219 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<%@include file="/security/login_status.jspf" %>
+<%
+    String message=(String)session.getAttribute("message");
+
+    if(message==null){
+        message="";
+    } else {
+        session.removeAttribute("message");
+        return;
+    }
+    
+    LushUserDTO user=new LushUserDTO();
+
+%>
+<style>
+
+/* Style the body */
+body {
+  font-family: Noto Sans KR;
+}
+
+p{
+    margin: 0;
+}
+
+/* Header/logo Title */
+.header {
+  padding: 80px;
+  text-align: center;
+  background: #1abc9c;
+  color: white;
+}
+
+/* Column container */
+.content {  
+  width: 1180px;
+  margin: 0 auto;
+  height: 100%;
+}
+
+/* Sidebar/left column */
+.side {
+  width: 200px;
+  height: 100%;
+  float: left;
+}
+
+.side ul li {
+    list-style-type: none;
+    color: gray;
+}
+.side li a:visited{
+    text-decoration: none;
+}
+
+/* Main column */
+.main {   
+  width: 880px;
+  height: 100%;
+  float: left;
+  margin: 0 50px;
+}
+
+.mypage{
+    width: 100%;
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
+#mygrade {
+}
+
+#ordering {
+    border-collapse: collapse;
+}
+
+#deleteInfor {
+    border: 1px solid gray;
+    text-align: left;
+}
+
+.section-header {
+    text-align: left;
+    display: inline;
+}
+
+.thclass {
+    text-align: left;
+    margin: 40px;
+}
+
+#message {
+    color: red;
+    position: relative;
+    display: none;
+}
+
+
+.spanclass {
+    margin-right: 80px;
+}
+
+/* Footer */
+.footer {
+  padding: 20px;
+  text-align: center;
+  background: #ddd;
+}
+
+/* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 700px) {
+  .content {   
+    flex-direction: column;
+  }
+}
+
+</style>
+<!-- content -->    
+<div class="content">
+        <!-- side -->
+          <div class="side">
+            <h2>마이페이지</h2>
+            <h3>쇼핑정보</h3>
+            <ul>
+              <li><a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp">주문목록/배송조회</a></li>
+              <li><a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp">취소/반품/교환내역</a></li>
+              <li><a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp">환불/입금리스트</a></li>
+            </ul>
+            <h3>고객센터</h3>
+            <ul>
+              <li><a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp">공지사항</a></li>
+              <li><a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp">1:1문의</a></li>
+              <li><a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp">FAQ</a></li>
+            </ul>
+            <h3>회원정보</h3>
+            <ul>
+              <li><a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/changeUser_confirm.jsp'">회원정보 변경</a></li>
+              <li><a href="javascript:location.href='<%=request.getContextPath() %>/lushuser/deleteUser.jsp">회원 탈퇴</a></li>
+            </ul>
+          </div>
+        
+        <!-- main -->  
+          <div class="main">
+            <!-- 회원탈퇴 -->
+            <div class="mypage" id="mygrade">
+	        <h2>회원탈퇴</h2>
+	        <hr>
+            </div>
+            <!-- 회원탈퇴 안내 -->
+            <div class="mypage" id="ordering">
+            <h3>01. 회원탈퇴 안내</h3>
+              <div id="deleteInfor">
+                  <p>러쉬탈퇴안내<br>불편하셨던 점이나 불만사항을 알려주시면 적극 반영해서 고객님의 불편함을 해결해
+                  드리도록 노력하겠습니다. <br> 아울러 회원 탈퇴시의 아래 사항을 숙지하시기 바랍니다.<br>
+                  1.회원 탈퇴 시 회원님의 정보는 상품 반품 및 A/S를 위해 전자상거래 등에서의 소비자 보호에 관한 법률에 의거한
+                  고객정보 보호정책에 따라 관리 됩니다.<br>
+                  2.탈퇴 시 회원님께서 보유하셨던 데이터는 삭제 됩니다.</p>
+              </div>
+             </div>
+            <!-- 회원탈퇴 하기 -->
+            <form name="deleteForm" id="deleteForm" action="<%=request.getContextPath()%>/lushuser/deleteUser_action.jsp" method="post">
+            <div class="mypage" id="orderlist">
+            <h3>02. 회원탈퇴 하기</h3>
+              <div class="section-header" id="">
+                      <table>
+                        <tr>
+                            <th class="thclass">비밀번호</th>
+                            <td class="tdclass"><input type="password" name="pass" id="pass"><span id="message"><%=message %></span></td>
+                            
+                        </tr>
+                        <!-- 
+                        <tr>
+                            <th class="thclass">탈퇴사유</th>
+                            <td class="tdclass">
+                                <div>
+                                    <div>
+                                    <span class="spanclass"><input type="checkbox" name="choice" value="1">고객서비스(상담,포장 등)불만</span>
+                                    <span class="spanclass"><span id="first"><input type="checkbox" name="choice" value="2">배송불만</span></span>
+                                    </div>
+                                    <div>
+                                    <span class="spanclass"><input type="checkbox" name="choice" value="3">교환/환불/반품 불만</span>
+                                    <span class="spanclass"><span id="second"><input type="checkbox" name="choice" value="4">방문빈도가 낮음</span></span>
+                                    </div>
+                                    <div>
+                                    <span class="spanclass"><input type="checkbox" name="choice" value="5">상품가격 불만</span>
+                                    <span class="spanclass"><span id="third"><input type="checkbox" name="choice" value="6">개인 정보유출 우려</span></span>
+                                    </div>
+                                    <div>
+                                    <span class="spanclass"><input type="checkbox" name="choice" value="7">쇼핑몰의 신뢰도 불만</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="thclass">남기실 말씀</th>
+                            <td class="tdclass">
+                                <textarea rows="5" cols="30"></textarea>
+                            </td>
+                        </tr>
+                         -->
+                      </table>
+              </div>
+            </div>
+            <!-- 버튼 -->
+            <div class="mypage" id="choicelist">
+              <div class="btn" id="">
+                  <div class="">
+                  <a href="<%=request.getContextPath()%>/index.jsp?workgroup=lushuser&work=mypage">이전으로</a>
+                  </div>
+                  <button type="submit" class="btn" id="submitBtn">탈퇴</button>
+              </div>
+            </div>
+            </form>
+        </div>
+</div>
+

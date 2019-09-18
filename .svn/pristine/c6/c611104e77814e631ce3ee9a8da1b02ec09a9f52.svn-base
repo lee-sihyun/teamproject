@@ -1,0 +1,1021 @@
+package site.itwill.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import site.itwill.dto.OrderDTO;
+
+public class OrderDAO extends JdbcDAO {
+	private static OrderDAO _dao;
+	
+	private OrderDAO() {
+		
+	}
+	
+	static {
+		_dao=new OrderDAO();
+	}
+	
+	public static OrderDAO getOrderDAO() {
+		return _dao;
+	}
+	
+	//주문 등록
+	//주문정보를 전달받아 ORDER_TABLE 테이블에 행정보를 삽입하는 메소드
+	public int insertOrder(OrderDTO order) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		int rows=0;
+		
+		try {
+			con=getConnection();
+			
+			String sql="insert into order_table values(?,?,?,?,?,?,?,?,?,sysdate,?,?,?)";
+			pstmt=con.prepareStatement(sql);			
+			pstmt.setString(1, order.getOrderNo());	
+			pstmt.setString(2, order.getId());	
+			pstmt.setString(3, order.getName());
+			pstmt.setString(4, order.getPostcode());
+			pstmt.setString(5, order.getAddress1());
+			pstmt.setString(6, order.getAddress2());
+			pstmt.setString(7, order.getPhone());
+			pstmt.setString(8, order.getMessage());
+			pstmt.setString(9, order.getPayChoice());
+			pstmt.setInt(10, 1);
+			pstmt.setInt(11, 1);
+			pstmt.setInt(12, order.getProductSum());
+			
+			rows=pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[에러] insertOrder() 메소드 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt);
+		}
+		return rows;
+	}
+
+	//마이페이지에서 최근 주문 정보 중 주문번호를 눌러서 나오는 주문 상세정보
+	
+	//(마이페이지) ORDER_TABLE 에서 주문 정보를 가져와 1.주문자정보  2.배송지정보  3.결제정보 를 검색하는 메소드
+	// => 1,2,3 번은 전체검색 메소드 호출 후 GETTER 메소드로 일부만 가져오기
+	public OrderDTO getOrder(String orderNo) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		OrderDTO order=null;
+		
+		try {
+			con=getConnection();
+			
+			String sql="select * from order_table where order_no=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, orderNo);
+			
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				//오라클 MEMBET 테이블의 컬럼명은 "_"를 사용하기 때문에 카멜표기법이 아닌 _를 사용해야 함
+				order=new OrderDTO();
+				order.setOrderNo(rs.getString("order_no"));
+				order.setId(rs.getString("id"));
+				order.setName(rs.getString("name"));
+				order.setPostcode(rs.getString("postcode"));
+				order.setAddress1(rs.getString("address1"));
+				order.setAddress2(rs.getString("address2"));
+				order.setPhone(rs.getString("phone"));
+				order.setMessage(rs.getString("message"));
+				order.setPayChoice(rs.getString("pay_choice"));
+				order.setOrderDate(rs.getString("order_Date"));
+				order.setDeliveryStatus(rs.getInt("delivery_status"));
+				order.setOrderStatus(rs.getInt("order_status"));
+				order.setProductSum(rs.getInt("product_sum"));
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("[에러] getOrder() 메소드 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return order;
+	}
+	
+	//
+	
+	//주문번호와 주문상태를 전달받아 ORDER_TABLE 테이블에 저장된 회원정보 중 주문 상태를 변경하고 변경행의 갯수를 반환하는 메소드
+	public int modifyOrderStatus(String orderNo, int orderStatus) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		int rows=0;
+		
+		try {
+			con=getConnection();
+			
+			String sql="update order_table set order_status=? where order_no=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1,orderNo);
+			pstmt.setInt(2, orderStatus);
+			
+			rows=pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[에러] modifyOrderStatus() 메소드 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt);
+		}
+		return rows;
+	}
+	
+	//주문번호와 배송상태를 전달받아 ORDER_TABLE 테이블에 저장된 회원정보 중 배송상태를 변경하고 변경행 갯수를 반환받아 출력하는 메소드
+	public int modifyDeilveryStatus(String orderNo, int deliveryStatus) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		int rows=0;
+		
+		try {
+			con=getConnection();
+			
+			String sql="update order_table set delivery_status=? where order_no=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1,orderNo);
+			pstmt.setInt(2, deliveryStatus);
+			
+			rows=pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[에러] modifyDeilveryStatus() 메소드 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt);
+		}
+		return rows;
+	}
+	
+	//마이페이지에 출력할 주문 목록
+	//ORDER_TABLE 에서 전체 주문(주문 목록)을 가져와 반환하는 메소드
+	//정렬 : 최근 주문날짜 순서대로
+	/*
+	 * public List<OrderDTO> getOrderList(String orderNo) { Connection con=null;
+	 * PreparedStatement pstmt=null; ResultSet rs=null; List<OrderDTO> orderList=new
+	 * ArrayList<OrderDTO>();
+	 * 
+	 * try { con=getConnection();
+	 * 
+	 * String
+	 * sql="select * from order_table where order_no=? order by order_date desc";
+	 * pstmt=con.prepareStatement(sql); pstmt.setString(1, orderNo);
+	 * 
+	 * rs=pstmt.executeQuery();
+	 * 
+	 * while(rs.next()) { OrderDTO order=new OrderDTO(); orderList.add(order); } }
+	 * catch (SQLException e) {
+	 * System.out.println("[에러] getOrderList() 메소드 오류 = "+e.getMessage()); } return
+	 * orderList;
+	 * 
+	 * }
+	 */
+
+	//전체주문목록 출력을 위한 메소드 생성- 관리자용
+	public List<OrderDTO> getOrderList() {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List<OrderDTO> orderList=new ArrayList<OrderDTO>();
+		try {
+			con=getConnection();
+			
+			String sql="select * from order_table order by order_date  desc";
+			pstmt=con.prepareStatement(sql);
+			
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				OrderDTO order=new OrderDTO();
+				
+				/*
+				이름          널?       유형           
+				----------- -------- ------------ 
+				ORDER_NO        NOT NULL VARCHAR2(30)  
+				ID              NOT NULL VARCHAR2(20)  
+				NAME            NOT NULL VARCHAR2(20)  
+				POSTCODE        NOT NULL VARCHAR2(30)  
+				ADDRESS1        NOT NULL VARCHAR2(400) 
+				ADDRESS2        NOT NULL VARCHAR2(400) 
+				PHONE           NOT NULL NUMBER(20)    
+				MESSAGE                  VARCHAR2(50)  
+				PAY_CHOICE      NOT NULL VARCHAR2(20)  
+				ORDER_DATE      NOT NULL DATE          		: SYSDATE
+				ORDER_STATUS    NOT NULL NUMBER(10)    		: 1 = 완료 / 2 = 환불요청 / 3 = 환불완료 / 4=교환요청 / 5=교환완료
+				DELIVERY_STATUS NOT NULL NUMBER(10) 		: 1 = 배송전 / 2 = 배송중 / 3 = 배송완료
+				*/   
+				
+				order.setOrderNo(rs.getString("order_no"));
+				order.setId(rs.getString("id"));
+				order.setName(rs.getString("name"));
+				order.setPostcode(rs.getString("postcode"));
+				order.setAddress1(rs.getString("address1"));
+				order.setAddress2(rs.getString("address2"));
+				order.setPhone(rs.getString("phone"));
+				order.setMessage(rs.getString("message"));
+				order.setPayChoice(rs.getString("pay_choice"));
+				order.setOrderDate(rs.getString("order_date"));
+				order.setOrderStatus(rs.getInt("order_status"));
+				order.setDeliveryStatus(rs.getInt("delivery_status"));
+				order.setProductSum(rs.getInt("product_sum"));
+				orderList.add(order);
+		
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]getOrderList() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return orderList;
+	}
+	
+	//마이페이지 주문목록 출력 메소드
+	public List<OrderDTO> getOrderList2(String id) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List<OrderDTO> orderList=new ArrayList<OrderDTO>();
+		try {
+			con=getConnection();
+				
+			String sql="select * from order_table where id=? order by order_date desc";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				OrderDTO order=new OrderDTO();
+				order.setOrderNo(rs.getString("order_no"));
+				order.setId(rs.getString("id"));
+				order.setName(rs.getString("name"));
+				order.setPostcode(rs.getString("postcode"));
+				order.setAddress1(rs.getString("address1"));
+				order.setAddress2(rs.getString("address2"));
+				order.setPhone(rs.getString("phone"));
+				order.setMessage(rs.getString("message"));
+				order.setPayChoice(rs.getString("pay_choice"));
+				order.setOrderDate(rs.getString("order_date"));
+				order.setOrderStatus(rs.getInt("order_status"));
+				order.setDeliveryStatus(rs.getInt("delivery_status"));
+				order.setProductSum(rs.getInt("product_sum"));
+				orderList.add(order);
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]getOrderList() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return orderList;
+	}
+
+	
+	
+	
+	//상품상태를 변경하여  배송관련 처리 변경
+	
+	//배송상태에 따른 메소드 메소드호출
+	public List<OrderDTO> getStaus1(){
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List<OrderDTO> orderList=new ArrayList<OrderDTO>();
+		try {
+			con=getConnection();
+			
+			String sql="select * from order_table where delivery_status=1  order by order_date  desc ";
+			pstmt=con.prepareStatement(sql);
+			
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				OrderDTO order=new OrderDTO();
+				
+				/*
+				이름          널?       유형           
+				----------- -------- ------------ 
+				ORDER_NO        NOT NULL VARCHAR2(30)  
+				ID              NOT NULL VARCHAR2(20)  
+				NAME            NOT NULL VARCHAR2(20)  
+				POSTCODE        NOT NULL VARCHAR2(30)  
+				ADDRESS1        NOT NULL VARCHAR2(400) 
+				ADDRESS2        NOT NULL VARCHAR2(400) 
+				PHONE           NOT NULL NUMBER(20)    
+				MESSAGE                  VARCHAR2(50)  
+				PAY_CHOICE      NOT NULL VARCHAR2(20)  
+				ORDER_DATE      NOT NULL DATE          		: SYSDATE
+				ORDER_STATUS    NOT NULL NUMBER(10)    		:  1 = 완료 / 2 = 환불요청 / 3 = 환불완료 / 4=교환요청 / 5=교환완료
+				DELIVERY_STATUS NOT NULL NUMBER(10) 		: 1 = 배송전 / 2 = 배송중 / 3 = 배송완료
+				*/   
+				
+				order.setOrderNo(rs.getString("order_no"));
+				order.setId(rs.getString("id"));
+				order.setName(rs.getString("name"));
+				order.setPostcode(rs.getString("postcode"));
+				order.setAddress1(rs.getString("address1"));
+				order.setAddress2(rs.getString("address2"));
+				order.setPhone(rs.getString("phone"));
+				order.setMessage(rs.getString("message"));
+				order.setPayChoice(rs.getString("pay_choice"));
+				order.setOrderDate(rs.getString("order_date"));
+				order.setOrderStatus(rs.getInt("order_status"));
+				order.setDeliveryStatus(rs.getInt("delivery_status"));
+				order.setProductSum(rs.getInt("product_sum"));
+				orderList.add(order);
+		
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]getStaus1() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return orderList;
+	}
+	
+	public List<OrderDTO> getStaus2(){
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List<OrderDTO> orderList=new ArrayList<OrderDTO>();
+		try {
+			con=getConnection();
+			
+			String sql="select * from order_table where delivery_status=2  order by order_date  desc ";
+			pstmt=con.prepareStatement(sql);
+			
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				OrderDTO order=new OrderDTO();
+				
+				/*
+				이름          널?       유형           
+				----------- -------- ------------ 
+				ORDER_NO        NOT NULL VARCHAR2(30)  
+				ID              NOT NULL VARCHAR2(20)  
+				NAME            NOT NULL VARCHAR2(20)  
+				POSTCODE        NOT NULL VARCHAR2(30)  
+				ADDRESS1        NOT NULL VARCHAR2(400) 
+				ADDRESS2        NOT NULL VARCHAR2(400) 
+				PHONE           NOT NULL NUMBER(20)    
+				MESSAGE                  VARCHAR2(50)  
+				PAY_CHOICE      NOT NULL VARCHAR2(20)  
+				ORDER_DATE      NOT NULL DATE          		: SYSDATE
+				ORDER_STATUS    NOT NULL NUMBER(10)    		:  1 = 완료 / 2 = 환불요청 / 3 = 환불완료 / 4=교환요청 / 5=교환완료
+				DELIVERY_STATUS NOT NULL NUMBER(10) 		: 1 = 배송전 / 2 = 배송중 / 3 = 배송완료
+				*/   
+				
+				order.setOrderNo(rs.getString("order_no"));
+				order.setId(rs.getString("id"));
+				order.setName(rs.getString("name"));
+				order.setPostcode(rs.getString("postcode"));
+				order.setAddress1(rs.getString("address1"));
+				order.setAddress2(rs.getString("address2"));
+				order.setPhone(rs.getString("phone"));
+				order.setMessage(rs.getString("message"));
+				order.setPayChoice(rs.getString("pay_choice"));
+				order.setOrderDate(rs.getString("order_date"));
+				order.setOrderStatus(rs.getInt("order_status"));
+				order.setDeliveryStatus(rs.getInt("delivery_status"));
+				order.setProductSum(rs.getInt("product_sum"));
+				orderList.add(order);
+		
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]getStaus2() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return orderList;
+	}
+	public List<OrderDTO> getStaus3(){
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List<OrderDTO> orderList=new ArrayList<OrderDTO>();
+		try {
+			con=getConnection();
+			
+			String sql="select * from order_table where delivery_status=3  order by order_date  desc ";
+			pstmt=con.prepareStatement(sql);
+			
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				OrderDTO order=new OrderDTO();
+				
+				/*
+				이름          널?       유형           
+				----------- -------- ------------ 
+				ORDER_NO        NOT NULL VARCHAR2(30)  
+				ID              NOT NULL VARCHAR2(20)  
+				NAME            NOT NULL VARCHAR2(20)  
+				POSTCODE        NOT NULL VARCHAR2(30)  
+				ADDRESS1        NOT NULL VARCHAR2(400) 
+				ADDRESS2        NOT NULL VARCHAR2(400) 
+				PHONE           NOT NULL NUMBER(20)    
+				MESSAGE                  VARCHAR2(50)  
+				PAY_CHOICE      NOT NULL VARCHAR2(20)  
+				ORDER_DATE      NOT NULL DATE          		: SYSDATE
+				ORDER_STATUS    NOT NULL NUMBER(10)    		: 1 = 완료 / 2 = 환불요청 / 3 = 환불완료 / 4=교환요청 / 5=교환완료
+				DELIVERY_STATUS NOT NULL NUMBER(10) 		: 1 = 배송전 / 2 = 배송중 / 3 = 배송완료
+				*/   
+				
+				order.setOrderNo(rs.getString("order_no"));
+				order.setId(rs.getString("id"));
+				order.setName(rs.getString("name"));
+				order.setPostcode(rs.getString("postcode"));
+				order.setAddress1(rs.getString("address1"));
+				order.setAddress2(rs.getString("address2"));
+				order.setPhone(rs.getString("phone"));
+				order.setMessage(rs.getString("message"));
+				order.setPayChoice(rs.getString("pay_choice"));
+				order.setOrderDate(rs.getString("order_date"));
+				order.setOrderStatus(rs.getInt("order_status"));
+				order.setDeliveryStatus(rs.getInt("delivery_status"));
+				order.setProductSum(rs.getInt("product_sum"));
+				orderList.add(order);
+		
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]getStaus3() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return orderList;
+	}
+	
+	//환불요청상품과 환불처리 완료  목록 출력
+	public List<OrderDTO> getRefund(){
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List<OrderDTO> orderList=new ArrayList<OrderDTO>();
+		try {
+			con=getConnection();
+			
+			String sql="select * from order_table where order_status=2 or order_status=3   order by order_status ";
+			pstmt=con.prepareStatement(sql);
+			
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				OrderDTO order=new OrderDTO();
+				
+				/*
+				이름          널?       유형           
+				----------- -------- ------------ 
+				ORDER_NO        NOT NULL VARCHAR2(30)  
+				ID              NOT NULL VARCHAR2(20)  
+				NAME            NOT NULL VARCHAR2(20)  
+				POSTCODE        NOT NULL VARCHAR2(30)  
+				ADDRESS1        NOT NULL VARCHAR2(400) 
+				ADDRESS2        NOT NULL VARCHAR2(400) 
+				PHONE           NOT NULL NUMBER(20)    
+				MESSAGE                  VARCHAR2(50)  
+				PAY_CHOICE      NOT NULL VARCHAR2(20)  
+				ORDER_DATE      NOT NULL DATE          		: SYSDATE
+				ORDER_STATUS    NOT NULL NUMBER(10)    		:  1 = 완료 / 2 = 환불요청 / 3 = 환불완료 / 4=교환요청 / 5=교환완료
+				DELIVERY_STATUS NOT NULL NUMBER(10) 		: 1 = 배송전 / 2 = 배송중 / 3 = 배송완료
+				*/   
+				
+				order.setOrderNo(rs.getString("order_no"));
+				order.setId(rs.getString("id"));
+				order.setName(rs.getString("name"));
+				order.setPostcode(rs.getString("postcode"));
+				order.setAddress1(rs.getString("address1"));
+				order.setAddress2(rs.getString("address2"));
+				order.setPhone(rs.getString("phone"));
+				order.setMessage(rs.getString("message"));
+				order.setPayChoice(rs.getString("pay_choice"));
+				order.setOrderDate(rs.getString("order_date"));
+				order.setOrderStatus(rs.getInt("order_status"));
+				order.setDeliveryStatus(rs.getInt("delivery_status"));
+				order.setProductSum(rs.getInt("product_sum"));
+				orderList.add(order);
+		
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]getRefund() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return orderList;
+	}
+	
+	//2가요청 3 환불완료-메인페이지용
+	public List<OrderDTO> getRefundCompelete(){
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List<OrderDTO> orderList=new ArrayList<OrderDTO>();
+		try {
+			con=getConnection();
+			
+			String sql="select * from order_table where order_status=3   order by order_status ";
+			pstmt=con.prepareStatement(sql);
+			
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				OrderDTO order=new OrderDTO();
+				
+				/*
+				이름          널?       유형           
+				----------- -------- ------------ 
+				ORDER_NO        NOT NULL VARCHAR2(30)  
+				ID              NOT NULL VARCHAR2(20)  
+				NAME            NOT NULL VARCHAR2(20)  
+				POSTCODE        NOT NULL VARCHAR2(30)  
+				ADDRESS1        NOT NULL VARCHAR2(400) 
+				ADDRESS2        NOT NULL VARCHAR2(400) 
+				PHONE           NOT NULL NUMBER(20)    
+				MESSAGE                  VARCHAR2(50)  
+				PAY_CHOICE      NOT NULL VARCHAR2(20)  
+				ORDER_DATE      NOT NULL DATE          		: SYSDATE
+				ORDER_STATUS    NOT NULL NUMBER(10)    		:  1 = 완료 / 2 = 환불요청 / 3 = 환불완료 / 4=교환요청 / 5=교환완료
+				DELIVERY_STATUS NOT NULL NUMBER(10) 		: 1 = 배송전 / 2 = 배송중 / 3 = 배송완료
+				*/   
+				
+				order.setOrderNo(rs.getString("order_no"));
+				order.setId(rs.getString("id"));
+				order.setName(rs.getString("name"));
+				order.setPostcode(rs.getString("postcode"));
+				order.setAddress1(rs.getString("address1"));
+				order.setAddress2(rs.getString("address2"));
+				order.setPhone(rs.getString("phone"));
+				order.setMessage(rs.getString("message"));
+				order.setPayChoice(rs.getString("pay_choice"));
+				order.setOrderDate(rs.getString("order_date"));
+				order.setOrderStatus(rs.getInt("order_status"));
+				order.setDeliveryStatus(rs.getInt("delivery_status"));
+				order.setProductSum(rs.getInt("product_sum"));
+				orderList.add(order);
+		
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]getRefund() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return orderList;
+	}
+	
+	//환불요청상태 - 메인페이지용 (관리자)
+	public List<OrderDTO> getRefundRequire(){
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List<OrderDTO> orderList=new ArrayList<OrderDTO>();
+		try {
+			con=getConnection();
+			
+			String sql="select * from order_table where order_status=2  order by order_status ";
+			pstmt=con.prepareStatement(sql);
+			
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				OrderDTO order=new OrderDTO();
+				
+				/*
+				이름          널?       유형           
+				----------- -------- ------------ 
+				ORDER_NO        NOT NULL VARCHAR2(30)  
+				ID              NOT NULL VARCHAR2(20)  
+				NAME            NOT NULL VARCHAR2(20)  
+				POSTCODE        NOT NULL VARCHAR2(30)  
+				ADDRESS1        NOT NULL VARCHAR2(400) 
+				ADDRESS2        NOT NULL VARCHAR2(400) 
+				PHONE           NOT NULL NUMBER(20)    
+				MESSAGE                  VARCHAR2(50)  
+				PAY_CHOICE      NOT NULL VARCHAR2(20)  
+				ORDER_DATE      NOT NULL DATE          		: SYSDATE
+				ORDER_STATUS    NOT NULL NUMBER(10)    		:  1 = 완료 / 2 = 환불요청 / 3 = 환불완료 / 4=교환요청 / 5=교환완료
+				DELIVERY_STATUS NOT NULL NUMBER(10) 		: 1 = 배송전 / 2 = 배송중 / 3 = 배송완료
+				*/   
+				
+				order.setOrderNo(rs.getString("order_no"));
+				order.setId(rs.getString("id"));
+				order.setName(rs.getString("name"));
+				order.setPostcode(rs.getString("postcode"));
+				order.setAddress1(rs.getString("address1"));
+				order.setAddress2(rs.getString("address2"));
+				order.setPhone(rs.getString("phone"));
+				order.setMessage(rs.getString("message"));
+				order.setPayChoice(rs.getString("pay_choice"));
+				order.setOrderDate(rs.getString("order_date"));
+				order.setOrderStatus(rs.getInt("order_status"));
+				order.setDeliveryStatus(rs.getInt("delivery_status"));
+				order.setProductSum(rs.getInt("product_sum"));
+				orderList.add(order);
+		
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]getRefund() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return orderList;
+	}
+	
+	
+	
+	
+	//교환요청  교환완료 상태 목록 출력
+	public List<OrderDTO> getExchange(){
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List<OrderDTO> orderList=new ArrayList<OrderDTO>();
+		try {
+			con=getConnection();
+			
+			String sql="select * from order_table where order_status=4 or order_status=5 order by order_status ";
+			pstmt=con.prepareStatement(sql);
+			
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				OrderDTO order=new OrderDTO();
+				
+				/*
+				이름          널?       유형           
+				----------- -------- ------------ 
+				ORDER_NO        NOT NULL VARCHAR2(30)  
+				ID              NOT NULL VARCHAR2(20)  
+				NAME            NOT NULL VARCHAR2(20)  
+				POSTCODE        NOT NULL VARCHAR2(30)  
+				ADDRESS1        NOT NULL VARCHAR2(400) 
+				ADDRESS2        NOT NULL VARCHAR2(400) 
+				PHONE           NOT NULL NUMBER(20)    
+				MESSAGE                  VARCHAR2(50)  
+				PAY_CHOICE      NOT NULL VARCHAR2(20)  
+				ORDER_DATE      NOT NULL DATE          		: SYSDATE
+				ORDER_STATUS    NOT NULL NUMBER(10)    		: 1 = 완료 / 2 = 취소 / 3 = 환불
+				DELIVERY_STATUS NOT NULL NUMBER(10) 		:  1 = 완료 / 2 = 환불요청 / 3 = 환불완료 / 4=교환요청 / 5=교환완료
+				*/   
+				
+				order.setOrderNo(rs.getString("order_no"));
+				order.setId(rs.getString("id"));
+				order.setName(rs.getString("name"));
+				order.setPostcode(rs.getString("postcode"));
+				order.setAddress1(rs.getString("address1"));
+				order.setAddress2(rs.getString("address2"));
+				order.setPhone(rs.getString("phone"));
+				order.setMessage(rs.getString("message"));
+				order.setPayChoice(rs.getString("pay_choice"));
+				order.setOrderDate(rs.getString("order_date"));
+				order.setOrderStatus(rs.getInt("order_status"));
+				order.setDeliveryStatus(rs.getInt("delivery_status"));
+				order.setProductSum(rs.getInt("product_sum"));
+				orderList.add(order);
+		
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]getExchange() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return orderList;
+	}
+	
+	//관리자 메인페이지용 교환요청
+	
+	public List<OrderDTO> getExchangeRequire (){
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List<OrderDTO> orderList=new ArrayList<OrderDTO>();
+		try {
+			con=getConnection();
+			
+			String sql="select * from order_table where order_status=4  order by order_status ";
+			pstmt=con.prepareStatement(sql);
+			
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				OrderDTO order=new OrderDTO();
+				
+				/*
+				이름          널?       유형           
+				----------- -------- ------------ 
+				ORDER_NO        NOT NULL VARCHAR2(30)  
+				ID              NOT NULL VARCHAR2(20)  
+				NAME            NOT NULL VARCHAR2(20)  
+				POSTCODE        NOT NULL VARCHAR2(30)  
+				ADDRESS1        NOT NULL VARCHAR2(400) 
+				ADDRESS2        NOT NULL VARCHAR2(400) 
+				PHONE           NOT NULL NUMBER(20)    
+				MESSAGE                  VARCHAR2(50)  
+				PAY_CHOICE      NOT NULL VARCHAR2(20)  
+				ORDER_DATE      NOT NULL DATE          		: SYSDATE
+				ORDER_STATUS    NOT NULL NUMBER(10)    		: 1 = 완료 / 2 = 취소 / 3 = 환불
+				DELIVERY_STATUS NOT NULL NUMBER(10) 		:  1 = 완료 / 2 = 환불요청 / 3 = 환불완료 / 4=교환요청 / 5=교환완료
+				*/   
+				
+				order.setOrderNo(rs.getString("order_no"));
+				order.setId(rs.getString("id"));
+				order.setName(rs.getString("name"));
+				order.setPostcode(rs.getString("postcode"));
+				order.setAddress1(rs.getString("address1"));
+				order.setAddress2(rs.getString("address2"));
+				order.setPhone(rs.getString("phone"));
+				order.setMessage(rs.getString("message"));
+				order.setPayChoice(rs.getString("pay_choice"));
+				order.setOrderDate(rs.getString("order_date"));
+				order.setOrderStatus(rs.getInt("order_status"));
+				order.setDeliveryStatus(rs.getInt("delivery_status"));
+				order.setProductSum(rs.getInt("product_sum"));
+				orderList.add(order);
+		
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]getExchange() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return orderList;
+	}
+	
+	
+
+	
+	//상태변경 메소드 배송전->배송중
+	public int orderDelivery(int orderNo) {
+		
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		int rows=0;
+		
+		try {
+			con=getConnection();
+			
+			String sql="update order_table set delivery_status='2' where order_no=? ";
+			pstmt=con.prepareStatement(sql);
+		
+			pstmt.setInt(1,orderNo);
+			
+			
+			rows=pstmt.executeUpdate();
+			
+			
+			
+		}catch (SQLException e) {
+		System.out.println("[에러]orderDelivery()sql 오류="+e.getMessage());
+		}finally {
+			close(con,pstmt);
+		}
+		return rows;
+		
+	}
+	 
+	//상태변경메소드 배송중->배송완료
+	public int orderDelivery2(int orderNo) {
+			
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		int rows=0;
+			
+		try {
+			con=getConnection();
+			
+			String sql="update order_table set delivery_status='3' where order_no=? ";
+			pstmt=con.prepareStatement(sql);
+			
+			pstmt.setInt(1,orderNo);
+				
+				
+			rows=pstmt.executeUpdate();
+				
+				
+				
+		}catch (SQLException e) {
+		System.out.println("[에러]orderDelivery2()sql 오류="+e.getMessage());
+		}finally {
+			close(con,pstmt);
+		}
+		return rows;
+			
+	}
+		
+	//주문상태 변경 : 주문완료 >> 환불요청
+	public int requestRedund(String orderNo) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		int rows=0;
+		
+		try {
+			con=getConnection();
+			
+			String sql="update order_table set order_status='2' where order_no=? ";
+			pstmt=con.prepareStatement(sql);
+		
+			pstmt.setString(1,orderNo);
+			
+			
+			rows=pstmt.executeUpdate();
+		}catch (SQLException e) {
+		System.out.println("[에러]exchange()sql 오류="+e.getMessage());
+		}finally {
+			close(con,pstmt);
+		}
+		return rows;
+	}
+	
+	//주문상태 변경 : 환불요청 >> 환불완료
+	//ORDER_STATUS    NOT NULL NUMBER(10)  
+	public int refund(int orderNo) {	
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		int rows=0;
+		
+		try {
+			con=getConnection();
+			
+			String sql="update order_table set order_status='3' where order_no=? ";
+			pstmt=con.prepareStatement(sql);
+		
+			pstmt.setInt(1,orderNo);
+			
+			
+			rows=pstmt.executeUpdate();
+			
+			
+			
+		}catch (SQLException e) {
+		System.out.println("[에러]refund()sql 오류="+e.getMessage());
+		}finally {
+			close(con,pstmt);
+		}
+		return rows;
+		
+	}
+	
+	
+	//주문상태 변경 : 주문완료 >> 교환요청
+	public int requestExchange(String orderNo) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		int rows=0;
+		
+		try {
+			con=getConnection();
+			
+			String sql="update order_table set order_status='4' where order_no=? ";
+			pstmt=con.prepareStatement(sql);
+		
+			pstmt.setString(1,orderNo);
+			
+			
+			rows=pstmt.executeUpdate();
+		}catch (SQLException e) {
+		System.out.println("[에러]exchange()sql 오류="+e.getMessage());
+		}finally {
+			close(con,pstmt);
+		}
+		return rows;
+	}
+	
+	//주문상태 변경 : 교환요청 >> 교환완료
+	public int exchange(int orderNo) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		int rows=0;
+		
+		try {
+			con=getConnection();
+			
+			String sql="update order_table set order_status='5' where order_no=? ";
+			pstmt=con.prepareStatement(sql);
+		
+			pstmt.setInt(1,orderNo);
+			
+			
+			rows=pstmt.executeUpdate();
+		}catch (SQLException e) {
+		System.out.println("[에러]exchange()sql 오류="+e.getMessage());
+		}finally {
+			close(con,pstmt);
+		}
+		return rows;
+	}
+	
+		
+	//페이지처리
+	public List<OrderDTO> getOrderList(int startRow, int endRow, String search, String keyword) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<OrderDTO> orderList = new ArrayList<OrderDTO>(); 
+		try {
+			con = getConnection();
+	
+			if (keyword.equals("")) {
+				String sql = "select * from (select rownum rn, temp.* from (select * from order order by order_no desc) temp) where rn between ? and ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, startRow);
+				pstmt.setInt(2, endRow);
+			} else {
+				String sql = "select * from (select rownum rn, temp.* from (select * from notice where " + search
+						+ " like '%'||?||'%'  order by order_no desc) temp) where rn between ? and ?";
+	
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, keyword);
+				pstmt.setInt(2, startRow);
+				pstmt.setInt(3, endRow);
+			}
+	
+			rs = pstmt.executeQuery();
+	
+			while (rs.next()) {
+	
+				OrderDTO order = new OrderDTO();
+					order.setOrderNo(rs.getString("order_no"));
+					order.setId(rs.getString("id"));
+					order.setName(rs.getString("name"));
+					order.setPostcode(rs.getString("postcode"));
+					order.setAddress1(rs.getString("address1"));
+					order.setAddress2(rs.getString("address2"));
+					order.setPhone(rs.getString("phone"));
+					order.setMessage(rs.getString("message"));
+					order.setPayChoice(rs.getString("pay_choice"));
+					order.setOrderDate(rs.getString("order_date"));
+					order.setOrderStatus(rs.getInt("order_status"));
+					order.setDeliveryStatus(rs.getInt("delivery_status"));
+					order.setProductSum(rs.getInt("product_sum"));
+					orderList.add(order);
+			
+	
+			}
+	
+		} catch (SQLException e) {
+			System.out.println("[에러]getOrderList()sql 오류="+e.getMessage());
+			// TODO: handle exception
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return orderList;
+	
+	}
+
+	//ORDER_SEQ 시퀀스의 자동 증가값을 검색하여 반환하는 메소드
+	public int getOrderNum() {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		int num=0;
+		
+		try {
+			con=getConnection();
+			
+			String sql="select order_seq.nextval from dual";
+			pstmt=con.prepareStatement(sql);
+			
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				num=rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]getOrderNum() 메소드의 SQL 오류 = "+e.getMessage()); 			
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return num;
+	}
+	
+	
+	//주문 갯수를 반환하는 메소드
+	public int getOrderAmount(String id) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		int num=0;
+		
+		try {
+			con=getConnection();
+			
+			String sql="select count(*) from order_table where id=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				num=rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]orderAmount() 메소드의 SQL 오류 = "+e.getMessage()); 			
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return num;
+	}
+
+}
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,86 @@
+<%@page import="site.itwill.dao.ProductDAO"%>
+<%@page import="site.itwill.dto.ProductDTO"%>
+<%@page import="site.itwill.dto.OrderDTO"%>
+<%@page import="java.util.List"%>
+<%@page import="site.itwill.dao.OrderDAO"%>
+<%@page import="site.itwill.dto.LushUserDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%-- 주문내역 페이지 --%>
+<%
+	LushUserDTO loginUser=(LushUserDTO)session.getAttribute("loginUser");
+	String id=loginUser.getId();
+	int num=OrderDAO.getOrderDAO().getOrderAmount(id);
+	List<OrderDTO> orderList=OrderDAO.getOrderDAO().getOrderList2(id);
+	
+%>
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Anton|Archivo+Black&display=swap" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<style type="text/css">
+#item th {
+	padding: 15px 0;
+	color: #8f8f8f;
+	font-weight: normal;
+	font-size: 14px;
+	text-align: center;
+}
+#item td {
+	height: 100px;
+	border-top: 1px solid #e7e7e7; 
+	text-align: center;
+}
+#item tr {
+	border-bottom: 0.5px solid #e7e7e7;
+}
+</style>
+<div>
+<form name="orderSearch" id="orderSearch" method="post">
+	<h3>주문목록/배송조회 내역 총 <%=num %>건</h3>
+	<div style="border-top: 1px solid #000; border-bottom: 0.5px solid #e7e7e7; margin-top: 10px;">
+		<table id="item">
+			<tr>
+				<th class="orderDate">주문날짜</th>
+				<th class="orderNo">주문번호</th>
+				<th class="name">상품명</th>
+				<th class="priceVolume">상품금액/수량</th>
+				<th class="oStatus">주문상태</th>
+				<th class="dStatus">배송상태</th>
+			</tr>
+			<% for(OrderDTO order:orderList) { %>
+			<% //상품명에 대한 ProductDTO, 상품금액과 수량에 대한 CartDTO 생성
+			   ProductDTO item=ProductDAO.getDAO().get
+			%>
+			<tr>
+				<td class="orderDate"><%=order.getOrderDate().substring(0, 10) %></td>
+				<td class="orderNo"><%=order.getOrderNo() %></td>
+				<td class="name">product 테이블 참조</td>
+				<td class="priceVolume">cart 테이블 참조</td>
+				<td class="oStatus">
+					<% if(order.getOrderStatus()==1) { %> 주문완료
+					<% } else if(order.getOrderStatus()==2) { %> 환불요청
+					<% } else if(order.getOrderStatus()==3) { %> 환불완료
+					<% } else if(order.getOrderStatus()==4) { %> 교환요청
+					<% } else { %> 교환완료
+					<% } %>
+				</td>
+				<td class="dStatus">
+					<% if(order.getDeliveryStatus()==1) { %> 배송대기중
+					<% } else if(order.getDeliveryStatus()==2) { %> 배송중
+					<% } else { %> 배송완료
+					<% } %>
+				</td>
+			</tr>
+			<% } %>
+		</table>
+	</div>
+</form>
+</div>
+<script type="text/javascript">
+$(".orderDate").css("width",200);
+$(".orderNo").css("width",200);
+$(".name").css("width",610);
+$(".priceVolume").css("width",250);
+$(".oStatus").css("width",200);
+$(".dStatus").css("width",200);
+</script>

@@ -1,0 +1,7 @@
+﻿@font-face {
+	font-family: 'futuraMediumBT';
+	src: url('./futuraMediumBT.eot');
+	src: local('futuraMediumBT'), url('./futuraMediumBT.woff') format('woff'), url('./futuraMediumBT.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}

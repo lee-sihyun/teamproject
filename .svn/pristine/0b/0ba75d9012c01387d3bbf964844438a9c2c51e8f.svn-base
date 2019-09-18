@@ -1,0 +1,57 @@
+<%-- ê²ìê¸ ë²í¸ë¥¼ ì ë¬ë°ì QnA íì´ë¸ì ì ì¥ë ê²ìê¸ì ì­ì ì²ë¦¬íê³  ê²ìê¸ ëª©ë¡ ì¶ë ¥íì´ì§(QnA_list.jsp)ë¡ ì´ëíë JSP ë¬¸ì --%>
+<%-- => ì­ì ì²ë¦¬ : QnA íì´ë¸ì STATUS ì»¬ë¼ê° ë³ê²½ --%>    
+<%@page import="site.itwill.dto.QnADTO"%>
+<%@page import="site.itwill.dto.LushUserDTO"%>
+<%@page import="site.itwill.dao.QnADAO"%>
+<%@include file="/security/login_status.jspf" %>
+<%
+
+	//POST 방식으로 요청되어 전달된 값들에 대한 캐릭터셋 변경
+	request.setCharacterEncoding("UTF-8");
+	LushUserDTO loginUser1=(LushUserDTO)session.getAttribute("loginUser");
+	
+	//ë¹ì ìì ì¸ ìì²­ì ëí ìëµ ì²ë¦¬
+	// => ì ë¬ê°ì´ ì¡´ì¬íì§ ìì ê²½ì°
+	if(request.getParameter("num")==null) {
+		out.println("<script>");
+		out.println("location.href='"+request.getContextPath()+"/index.jsp?workgroup=QnA&work=QnA_list';");
+		out.println("</script>");
+		return;
+	}
+			
+	//ì ë¬ê°ì ë°íë°ì ì ì¥
+	int num=Integer.parseInt(request.getParameter("num"));
+	String pageNum=request.getParameter("pageNum");
+	
+	//ê²ìê¸ ë²í¸ë¥¼ ì ë¬íì¬ QnA íì´ë¸ì ì ì¥ë ê²ìê¸ì ê²ìíì¬ ë°ííë DAO í´ëì¤ì ë©ìë í¸ì¶
+	QnADTO QnA=QnADAO.getDAO().getQnA(num);
+	
+	//ë¹ì ìì ì¸ ìì²­ì ëí ìëµ ì²ë¦¬
+	// => ê²ìë ê²ìê¸ì´ ìê±°ë ì­ì ë ê²ìê¸ì¸ ê²½ì°
+	if(QnA==null || QnA.getStatus()==9) {
+		out.println("<script>");
+		out.println("location.href='"+request.getContextPath()+"/index.jsp?workgroup=board/QnA&work=QnA_list';");
+		out.println("</script>");
+		return;
+	}
+
+	//ì¸ìì¼ë¡ ê³µì ë ì¸ì¦ì ë³´ë¥¼ ë°íë°ì ì ì¥
+	//LushUserDTO loginUser=(LushUserDTO)session.getAttribute("loginUser");
+		
+	//ë¹ì ìì ì¸ ìì²­ì ëí ìëµ ì²ë¦¬
+	// => ë¡ê·¸ì¸ ìíê° ìëê±°ë ë¡ê·¸ì¸ ì¬ì©ìê° ìì±ì ëë ê´ë¦¬ìê° ìë ê²½ì°	
+	if(loginUser1==null || !loginUser1.getId().equals(QnA.getId()) && loginUser1.getStatus()!=9) {
+		out.println("<script>");
+		out.println("location.href='"+request.getContextPath()+"/index.jsp?workgroup=board/QnA&work=QnA_list';");
+		out.println("</script>");
+		return;
+	}
+	
+	//ê²ìê¸ ë²í¸ë¥¼ ì ë¬íì¬ QnA íì´ë¸ì ì ì¥ë ê²ìê¸ì ì­ì ì²ë¦¬(ê²ìê¸ ìí ë³ê²½)íë DAO í´ëì¤ì ë©ìë í¸ì¶
+	QnADAO.getDAO().deleteQnA(num);
+	
+%>
+
+
+
+

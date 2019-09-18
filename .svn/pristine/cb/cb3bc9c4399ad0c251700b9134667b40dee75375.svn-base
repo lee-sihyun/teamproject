@@ -1,0 +1,141 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+    String message=(String)session.getAttribute("message");
+    if(message== null){
+        message="";
+    } else {
+        session.removeAttribute("message");
+    }
+    
+    String id=(String)session.getAttribute("id");
+    if(id==null) {
+        id="";
+    } else {
+        session.removeAttribute("id");
+    }
+
+%>
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">;
+<style type="text/css">
+
+.contentBox {
+    margin: 0 auto;
+    width: 800px;
+    height: 500px;
+    padding: 0px;
+}
+
+.innerBox{
+    witdh: 80%;
+    margin: 0 auto;
+}
+
+.member {
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+}
+
+.loginBox{
+    width: 70%;
+    margin: 0 auto;
+    padding: 30px 15%;
+}
+
+.dataBox {
+    width: 75%;
+    margin: 0 auto;
+}
+
+.dataBox_re {
+    margin: 15px;
+}
+
+h2 {
+    color: black;
+    padding-bottom: 30px;
+}
+
+#user li {
+    witdh:90%;
+}
+
+#message {
+    color: red;
+    font-weight: bold;
+}
+
+#login {
+    witdh:90%;
+}
+
+#checkBox {
+    text-align: left;
+}
+
+#loginBtn {
+    background-color: black;
+    color: white;
+}
+
+.inputLa {
+    witdh:90%;
+    border: 1px solid black;
+}
+
+</style>
+<div class="contentBox">
+   <div class="innerBox">
+   <div class="member">
+	   <h2>로그인</h2>
+	       <ul id="user">
+	                <li>회원</li>
+	       </ul>
+   </div>
+   <div class="member">
+       <form id="login" name="loginForm" action="<%=request.getContextPath() %>/lushuser/login_action.jsp" method="post">
+        <div class="loginBox">
+            <div class="dataBox">
+	            <div class="dataBox_re">
+	                <input type="text" class="inputLa" name="id" placeholder="아이디" required style="width: 100%; text-align: center; height: 50px;">
+	            </div>
+	            <div class="dataBox_re">
+	                <input type="password" class="inputLa" name="pass"  placeholder="비밀번호" required style="width: 100%; text-align: center; height: 50px;">
+	            </div>
+	            <div id="message"><%=message%></div>
+		        <div class="dataBox_re" id="checkBox">
+		            <input type="checkbox" id="checkbox" >
+		            <label>아이디 저장</label>
+		        </div>
+		        <div class="dataBox_re">
+		            <button type="submit" id="loginBtn" style="width: 100%; height: 50px;"> 로그인 </button>
+		        </div>
+		        <div id="login_menu" class="dataBox_re">
+		            <button type="submit" id="new_id">회원가입</button> |
+		            <button type="submit" id="find_id">아이디 찾기</button> |
+		            <button type="submit" id="find_pw">비밀번호 찾기</button>
+		        </div>
+	        </div>
+        </div>
+       </form>
+   </div>
+   </div>
+</div>
+
+
+<script type="text/javascript">
+$("#new_id").click(function() {
+	location.href="<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=insertUser";
+});
+
+$("#find_id").click(function() {
+    location.href="<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=findUser";
+});
+
+$("#find_pw").click(function() {
+    location.href="<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=findPass";
+});
+
+</script>

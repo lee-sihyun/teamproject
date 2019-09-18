@@ -1,0 +1,40 @@
+<%@page import="site.itwill.dao.ProductDAO"%>
+
+<%@page import="site.itwill.dto.ProductDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+	if(request.getMethod().equals("GET")){
+	
+	response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+	return;
+}
+
+
+request.setCharacterEncoding("UTF-8");
+
+
+
+
+int no=Integer.parseInt(request.getParameter("no"));
+String name=request.getParameter("name");
+int price=Integer.parseInt(request.getParameter("price"));
+int stock=Integer.parseInt(request.getParameter("stock"));
+String image=request.getParameter("image");
+String imagedetail=request.getParameter("imagedetail");
+
+
+ProductDTO product=new ProductDTO();
+	
+	product.setNo(no);
+	product.setName(name);
+	product.setPrice(price);
+	product.setStock(stock);
+	product.setImage(image);
+	product.setImagedetail(imagedetail);
+	
+	ProductDAO.getDAO().insertProduct(product);
+
+	response.sendRedirect(request.getContextPath() + "/admin/index.jsp?workgroup=product&work=product_list");
+%>
+

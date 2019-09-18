@@ -1,0 +1,52 @@
+<%@page import="site.itwill.utill.Utility"%>
+<%@page import="site.itwill.dao.LushUserDAO"%>
+<%@page import="site.itwill.dto.LushUserDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+    if(request.getMethod().equals("GET")){
+        response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+        return;
+    }
+    
+    String passwd=Utility.encrypt(request.getParameter("pass"), "SHA-256");
+    
+    String id=request.getParameter("id");
+    
+    LushUserDTO user=LushUserDAO.getDao().getUser(id);
+    
+    
+    if(user==null){
+        session.setAttribute("message", "아이디가 존재하지 않습니다.");
+        session.setAttribute("id", id);
+        response.sendRedirect(request.getContextPath()+"/index.jsp?workgroup=lushuser&work=login");
+        return;
+    }
+    
+    if(!passwd.equals(user.getPasswd())) {
+        session.setAttribute("message", "아이디 혹은 비밀번호가 일치하지 않습니다.");
+        session.setAttribute("id", id);
+        response.sendRedirect(request.getContextPath()+"/index.jsp?workgroup=lushuser&work=login");
+        return;
+    }
+    
+    
+    LushUserDAO.getDao().lastLoginUser(id);
+    
+    session.setAttribute("loginUser", LushUserDAO.getDao().getUser(id));
+    
+    String uri=(String)session.getAttribute("uri");
+    
+    
+    if(uri==null) {
+       response.sendRedirect(request.getContextPath()+"/index.jsp?workgroup=rush&work=rush_main");
+    } else {
+        session.removeAttribute("uri");
+        response.sendRedirect(uri);
+    }
+
+%>
+
+
+
+

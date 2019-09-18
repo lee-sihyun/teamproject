@@ -1,0 +1,26 @@
+<%@page import="site.itwill.dto.LushUserDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%-- 장바구니 정보를 전달받아 주문상세 테이블에 저장하고 장바구니 삭제 처리페이지로 이동하는 JSP 문서 --%>
+<%
+	//POST 방식으로 요청되어 전달된 값들에 대한 캐릭터셋 변경
+	request.setCharacterEncoding("UTF-8");
+
+	//장바구니 정보 전달
+	//상세번호 : 자동 증가값 >> 전달 X	int
+
+	//아이디 : 세션 공유 인증정보		String
+	LushUserDTO loginUser=(LushUserDTO)session.getAttribute("loginUser");
+	String id=loginUser.getId();
+	
+	//주문번호 : 주문 테이블			String
+	
+	
+	//상품코드 : 장바구니 테이블		int
+	
+	//금액(합계금액) : 장바구니 테이블의 total_price	int
+	
+	//수량 : 장바구니 테이블			int
+	
+	//주문날짜 : 주문 테이블			String
+%>

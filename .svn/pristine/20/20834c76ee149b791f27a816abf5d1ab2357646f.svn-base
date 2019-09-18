@@ -1,0 +1,22 @@
+<%@page import="site.itwill.dao.CartDAO"%>
+<%@page import="site.itwill.dto.CartDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%-- 입력페이지에서 장바구니 번호를 전달받아 CART 테이블 해당 행을 변경하고 출력페이지(cart_list.jsp)로 이동 --%>
+<%
+	//POST 방식으로 요청되어 전달된 값에 대한 캐릭터셋 변경
+	request.setCharacterEncoding("UTF-8");
+
+	//전달값을 반환받아 저장
+	//btnStatus, cartNo,id
+	int btnStatus=Integer.parseInt(request.getParameter("btnStatus"));
+	int cartNo=Integer.parseInt(request.getParameter("cartNo"));
+	//MemberDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
+	String id="one";
+	
+	//CART 테이블의 수량변경 메소드 호출
+	CartDAO.getCartDAO().modifyCart(btnStatus, cartNo,id);
+	
+	//페이지 이동
+	response.sendRedirect(request.getContextPath()+"/index.jsp?workgroup=cart&work=cart_list");
+%>

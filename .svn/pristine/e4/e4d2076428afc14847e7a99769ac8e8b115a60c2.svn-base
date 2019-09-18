@@ -1,0 +1,41 @@
+<%@page import="site.itwill.dao.LushUserDAO"%>
+<%@page import="site.itwill.dto.LushUserDTO"%>
+<%@page import="site.itwill.utill.Utility"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+    if(request.getMethod().equals("GET")){
+        response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+        return;
+    }
+
+    request.setCharacterEncoding("UTF-8");
+    
+    String id=request.getParameter("id");
+    String passwd=Utility.encrypt(request.getParameter("pass"), "SHA-256");
+    String name=request.getParameter("name");
+    String nickname=request.getParameter("nickname");
+    String email=request.getParameter("email");
+    String phone=request.getParameter("phone");
+    String postcode=request.getParameter("postcode");
+    String address1=request.getParameter("address1");
+    String address2=request.getParameter("address2");
+    
+    LushUserDTO user=new LushUserDTO();
+    int num=LushUserDAO.getDao().getUserNum();
+    user.setId(id);
+    user.setPasswd(passwd);
+    user.setName(name);
+    user.setNickname(nickname);
+    user.setEmail(email);
+    user.setPhone(phone);
+    user.setPostcode(postcode);
+    user.setAddress1(address1);
+    user.setAddress2(address2);
+    
+    LushUserDAO.getDao().addUser(user);
+    
+    response.sendRedirect(request.getContextPath()+"/index.jsp?workgroup=rush&work=lush_main");
+    
+%>
+

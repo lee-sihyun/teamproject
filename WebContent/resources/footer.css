@@ -1,0 +1,84 @@
+    /* footer */
+
+
+
+#footer { display:block; position: relative;width:100%;min-width:1180px; margin:0 auto; padding:45px 0 55px; background:#000; border-top:1px solid #262626; }
+#footer:after{content:''; display:block; clear:both;}
+#footer .footer { display: block; width:1180px; margin:0 auto }
+
+
+/*
+================
+	검색
+================
+*/	
+
+
+#footer .scrollbtns{position:fixed; bottom:20px; right:20px; width:51px; height:79px; z-index:2;}
+#footer .scrollbtns a{ display:block; position:relative; width:50px; width:40px; border:1px solid #dddddd; font-size:.7em;  text-align:center; background:#FFF; }
+#footer .scrollbtns .scrolldown{ margin-top:-1px; }
+#footer .scrollbtns a span{ display:block; font-size:1em; line-height:20px;}
+
+#footer .servicewrap{display:block; margin-bottom:20px;}
+#footer .servicewrap:after{content:''; display:block; clear:both; }
+#footer .subwrap{display:inline-block; float:left; width:300px; }
+#footer .subwrapR{display:inline-block; float:right; width:815px; }
+#footer .subwrap .subinfo{ display:block; padding-left:100px; color:#fff; }
+
+/*===============
+	회사정보
+=================*/
+
+#footer .subwrap .subinfo dl{padding-top:55px;}	 
+#footer .subwrap .subinfo dt{font-size:16px;}
+#footer .subwrap .subinfo dd{padding-top:15px;line-height:16px;}
+#footer .subwrap .subinfo dd button{color:#fff;}
+#footer .subwrap .subinfo dd.mail{padding-top:20px;}
+
+#footer .addr { display: block; margin: 0 auto; text-align: left; }
+#footer .addr strong{  }
+#footer .addr address { font-style: normal; }
+#footer .addr span{ }
+#footer .addr span.kor,
+#footer .addr address { display:inline-block; line-height:20px; margin:0 12px 0 0; font-style: normal; }
+
+#footer .addr .flogo {margin:20px 0;}
+
+
+/*===============
+	copyright
+=================*/
+
+#footer .company { clear: both; display: block; position:relative; width: 100%; }
+#footer .company:after { content: ''; display: block; clear: both; zoom: 1; }
+#footer .companyinfo{display:block; max-width:1200px; margin:0 auto; }
+#footer .companyinfo{display:block; padding:10px;}
+
+#footer .newsletter{margin-top:55px;color:#fff;} 
+#footer .newsletter dt{padding-bottom:20px;font-size:16px;font-family : "notokrM";}
+#footer .newsletter dd input{width:300px;height:40px;line-height:40px;text-indent:20px;font-size:12px;border:0;box-sizing:border-box}
+#footer .newsletter dd .btnicon{width:110px;height:40px;line-height:40px;margin-left:15px;vertical-align:top; border:1px solid #fff;color:#fff;font-size:12px;}
+
+#footer .foot_menu li{display:inline-block;letter-spacing:-0.5px;}
+#footer .foot_menu li a{display:inline-block;margin-right:40px;color:#fff; }
+#footer .foot_menu li.f_bd a{ font-weight:bold;font-family : "notokrB";}
+#footer .copyright{ display: block; line-height:22px;color:#9b9b9b; padding: 48px 0 0 0; } 
+#footer .copyright .copy{display:block;font-size:12px;margin:25px 0 0 0; }
+#footer .copyright .framework { display:inline-block; color:#bbbbbb; }
+#footer .copyright .made, #footer .copyright .system {  }
+#footer .copyright  a{ color:#9b9b9b;}
+#footer .copyright .system span{  }
+#footer .copyright .system b{color:#e60012;}
+
+#footer .mark { display: inline-block; float: right;}
+#footer .mark img {display:block; float:left; }
+
+#footer .mark .add{ display:block; float:right;margin-top:20px; }
+#footer .mark .add img{ margin: 5px; }
+#footer .mark .add span{ display:inline-block; float:left;}
+
+#footer .flogo {display:block; }
+#footer .flogo a{display:block;}
+#footer .sns img {margin-top:10px; margin-right:5px;}
+.copyright_copy {text-align:center; margin:30px auto 10px;}
+/*footer*/

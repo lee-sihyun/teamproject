@@ -1,0 +1,21 @@
+#scroll-right{}
+#scroll-right { z-index: 2; position: relative; top: 0; left: 0; margin: 0 0 0 0; }
+
+#quick div:after, #quick ul:after, #quick li:after { content:''; display:block;clear:both;}
+#quick { position: absolute; left:50%; top:0; margin-left:-600px; height: 0; width: 1200px; z-index:0;}
+
+#quickL, #quickR { position: absolute; }
+#quickL { width: 110px; left: -110px; top: 220px; }
+#quickR { width: 110px; right: -110px; top: 220px; }
+
+#quickL .wing { width: 110px;  min-height: 100px; /*background-color:#d4fe6c;*/ text-align: left;  z-index:11;}
+#quickR .wing { width: 110px;  min-height: 100px; background-color:#FFF;  text-align: right; letter-spacing:1px;   z-index:11;}
+
+#quickL .wing.fix { float: none; position: fixed; top:0; padding-top:0; z-index: 1; left: auto; }
+#quickR .wing.fix { float: none; position: fixed; top:0; padding-top:0; z-index: 1; right: auto; }
+
+@media all and ( max-width:1217px ){
+	#quick { width:100%; min-width:1000px;}
+	#quickL { left: -110px; }
+	#quickR { right:-110px; }
+}

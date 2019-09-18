@@ -1,0 +1,248 @@
+<%@page import="site.itwill.dao.OrderDAO"%>
+<%@page import="site.itwill.dto.OrderDTO"%>
+<%@page import="site.itwill.dto.OrderDetailDTO"%>
+<%@page import="site.itwill.dao.OrderDetailDAO"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%
+    
+    
+    /*
+이름          널?       유형           
+----------- -------- ------------ 
+ORDER_NO        NOT NULL VARCHAR2(30)  
+ID              NOT NULL VARCHAR2(20)  
+NAME            NOT NULL VARCHAR2(20)  
+POSTCODE        NOT NULL VARCHAR2(30)  
+ADDRESS1        NOT NULL VARCHAR2(400) 
+ADDRESS2        NOT NULL VARCHAR2(400) 
+PHONE           NOT NULL NUMBER(20)    
+MESSAGE                  VARCHAR2(50)  
+PAY_CHOICE      NOT NULL VARCHAR2(20)  
+ORDER_DATE      NOT NULL DATE          		: SYSDATE
+ORDER_STATUS    NOT NULL NUMBER(10)    		: 1 = 완료 / 2 = 취소(환불) / 3 = 교환
+DELIVERY_STATUS NOT NULL NUMBER(10) 		: 1 = 배송전 / 2 = 배송중 / 3 = 배송완료
+*/   
+
+/*
+String orderNo=request.getParameter("orderNo");
+String id=request.getParameter("id");
+*/
+
+
+//List<OrderDetailDTO>orderDetailList=OrderDetailDAO.getOrderDAO().getOrderDetail(id, orderNo);
+List<OrderDTO>orderList=OrderDAO.getOrderDAO().getOrderList();
+
+
+
+
+
+
+    
+    %>
+    
+    
+    
+
+<jsp:include page="/admin/header.jsp"/>
+
+<link href="css/admin_order.css" rel="stylesheet" type="text/css">
+
+
+
+			<!--본문내용역역 시작 content로 잡으면 됩니다  -->
+
+			<div id="content">
+				<div class="mTitle">
+					<h1>주문관리</h1>
+				</div>
+				<form action="" method="post" name="eProductSearchForm"
+					id="eProductSearchForm">
+
+					<!--<div class="optionArea" id="QA_list1">
+					
+
+					</div> -->
+					<!-- QA_list1종료 -->
+					<div class="section" id="QA_list2">
+
+
+						<div class="mOption">
+							<table>
+								<tr>
+
+									<th scope="row">상품명</th>
+
+									<td colspan="1">
+										<div id="testfiled">
+
+											<input type="text" class="fTexteSearchText">
+										</div>
+
+									</td>
+								</tr>
+
+
+
+
+
+							</table>
+
+						</div>
+
+						<!-- 검색영역 종료 -->
+						<div class="mButtongCenter">
+							<a href="#none" class="btnSearch"> <span>검색</span>
+
+							</a> <a href="#none" class="btnSearchreset" id="eSearchFormInit">
+
+								<span>초기화</span>
+
+							</a>
+
+
+
+						</div>
+
+						<!-- 표영역 -->
+
+						<div class="mBoardtypeListgScrollgCell">
+
+							<table class="eChkColor">
+								<colgroup>
+									<col class="chk">
+									<col style="width: 250px">
+									<col style="width: 100px">
+									<col style="width: 150px">
+									<col style="width: 150px">
+									<col style="width: 160px">
+									<col style="width: 300px">
+									<col class="date">
+
+								</colgroup>
+								<thead>
+								
+								<!--    /*
+이름          널?       유형           
+----------- -------- ------------ 
+ORDER_NO        NOT NULL VARCHAR2(30)  
+ID              NOT NULL VARCHAR2(20)  
+NAME            NOT NULL VARCHAR2(20)   //상품이름
+POSTCODE        NOT NULL VARCHAR2(30)  
+ADDRESS1        NOT NULL VARCHAR2(400) 
+ADDRESS2        NOT NULL VARCHAR2(400) 
+PHONE           NOT NULL NUMBER(20)    
+MESSAGE                  VARCHAR2(50)  //배송메세지
+PAY_CHOICE      NOT NULL VARCHAR2(20)  
+ORDER_DATE      NOT NULL DATE          		: SYSDATE
+ORDER_STATUS    NOT NULL NUMBER(10)    		: 1 = 완료 / 2 = 취소(환불) / 3 = 교환
+DELIVERY_STATUS NOT NULL NUMBER(10) 		: 1 = 배송전 / 2 = 배송중 / 3 = 배송완료
+*/    -->
+								
+									<tr>
+										<!-- <th scope="col"><input type="checkbox" class="allcheck"
+											id="check"></th> -->
+										<th scope="col" >주문번호</th>
+										<th>주문고객</th>	
+										<th scope="col">상품명</th>
+										<!--  <th scope="col">결제금액</th>-->
+										<th>주문일</th>
+										<th scope="col">주문상태</th>
+										<th>배송상태</th>
+									<!-- <th>비고</th>-->	
+
+
+									</tr>
+
+
+
+
+
+								</thead>
+								<!--  <tbody> </tbody>-->
+
+					<tr>
+					
+					
+					<!-- <th scope="col" >주문번호</th>
+										<th>주문고객</th>	
+										<th scope="col">상품명</th>
+										<th scope="col">결제금액</th>
+										<th>주문일</th>
+										<th scope="col">주문상태</th>
+										<th>배송상태</th> 
+										
+ORDER_STATUS    NOT NULL NUMBER(10)    		: 1 = 완료 / 2 = 취소(환불) / 3 = 교환
+DELIVERY_STATUS NOT NULL NUMBER(10) 		: 1 = 배송전 / 2 = 배송중 / 3 = 배송완료
+										
+										
+										-->
+					
+					<%for(OrderDTO order:orderList) {%>
+					<td><%=order.getOrderNo() %></td>
+				<!--  -->	
+					<td><%=order.getId() %></td>
+					<td><%=order.getName() %></td>
+					
+			
+					<td><%=order.getOrderDate()%></td>
+				
+					
+					<td>
+					<%if(order.getOrderStatus()==1){ %>
+					완료 
+					<%}else if (order.getOrderStatus()==2){ %>
+					취소/환불
+					<%}else if (order.getOrderStatus()==3){ %>
+					교환
+					<%} %>
+					</td>
+					<td>
+					<%  if(order.getDeliveryStatus()==1){ %>
+						배송전
+						<%}else if (order.getDeliveryStatus()==2) {%>
+						배송중
+						<%} else if (order.getDeliveryStatus()==3){%>
+					배송완료
+					<%} %>
+					</td>
+					</tr>
+<%} %>
+
+							</table>
+
+						</div>
+
+						<div class="mCtrltypeFooter">
+							<div class="gLeft">
+								<span class="txtLess">선택주문을 </span> <a href="#none"
+									class="btnNormaldelete">취소</a> <a href="#none"
+									class="btnNormalmodify">수정</a>
+
+
+
+							</div>
+
+
+						</div>
+
+
+					</div>
+
+
+
+
+				</form>
+
+			</div>
+			<!--content 영역종료 -->
+
+
+		</div>
+		<!-- container 영역종료 -->
+	</div>
+	<!-- wrap영역종료 -->
+
+</body>
+</html>

@@ -1,0 +1,691 @@
+<%@page import="java.util.Date"%>
+<%@page import="site.itwill.dto.FAQDTO"%>
+<%@page import="site.itwill.dto.LushUserDTO"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.List"%>
+<%@page import="site.itwill.dao.FAQDAO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%
+	LushUserDTO loginUser1=(LushUserDTO)session.getAttribute("loginUser");
+	
+
+	//POST 방식으로 요청되어 전달된 값들에 대한 캐릭터셋 변경
+	request.setCharacterEncoding("UTF-8");
+
+	//LushUserDTO loginUser1=(LushUserDTO)session.getAttribute("loginUser");
+	//List<CartDTO> cartList=CartDAO.getCartDAO().getCartList(loginUser1.getId());
+
+	//전달된 페이지번호를 반환받아 저장
+	int pageNum = 1;//페이지번호를 저장하기 위한 변수
+	if (request.getParameter("pageNum") != null) {//전달값이 존재할 경우
+		pageNum = Integer.parseInt(request.getParameter("pageNum"));
+	}
+	
+	//입력된 검색대상과 검색키워드를 반환받아 저장
+		String search=request.getParameter("search");
+		if(search==null) search="";
+		String keyword=request.getParameter("keyword");
+		if(keyword==null) keyword="";
+		
+	
+	//페이지에 응답될 게시글의 갯수 설정
+	int pageSize = 10;//응답 게시글의 갯수를 저장하기 위한 변수
+
+	//FAQ 테이블에 저장된 전체 게시글의 갯수를 반환하는 DAO 클래스의 메소드 호출
+	int totalFAQ = FAQDAO.getDAO().getFAQTotal(search, keyword);//전체 게시글의 갯수를 저장하기 위한 변수
+
+	//총 페이지 갯수를 계산하여 저장
+	int totalPage = (int) Math.ceil((double) totalFAQ / pageSize);
+
+	//전달받은 페이지 번호에 대한 유효성 검사
+	if (pageNum <= 0 || pageNum > totalPage) {
+		//비정상적인 페이지 번호가 전달된 경우 무조건 1 페이지로 설정 
+		pageNum = 1;
+	}
+	//페이지 번호에 대한 게시글 시작 행번호를 계산하여 저장
+	// => 1 Page : 1, 2 Page : 11, 3 Page : 21, 4 Page : 31,... 
+	int startRow = (pageNum - 1) * pageSize + 1;
+
+	//페이지 번호에 대한 게시글 종료 행번호를 계산하여 저장
+	// => 1 Page : 10, 2 Page : 20, 3 Page : 30, 4 Page : 41,... 
+	int endRow = pageNum * pageSize;
+
+	//마지막 페이지의 게시글 종료 행번호를 게시글 전체 갯수로 변경
+	if (endRow > totalFAQ) {
+		endRow = totalFAQ;
+	}
+	
+	//아이디값 세션 설정
+	//session.setAttribute("id", "value");
+	//세션속성 사용
+	//String id = (String)session.getAttribute("id");
+	
+	//검색대상과 검색키워드를 전달하여 BOARD 테이블에 저장된 검색 게시글의 갯수를 반환하는 DAO 클래스의 메소드 호출
+	int totalBoard=FAQDAO.getDAO().getFAQTotal(search,keyword);
+	
+	
+	// 유저 로그인 했을 때 그 사람만의 글을 보여주도록 ID를 찾아 반환하는
+	// DAO 클래스의 메소드 호출
+	//List<FAQDTO> FAQIDList=FAQDAO.getDAO().getFAQIDList(loginUser1.getId());
+	
+	//시작 행번호와 종료 행번호를 전달하여 FAQ 테이블에서 페이지에 
+	//응답될 게시글 목록을 검색하여 반환하는 DAO 클래스의 메소드 호출
+	List<FAQDTO> FAQList=FAQDAO.getDAO().getFAQList(startRow, endRow, search, keyword);
+	
+	//페이지에 응답될 게시글의 출력시작번호를 계산하여 저장
+	// => 게시글이 하나 출력될 때마다 1씩 감소
+	int number=totalFAQ-(pageNum-1)*pageSize;
+	                    
+	//세션으로 공유된 인증정보(회원정보)를 반환받아 저장
+	//LushUserDTO loginUser=(LushUserDTO)session.getAttribute("loginUser");
+	
+	//서버의 현재 날짜(시간)정보 저장
+	String currentDate=new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+%>
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/resources/gd_ui.js.다운로드"></script>
+<title>Insert title here</title>
+<style type="text/css">
+#content {  
+    width: 1500px;
+    height: 1300px;
+
+    margin: 0 auto;
+}
+#main {
+	display: inline;
+    width: 70%;
+    float: left;
+    margin: 0 0 200px 50px;
+}
+.contents-inner {
+padding: 90px 0 100px !important;
+}
+.cs-page .section-header {
+overflow: hidden;
+margin: 0;
+padding: 0 0 40px;
+}
+.section-header{
+
+height: 38.889px;
+display: block;
+font-size: 14px;
+letter-spacing: -0.5px;
+line-height: 19.6px;
+position: relative;
+}
+
+.cs-page .section-header .h2 {
+float: left;
+font-size: 28px;
+color: #000000;
+font-family: "notokrB"
+}
+
+* {
+margin: 0;
+padding: 0;
+}
+
+.cs-page .section-header h2 {
+float: left;
+font-size: 28px;
+color: #000000;
+font-family: "notokrB";
+line-height: 39.2px;
+}
+h2 {
+display: block;
+margin-block-start: 0.83em;
+margin-block-end:0.83em;
+margin-inline-start: 0px;
+margin-inline-end: 0px;
+font-weight: bold;
+}
+
+html, body, form, #wrap {
+height: 100%
+}
+
+form {
+display: block;
+
+height: 150.174px;
+}
+input[type="hidden" i] {
+display: none;
+backgound-color: initial;
+cursor: default;
+border: initial;
+}
+input {
+text-rendering: auto;
+letter-spacing: normal;
+text-transform: none;
+text-indent:0px;
+text-shadow: none;
+text-align: start;
+font: 13.3333px Arial;
+}
+.box-b {
+ border: 1px solid #e9e9e9;
+ padding: 37px 39px;
+ weight: 1000px;
+ height: 74.201px;
+}
+.clear {
+zoom: 1;
+}
+.box-b .col-a {
+float: left;
+margin: 0 100px 0 0;
+}
+.box-b .h2 {
+font-size: 16px;
+margin:0 0 10px 0;
+}
+.input.faq-search {
+width: auto;
+}
+.box-b .input {
+float: left;
+}
+.box-b .col-a .input.faq-search .txt-field {
+height: 40px;
+line-height: 38px;
+font-size: 16px;
+}
+
+.input.faq-search .txt-field {
+margin-right: 7px
+}
+span.txt-field {
+display: inline-block;
+}
+.txt-field {
+padding: 0 10px;
+background: white;
+border: 1px solid rgb(204,204,204);
+vertical-align: middle;
+width: 450px;
+height: 40px;
+}
+input[type="hidden" i] {
+display: none;
+background-color: initial;
+cursor: default;
+border: initial;
+}
+.input.faq-search .txt-field .text {
+height: 30px;
+line-height: 30px;
+}
+.txt-field .text {
+width: 100%;
+padding: 0;
+border: 1px solid #ffffff;
+color: #000000;
+}
+.cs-page .box-b .col-a .btn.faq-search {
+height: 40px;
+line-height: 38px;
+}
+.cs-page .btn.faq-search {
+width: 101px;
+}
+.btn.faq-search {
+background: #000000;
+border: 1px solid #000000;
+color: #ffffff;
+}
+.btn {
+display: inline-block;
+padding: 0;
+text-align: center;
+vertical-align: top;
+box-sizing: border-box;
+cursor: pointer;
+font-size: 12px;
+border-radius: 0; 
+width:100.99px;
+height: 40px;
+}
+
+.btn {
+font-size: 16px;
+font-weight: bold;
+}
+
+button {
+font-family: "notoKrR";
+font-sytle: normal;
+text-rendering: normal;
+letter-spacing: normal;
+word-spacing: normal;
+text-transform: none;
+text-indent: 0px;
+text-shadow: none;
+align-items: flex-start;
+font: 13.3333px Arial;
+}
+
+.box-b .col-b {
+padding: 0;
+overflow: hidden;
+margin: 0;
+width: 217.413px;
+height: 72.222px;
+}
+
+.box-b .h2 {
+font-size: 16px;
+color: #000000;
+margin: 0 0 10px 0;
+}
+.box-b .col-b .normal-btn.small{
+border: 1px solid #000000;
+width: 120px;
+height: 40px;
+line-height: 38px;
+font-family: "notokrR";
+}
+.normal-btn.small {
+font-size: 14px !important;
+}
+.normal-btn {
+display: inline-block;
+padding: 0 10px !important;
+color: #000000;
+text-align: center;
+vertical-align: top;
+box-sizing: border-box;
+cursor: pointer;
+}
+a {
+text-decoration: none;
+}
+.main {
+display: block;
+font-family: "notokrR";
+font-size: 14px;
+letter-spacing: -0.5px;
+line-height: 19.6px;
+margin: 36px 0 0 0;
+height: 570.174px;
+}
+.m2{
+width: 980px;
+height: 570.174px;
+}
+.clear {
+zoom: 1;
+
+}
+tr, tbody {
+color: #333
+}
+
+th {
+    padding: 15px 0;
+    border-bottom: 1px solid #e7e7e7;
+    font-weight: normal;
+    color: #8f8f8f;
+
+}
+
+
+nav {
+display: block;
+}
+.board-paging .pagination{
+padding-top: 40px;
+}
+.pagination {
+padding: 20px 0 0;
+text-align: center;
+}
+.board-paging .pagination .active {
+border: 0;
+}
+.pagination .active {
+text-decoration: underline;
+color: #3e3d3c;
+}
+
+.paging {
+height: 21px;
+padding: 4px 10px 1px;
+text-align: center;
+display: block;
+
+}
+.length{
+width:220px;
+}
+.faqList{
+text-align: center;
+margin: 0 auto;
+
+
+}
+#data002 {
+text-align: left important!;
+float:auto;
+   color: #333;
+}
+a {
+text-decoration: none;
+}
+.data001 {
+padding: 20px;
+}
+
+.data002 {
+padding: 20px;
+}
+body {
+    color: #333;
+    font-family: "notokrR",Malgun Gothic,"맑은 고딕",AppleGothic,Dotum,"돋움",sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    letter-spacing: -0.5px;
+}
+.category {
+	margin: 0 40px 40px 0;
+	text-align: left;
+	font-size: 16px;
+	color: #333;
+    font-family: "notokrR",Malgun Gothic,"맑은 고딕",AppleGothic,Dotum,"돋움",sans-serif;
+}
+
+.clear {
+	font-size: 16px;
+	margin: 0 40px 40px 0;
+	text-align: left;
+	color: #333;
+	font-family: "notokrR",Malgun Gothic,"맑은 고딕",AppleGothic,Dotum,"돋움",sans-serif;
+}
+
+/* Column container */
+#side1 {
+	display: inline;
+	width: 20%;
+	float: left;
+	height: 80%;
+}
+
+#side1 .side2 {
+	padding: 0;
+	width: 200px;
+	margin: 0;
+}
+
+#side1 .lnb {
+	width: 100%;
+	margin: 0 auto;
+	position: relative;
+	z-index: 2;
+}
+
+.side4 {
+    padding: 90px 0 100px;
+}
+
+#side1 .side4 h2 {
+	font-size: 22px;
+	font-family: "notokrB";
+	font-weight: bold;
+	line-height: 24px;
+}
+
+#side1 h2 {
+	position: relative;
+	margin: 0 auto 10px;
+	text-align: left;
+}
+
+h2 {
+	margin-block-start: 0.83em;
+	margin-block-end: 0.83em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+}
+
+#side1 .side4 h3 {
+	position: relative;
+	padding: 0 0 15px 0;
+	line-height: 20px;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: "notokrM";
+	letter-spacing: 1px;
+	text-align: left;
+	background: none;
+}
+
+.side4 h3 {
+	margin: 32px 0 0;
+	color: #222;
+}
+
+h3 {
+	margin-block-start: 1em;
+	margin-block-end: 1em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+}
+
+#side1 .side4 ul {
+	padding: 0 0 0 8px;
+}
+
+.mypageUser {
+	margin-top: 50px;
+	margin-bottom: 100px;
+}
+
+.lnb .side4 ul {
+	line-height: 24px;
+	text-align: center;
+}
+
+ul {
+	margin-block-start: 1em;
+	margin-block-end: 1em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+	padding-inline-start: 40px;
+}
+
+ul, li {
+	margin: 0;
+	list-style: none;
+}
+
+#side1 .side4 li {
+	line-height: 28px;
+}
+
+
+ul, li {
+	margin: 0 auto;
+	padding: 0;
+	list-style: none;
+}
+
+li {
+	display: list-item;
+}
+
+#side1 .side4 li a {
+	color: #8f8f8f;
+}
+
+a {
+	text-decoration: none;
+}
+
+.content {
+	width: 1200px;
+	height: 1200px;
+	margin: 0 auto;
+}
+
+
+</style>
+</head>
+<body>
+<div id="content">
+	<!-- sidebar -->
+	<div id="side1">
+		<div class="side2">
+			<div class="side3">
+				<div class="side4">
+					<h2>마이페이지</h2>
+					<h3>쇼핑정보</h3>
+					<ul>
+						<li><a
+							href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=order_search';">주문목록/배송조회</a></li>
+						<li><a
+							href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=order_refund';">환불/반품/교환내역</a></li>
+					</ul>
+					<h3>고객센터</h3>
+					<ul>
+						<li><a
+							href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=board/QnA&work=QnA_list';">1:1문의</a></li>
+						<li><a
+							href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=board/FAQ&work=FAQ_List';">FAQ</a></li>
+					</ul>
+					<h3>회원정보</h3>
+					<ul>
+						<li><a
+							href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=changeUser_confirm';">회원정보변경</a></li>
+						<li><a
+							href="javascript:location.href='<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=deleteUser';">회원탈퇴</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+<%--본문 --%>
+<div id="main">
+		<div class="contents-inner cs-page">
+			<div class="section-header">
+				<h2 class="h2">FAQ</h2>
+			</div>
+		</div>
+		<form name="frmlist" id="frmlist" action="<%=request.getContextPath()%>/index.jsp?workgroup=board/FAQ&work=FAQ_list"  method="get">
+			<input type="hidden" name="noheader" >
+			<div class="box-b">
+				<div class="col-a">
+					<h2 class="h2">자주묻는 질문 검색</h2>
+					<div class="input faq-search">
+						<span class="txt-field" style="width: 450px;">
+							<input type="hidden" name="searchField" value="all">
+							<input type="text" id="keyword" name="searchWord" 
+							class="text" placeholder="검색어를 입력하세요">
+						</span>
+						<button type="submit" class="btn faq-search">
+							조회</button>
+					</div>
+				</div>
+				
+				<div class="col-b">
+					<h2 class="h2">찾으시는 질문이 없다면?</h2>
+					<a href="<%=request.getContextPath()%>/board/FAQ/FAQ_write1.jsp" class="normal-btn small" target="_top"> 
+					1:1 문의하기 </a>
+				</div>
+			</div>
+		</form>
+		<div class="main">
+			<div class="m2">
+				<div class=table1 id="faqList" class="faqList">
+					<table>
+						<colgroup>
+							<col class="length"><col>
+						</colgroup>
+						<tbody>
+								<% if(totalFAQ==0) { %>
+								<tr>
+									<td colspan="3" align="center" class="no-data02">게시글이 존재하지않습니다.</td>
+								</tr>
+								<% } else { %>
+								<tr>
+								<th>카테고리</th>
+								<th>내용</th>
+								</tr>
+								<%-- 게시글 목록 출력 --%>
+								<% for(FAQDTO FAQ:FAQList) { %>
+						</thead>
+						<tbody>
+							<tr class="toggle-faq answer">							
+								<td align="center" class="data001"><%=FAQ.getCategory()%></td>
+								<td align="center" class="data002">
+								<a href="<%=request.getContextPath()%>/index.jsp?workgroup=board/FAQ&work=FAQ_detail&num=<%=FAQ.getNum()%>&pageNum=<%=pageNum%>"><%=FAQ.getTitle() %></a>
+								</td>	
+							</tr>
+							<% } %><% } %>
+						</tbody>
+					</table>
+				</div>
+				<%-- 페이지 번호 출력(페이징 처리) 및 하이퍼 링크 --%>
+					<%
+						//페이지 블럭에 출력될 페이지 번호의 갯수를 설정하여 저장
+						int blockSize=5;//블럭에 출력될 페이지 번호의 갯수를 저장하기 위한 변수
+	
+						//페이지 블럭에 출력될 시작 페이지 번호를 계산하여 출력
+						// => 1 Block(1~5) : 1, 2 Block(6~10) : 6, 3 Block(11~15) : 11, 4(16~20) Block : 16,... 
+						int startPage=(pageNum-1)/blockSize*blockSize+1;//블럭에 출력될 페이지 시작 페이지번호를 저장하기 위한 변수
+	
+						//페이지 블럭에 출력될 마지막 페이지 번호를 계산하여 출력
+						// => 1 Block(1~5) : 5, 2 Block(6~10) : 10, 3 Block(11~15) : 15, 4(16~20) Block : 20,...
+						int endPage=startPage+blockSize-1;
+						
+						//마지막 페이지 블럭의 페이지 번호 변경
+						if(endPage>totalPage) {
+							endPage=totalPage;
+						}
+					%>
+
+					<%-- 페이지 번호 출력 및 하이퍼 링크 --%>
+					<div class="paging" >
+						<% if(startPage>blockSize) { %>
+							<a href="<%=request.getContextPath()%>/index.jsp?workgroup=board/FAQ&work=FAQ_list&pageNum=1&search=">[처음]</a>
+							<a href="<%=request.getContextPath()%>/index.jsp?workgroup=board/FAQ&work=FAQ_list&pageNum=<%=startPage-blockSize%>">[이전]</a>
+						<% } else { %>
+							[처음][이전]
+						<% } %>
+	
+						<% for(int i=startPage;i<=endPage;i++) { %>
+						<% if(pageNum!=i) { %>
+							<a href="<%=request.getContextPath()%>/index.jsp?workgroup=board/FAQ&work=FAQ_list&pageNum=<%=i%>">[<%=i %>]</a>
+						<% } else { %>
+							<span style="font-weight: bold; color: red;">[<%=i %>]</span>
+						<% } %>
+						<% } %>
+	
+						<% if(endPage!=totalPage) { %>
+						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=board/FAQ&work=FAQ_list&pageNum=<%=startPage+blockSize%>">[다음]</a>
+						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=board/FAQ&work=FAQ_list&pageNum=<%=totalPage%>">[마지막]</a>
+						<% } else { %>
+							[다음][마지막]
+					<% } %>
+					</div>
+					<br>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+</body>
+
+
+</html>

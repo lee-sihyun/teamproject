@@ -1,0 +1,78 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
+<%@page import="site.itwill.dao.OrderDAO"%>
+<%@page import="site.itwill.dto.OrderDTO"%>
+<%@page import="site.itwill.dao.LushUserDAO"%>
+<%@page import="site.itwill.dto.LushUserDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%-- 주문 입력페이지에서 정보를 전달받아 주문 테이블에 저장하고 주문상세 추가 처리페이지로 이동 --%>
+<%
+	//비정상적인 요청에 대한 응답 처리
+	if(request.getMethod().equals("GET")) {
+		response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+		return;
+	}
+
+	//POST 방식으로 요청되어 전달된 값들에 대한 캐릭터셋 변경
+	request.setCharacterEncoding("UTF-8");
+
+	String[] checkCartNo=request.getParameterValues("checkCartNo");
+	session.setAttribute("checkCartNo", checkCartNo);
+	//주문테이블에 필요한 컬럼값 전달받기
+	//주문번호 : 주문날짜+자동증가값
+	int num=OrderDAO.getOrderDAO().getOrderNum();
+	Date date=new Date();
+	SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+	String orderDate=sdf.format(date);
+	String orderNo=orderDate+Integer.toString(num);
+	
+	//아이디 : loginUser
+	LushUserDTO loginUser=(LushUserDTO)session.getAttribute("loginUser");
+	String id=loginUser.getId();
+	//String id="oneone";
+	
+	//배송고객명,우편번호,배송주소,상세주소,배송 휴대폰번호,배송메세지: getParameter
+	String name=request.getParameter("deliverName");
+	String postcode=request.getParameter("addr");
+	String address1=request.getParameter("address1");
+	String address2=request.getParameter("address2");
+	String phone=request.getParameter("deliverPhone");
+	String message=request.getParameter("deliverMessage");
+	
+	//결제방법 : getParameter
+	String payChoice=request.getParameter("wayOfPayment");
+	
+	//주문날짜 : sysdate >> 전달 X
+	//배송상태, 주문상태 : 1=배송전, 1=주문완료 >> 전달 X
+	
+	//총 주문금액 : getParameter
+	int productSum=Integer.parseInt(request.getParameter("productSum"));
+	session.setAttribute("productSum", productSum);
+	
+	//DTO 인스턴스 생성 후 필드값 변경
+	OrderDTO order=new OrderDTO();
+	order.setOrderNo(orderNo);
+	order.setId(id);
+	order.setName(name);
+	order.setPostcode(postcode);
+	order.setAddress1(address1);
+	order.setAddress2(address2);
+	order.setPhone(phone);
+	order.setMessage(message);
+	order.setPayChoice(payChoice);
+	order.setProductSum(productSum);
+	
+	//변경한 값을 ORDER 테이블에 전달해 저장하는 DAO 클래스의 메소드 호출
+	OrderDAO.getOrderDAO().insertOrder(order);
+		
+	//회원정보 반영 체크박스에 체크할 시 해당 아이디의 회원정보를 배송정보로 변경 (주소/휴대폰번호)
+	LushUserDAO.getDao().updateAddrPhone(postcode, address1, address2, phone, id);
+	
+	//변경된 회원정보로 다시 loginUser 세션 공유하기
+	session.removeAttribute("loginUser");
+	session.setAttribute("loginUser", LushUserDAO.getDao().getUser(id));
+	
+	//주문 상세 등록 처리페이지로 이동
+	response.sendRedirect(request.getContextPath()+"/order/order_detail_add_action.jsp?orderNo="+orderNo);
+%>

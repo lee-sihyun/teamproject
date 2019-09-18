@@ -1,0 +1,65 @@
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="site.itwill.dao.ProductDAO"%>
+<%@page import="site.itwill.dto.ProductDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%
+	String itemNo = request.getParameter("item_no");
+	ProductDTO product = ProductDAO.getDAO().getProduct(itemNo);
+%>
+
+<h2>제품상세정보</h2>
+<table>
+
+	<tr>
+		<td class="title">카테고리-대분류</td>
+		<td class="value"><%=product.getMainCategory()%></td>
+	</tr>
+
+	<tr>
+		<td class="title">카테고리-소분류</td>
+		<td class="value"><%=product.getSubCategory()%></td>
+	</tr>
+
+
+	<tr>
+		<td class="title">상품코드</td>
+		<td class="value"><%=product.getItemNo()%></td>
+	</tr>
+
+	<tr>
+		<td class="title">제품수량</td>
+		<td class="value"><%=DecimalFormat.getInstance().format(product.getStock())%></td>
+	</tr>
+
+
+
+	<tr>
+		<td class="title">제품가격</td>
+		<td class="value"><%=DecimalFormat.getCurrencyInstance().format(product.getPrice())%></td>
+	</tr>
+
+
+	<tr>
+
+		<td class="title">제품이름</td>
+		<td class="value"><%=product.getName()%></td>
+	</tr>
+	<tr>
+		<td class="title">제품이미지</td>
+		<td class="value"><img
+			src="<%=request.getContextPath()%>/site/product_image/<%=product.getImage()%>"
+			width="200"></td>
+	</tr>
+
+
+	<tr>
+		<td class="title">제품상세설명</td>
+		<td class="value"><img
+			src="<%=request.getContextPath()%>/site/product_image/<%=product.getImageDetail()%>"
+			width="200"></td>
+	</tr>
+
+
+
+</table>

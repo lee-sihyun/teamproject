@@ -1,0 +1,364 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+	
+%>
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Anton|Archivo+Black&display=swap" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<style type="text/css">
+body {
+	color: #000000;
+	font-family: "Noto Sans KR";
+	font-size: 14px;
+	line-height: 1.4;
+	letter-spacing: -0.5px;
+}
+#shoppingCart {
+	font-family: 'Archivo Black', sans-serif;
+	text-align: center;
+	font-size: 42px;
+	margin-top: 70px;
+}
+.orderDiv {
+	margin-top: 10px;
+	margin-bottom: 70px;
+	padding: 20px 0;
+	border-top: 2px solid #000;
+	border-bottom: 1px solid #e7e7e7;
+}
+.textRO {
+	width: 400px;
+	height: 35px;
+	font-family: "Noto Sans KR";
+	padding-left: 10px;
+	border: none;
+}
+tr>th {
+	padding: 10px 0;
+	color: #8f8f8f;
+	font-weight: normal;
+	text-indent: 8px;
+	font-size: 14px;
+	text-align: left;
+	width: 140px;
+	height: 30px;
+}
+.text {
+	width: 400px;
+	height: 35px;
+	font-family: "Noto Sans KR";
+	padding-left: 10px;
+}
+.btn {
+	background: white;
+	font-family: "Noto Sans KR";
+	border: 1px solid black;
+}
+label {
+	color: #000000;
+	font-size: 14px;
+	line-height: 1.4;
+}
+#postcode {
+ 	letter-spacing: 5px;
+ 	text-align : center;
+ }
+#payment {
+	text-align: left;
+}
+#benefit {
+	display: inline-flex;
+}
+.totalPrice {
+	background: rgb(240, 240, 240);
+	text-align: center;
+	font-size: 20px;
+}
+#cooc {
+	text-align: center;
+}
+#bottomBtn {
+	margin-top: 50px;
+	margin-bottom: 100px;
+	text-align: center;
+}
+#payAgreement {
+	margin-top: 25px;
+	text-align: center;
+}
+.radioAddr,.checkboxInfo,.radioPayment,.checkboxCheck:hover {
+	cursor: pointer;
+}
+#goBasket,#goPay,#postSearch:hover {
+	cursor: pointer;
+}
+.error {
+	color: blue;
+	font-size: 14px;
+	font-weight: bold;
+	position: relative;
+	left: 10px;
+	display: none;0
+}
+*:focus {
+    outline: none;
+}
+</style>
+<form name="orderForm" id="orderForm" style="width: 1180px; margin: 0 auto;">
+		<h2 id="shoppingCart">SHOPPING CART</h2>
+		<h4 id="cooc" style="color: rgb(168, 168, 168); font-size: 15px;">
+			Cart&nbsp;&nbsp;&nbsp;&nbsp;>&nbsp;&nbsp;&nbsp;&nbsp; <span	id="order" style="color: #333">Order</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;>&nbsp;&nbsp;&nbsp;&nbsp;Order confirmed</h4>
+		<h1>제품</h1>
+		<div style="border-top: 1px solid #000; border-bottom: 0.5px solid #e7e7e7;">
+			<table id="item">
+				<tr>
+					<th>제품 정보</th>
+					<th>수량</th>
+					<th>금액</th>
+					<th>합계금액</th>
+					<th>배송비</th>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+		<div class="totalPrice" style="padding: 30px; margin-bottom: 70px;">
+			총 <span id="itemNum"></span>개의 상품금액 <span id="itmePrice" style="font-weight: bold;"></span>
+			 + 배송비<span id="ShippingPay" style="font-weight: bold;"></span> = <span id="totalPrice" style="font-weight: bold; font-size: 24px;"></span>
+		</div>
+		<h1>주문 고객 정보</h1>
+		<div class="orderDiv">
+			<table>
+				<tr>
+					<th>주문하시는 분</th>
+					<td>
+						<input type="text" name="orderName" id="orderName" class="textRO" maxlength="20" readonly="readonly"> 
+						<!-- <span id="orderNameMsg" class="error">성함을 정확하게 입력해주세요.</span> -->
+					</td>
+				</tr>
+				<tr>
+					<th>주소</th>
+					<td>
+						<!-- <span id="addrBlock">주소변경불가능</span> --> 
+						<input type="text" name="orderAddr" id="orderAddr" class="textRO" maxlength="20" readonly="readonly">
+					</td>
+				</tr>
+				<tr>
+					<th>휴대폰 번호</th>
+					<td><input type="text" id="orderPhone" name="orderPhone" class="textRO" maxlength="20" readonly="readonly"> 
+						<!-- <span id="orderPhoneMsg" class="error">휴대폰 번호를 정확하게 입력해주세요.</span> -->
+					</td>
+				</tr>
+				<tr>
+					<th>이메일</th>
+					<td><input type="text" id="orderEmail1" name="orderEmail1" class="textRO"  readonly="readonly">
+						<!-- style="width: 200px; margin-right: 5px" -->
+						<!-- @<input type="text" id="orderEmail2" name="orderEmail2" class="text" style="width: 160px; margin-left: 5px;" readonly="readonly">  -->
+						<!-- <select name="orderEmailSelect" style="width: 120px; height: 39px; margin-left: 9px; font-family: 'Noto Sans KR';"  onChange="showField(this.value);">
+							<option selected="selected"  value="">선택하세요</option>
+							<option value="naver.com">naver.com</option>
+							<option value="hanmail.net">hanmail.net</option>
+							<option value="daum.net">daum.net</option>
+							<option value="gmail.com">gmail.com</option>
+							<option value="other">직접입력</option>
+						</select> -->
+						<!-- <span id="orderEmailMsg" class="error">이메일 주소를 정확하게 입력해주세요.</span> -->
+					</td>
+				</tr>
+			</table>
+		</div>
+		<h1>배송 정보</h1>
+		<div class="orderDiv">
+			<table>
+				<tr>
+					<th>배송지 확인</th>
+					<td>
+						<input type="radio" name="delivery" id="basicAddr" class="radioAddr">
+						<label for="basicAddr" class="radioAddr">기본배송지</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<!-- <input type="radio" name="delivery" id="recentAddr">최근배송지&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+						<input type="radio" name="delivery" id="inputAddr" class="radioAddr">
+						<label for="inputAddr" class="radioAddr">직접 입력</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+						<!-- <input type="radio" name="delivery" id="sameOrderAddr" class="radioAddr">
+						<label for="sameOrderAddr" class="radioAddr">주문자정보와 동일</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+					<td>
+				</tr>
+				<tr>
+					<th>받으실분</th>
+					<td><input type="text" name="deliverName" id="deliverName" class="text"> 
+						<span id="deliverNameMsg" class="error">성함을 정확하게 입력해주세요.</span>
+					</td>
+				</tr>
+				<tr>
+					<th rowspan="2">받으실곳</th>
+					<td>
+						<input type="text" id="postcode" name="postcode"  style="width: 270px; height: 35px;" readonly="readonly">
+						<button type="button" id="postSearch" class="btn" style="width: 120px; height: 39px; margin-left: 8px;">우편번호검색</button>
+						<span id="deliverAddrMsg" class="error">우편번호를 입력해주세요.</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="text" id="deliverAddr1" name="deliverAddr1" class="text" style="width: 270px; height: 35px;" readonly="readonly"> 
+						<input type="text" id="deliverAddr2" name="deliverAddr2" class="text" style="width: 270px; height: 35px;"> 
+						<span id="deliverAddrMsg" class="error">주소를 정확하게 입력해주세요.</span>
+					</td>
+				</tr>
+				<!-- <tr>
+					<th>전화번호</th>
+					<td><input type="text" name="deliverNumber" id="deliverNumber" class="text"> 
+						<span id="deliverNumberMsg" class="error"></span>
+					</td>
+				</tr> -->
+				<tr>
+					<th>휴대폰 번호</th>
+					<td><input type="text" name="deliverPhone" id="deliverPhone" class="text" placeholder="-를 제외하고 입력해 주세요"> 
+					<span id="deliverPhoneMsg" class="error">휴대폰 번호를 정확하게 입력해주세요.</span>
+					</td>
+				</tr>
+				<tr>
+					<th>배송 메시지</th>
+					<td><input type="text" name="deliverMessage" id="deliverMessage" class="text"></td>
+				</tr>
+				<tr>
+					<th>회원정보 반영</th>
+					<td>
+						<input type="checkbox" id="information" name="information" class="checkboxInfo">
+						<label for="information" class="checkboxInfo">위 내용을 회원정보에 반영합니다.</label>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<h1>결제 정보</h1>
+		<div class="orderDiv">
+			<table id="payment">
+				<tr>
+					<th>합계 금액</th>
+					<td></td>
+				</tr>
+				<tr>
+					<th>배송비</th>
+					<td></td>
+				</tr>
+				<tr>
+					<th>최종 결제 금액</th>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+		<h1>결제 방법</h1>
+		<div class="orderDiv" style="padding: 0; margin-bottom: 0; border-top: 1px solid #000; border-bottom: 0.5px solid #e7e7e7;">
+			<table>
+				<tr>
+					<th style="color: black; font-weight: bold;">일반결제</th>
+					<td>
+						<input type="radio" name="wayOfPayment" id="creditCard" class="radioPayment">
+						<label for="creditCard" class="radioPayment">신용카드</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="radio" name="wayOfPayment" id="accountTransfer" class="radioPayment">
+						<label for="accountTransfer" class="radioPayment">계좌이체</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="radio" name="wayOfPayment" id="virtualAccount" class="radioPayment">
+						<label for="virtualAccount" class="radioPayment">가상계좌</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="radio" name="wayOfPayment" id="phonePayment" class="radioPayment">
+						<label for="phonePayment" class="radioPayment">휴대폰결제</label>
+						<span id="wayOfPaymentMsg" class="error">결제 수단을 선택해주세요.</span>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="totalPrice" style="padding: 35px 20px;">
+			<span style="font-weight: bold;">최종 결제 금액 </span>
+		</div>
+		<div id="payAgreement">
+			<input type="checkbox" name="check" id="check" class="checkboxCheck">
+			<label for="check" class="checkboxCheck">
+				<span style="font-weight: bold;">(필수) </span>구매하실 상품의 결제정보를 확인하였으며, 구매진행에 동의합니다.
+			</label>
+		</div>
+
+		<div id="bottomBtn">
+			<button type="button" name="goBasket" id="goBasket">장바구니 가기</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<button type="button" name="goPay" id="goPay">결제하기</button>
+		</div>
+	</form>
+	<script type="text/javascript">
+	<%-- 유효성 검사 --%>
+	$("#orderForm").submit(function() {
+		var submitResult=true;
+		
+		$(".error").css("display","none");
+		
+		if($("#deliverName").val()=="") {
+			$("#deliverNameMsg").css("display","inline");
+			submitResult=false;
+		}
+		
+		if($("#postcode").val()=="") {
+			$("#postcodeMsg").css("display","inline");
+			submitResult=false;
+		}
+		
+		if($("#deliverAddr2").val()=="") {
+			$("#deliverAddrMsg").css("display","inline");
+			submitResult=false;
+		}
+		
+		var phoneReg=/01[016789]\d{3,4}\d{4}/g;
+		if($("#deliverPhone").val()=="") {
+			$("#deliverPhoneMsg").css("display","inline");
+			submitResult=false;
+		} else if(!phoneReg.test($("#deliverPhone").val())) {
+			$("#deliverPhoneMsg").css("display","inline");
+			submitResult=false;
+		}
+		return submitResult;
+	});
+	
+	$("#bottomBtn").children("#goBasket").css({"width":250,"height":60,"background":"white","color":"black","font-size":"15px","border":"solid 0.5px black","font-weight":"bold"});
+	$("#bottomBtn").children("#goPay").css({"width":250,"height":60,"background":"black","color":"white","font-size":"15px","border":"none","font-weight":"bold"});
+	$("#orderForm ul li").children("input").css({"width":360,"height":30});
+	
+	$("#postSearch").click(function() {
+		window.open("post_search.jsp","우편번호 검색","width=550,height=580,left=350,top=30");	
+	});
+	
+	function showField(email) {
+		if(email=="other") {
+			orderForm.orderEmail2.value="";
+			orderForm.orderEmail2.focus();
+		} else {
+			orderForm.orderEmail2.value=orderForm.orderEmailSelect.value;
+		}
+	}
+	
+	//장바구니가기 버튼 눌렀을 때 장바구니 삭제 처리페이지로 이동하기
+	$("#goBasket").click(function() {
+		$("#orderForm").attr("method","post");
+		$("#orderForm").attr("action","<%=request.getContextPath()%>/cart/cart_modify_action.jsp");
+		$("#orderForm").submit();
+	});
+	
+	//결제하기 버튼 눌렀을 때 주문상세 등록 처리페이지로 이동하기
+	$("#goPay").click(function() {
+		//결제방법 라디오 중 아무것도 선택하지 않은 경우 alert 하고 돌아가기
+		if(orderForm.wayOfPayment.value==null) {
+			alert("결제수단을 선택해주세요.");
+			return;
+		}
+		
+		//구매진행 동의 체크박스에 체크하지 않은 경우 alert 하고 돌아가기
+		if(orderForm.check.value==null) { 
+			alert("구매 확인에 동의해 주셔야 주문을 진행하실 수 있습니다.");
+			return;
+		}
+		
+		$("#orderForm").attr("method","post");
+		$("#orderForm").attr("action","<%=request.getContextPath()%>/site/order/order_detail_add_action.jsp");
+		$("#orderForm").submit();
+	});
+    </script>

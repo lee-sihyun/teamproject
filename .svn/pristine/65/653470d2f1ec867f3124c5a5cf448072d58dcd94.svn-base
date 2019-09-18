@@ -1,0 +1,99 @@
+<%@page import="site.itwill.utill.Utility"%>
+<%@page import="site.itwill.dto.LushUserDTO"%>
+<%@page import="site.itwill.dao.QnADAO"%>
+<%@page import="site.itwill.dto.QnADTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@include file="/security/login_status.jspf" %>
+
+
+<%-- 입력페이지(QnA_write.jsp)에서 전달된 게시글(새글 또는 답글)을 반환받아 
+QnA 테이블에 저장하고  게시글 목록 출력페이지(QnA_list.jsp)로 이동하는 JSP 문서 --%>
+<%
+	request.setCharacterEncoding("UTF-8");
+	LushUserDTO loginUser1=(LushUserDTO)session.getAttribute("loginUser");
+	
+	//비정상적인 요청에 대한 응답 처리
+	if(request.getMethod().equals("GET")) {
+		response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+		return;
+	}
+
+	System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+	//전달된 입력값을 반환받아 저장
+	int ref=Integer.parseInt(request.getParameter("ref"));
+	
+	int refStep=Integer.parseInt(request.getParameter("refStep"));
+	int refLevel=Integer.parseInt(request.getParameter("refLevel"));
+	String pageNum=request.getParameter("pageNum");
+	//String category=Utility.stripTag(request.getParameter("category"));
+	String category=request.getParameter("category");
+	//XSS(입력값으로 태그를 입력하는 기술)에 대한 처리
+	// => 태그 관련 문자를 Escape 문자로 변환하거나 제거
+
+	//String title=Utility.stripTag(request.getParameter("title"));
+	String title = request.getParameter("title");
+	System.out.println("제목 확인 : " +title);
+	
+	
+	int status=0;
+	/* if(request.getParameter("secret")!=null) {
+		status=Integer.parseInt(request.getParameter("secret"));
+	} */
+	//String content=Utility.stripTag(request.getParameter("content"));
+	String content = request.getParameter("content");
+	System.out.println("내용 확인 : " +content);
+	
+	System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+	
+	/* //태그 제거에 의해 입력값이 없을 경우에 대한 처리
+	if(title==null|| title.equals("") || content==null || content.equals("")) {
+		response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+		return;
+	} */
+
+	//QnA_SEQ 객체의 자동 증가값을 검색하여 반환하는 DAO 클래스의 메소드 호출
+	int num=QnADAO.getDAO().getQnANum();
+	System.out.println("확인 : "+num);
+	
+	/* //세션으로 공유된 인증정보(회원정보)를 반환받아 저장 
+	LushUserDTO loginUser1=(LushUserDTO)session.getAttribute("loginUser1"); */
+	
+	
+	System.out.println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
+		
+	//새글 또는 답글 구분하여 처리
+	if(ref==0) {//새글
+		ref=num;
+	} else {//답글
+		//QnA 테이블에 저장된 기존 게시글 정보를 변경하는 DAO 클래스의 메소드 호출
+		// => QnA 테이블의 REF 컬럼값과 부모글의 ref 전달값이 같고 QnA 테이블의 REF_STEP 컬럼값이  
+		//    부모글의 refStep 전달값보다 큰 행의 REF_STEP 컬럼값을 1 증가되도록 변경
+		QnADAO.getDAO().modifyRefStep(ref, refStep);
+		
+		//부모글의 refStep 전달값과 refLevel 전달값 1 증가
+		refStep++;
+		refLevel++;
+		
+	}
+	System.out.println("dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd");
+	
+	//DTO 인스턴스 생성 후 필드값 변경
+	QnADTO QnA=new QnADTO();
+	QnA.setNum(num);//자동 증가값
+	QnA.setTitle(title);//글의 제목
+	QnA.setContent(content);//글의 내용
+	QnA.setCategory(category);//글의 카테고리
+	QnA.setId(loginUser1.getId());//로그인 사용자 아이디
+	QnA.setRef(ref);//새글 : 자동 증가값, 답글 : 부모글 전달값
+	QnA.setRefStep(refStep);//새글 : 0, 답글 : 부모글 전달값 + 1
+	QnA.setRefLevel(refLevel);//새글 : 0, 답글 : 부모글 전달값 + 1
+	QnA.setStatus(status);//일반글 : 0, 비밀글 : 1
+
+	//게시글을 전달하여 QnA 테이블에 저장하는 DAO 클래스의 메소드 호출
+	QnADAO.getDAO().addQnA(QnA);
+	
+	System.out.println("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+	//게시글 목록 출력페이지 이동
+	response.sendRedirect(request.getContextPath()+"/index.jsp?workgroup=board/QnA&work=QnA_list&pageNum="+pageNum);
+%>

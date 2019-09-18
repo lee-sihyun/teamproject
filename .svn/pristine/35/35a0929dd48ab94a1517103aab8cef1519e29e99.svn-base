@@ -1,0 +1,137 @@
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+
+<jsp:include page="/admin/header.jsp"/>
+<link href="css/product_register.css" rel="stylesheet" type="text/css">
+
+			<!--본문내용역역 시작 content로 잡으면 됩니다  -->
+
+			<div id="content">
+				<div class="mTitle">
+					<h1>상품관리</h1>
+				</div>
+				<form action="" method="post" name="eProductSearchForm"
+					id="eProductSearchForm">
+
+					<!--<div class="optionArea" id="QA_list1">
+					
+
+					</div> -->
+					<!-- QA_list1종료 -->
+					<div class="section" id="QA_list2">
+
+
+						<div class="mOption">
+							<table>
+								<tr>
+
+									<th scope="row">상품명</th>
+
+									<td colspan="1">
+										<div id="testfiled">
+
+											<input type="text" class="fTexteSearchText">
+										</div>
+
+									</td>
+								</tr>
+
+
+
+
+
+							</table>
+
+						</div>
+
+						<!-- 검색영역 종료 -->
+						<div class="mButtongCenter">
+							<a href="#none" class="btnSearch"> <span>검색</span>
+
+							</a> <a href="#none" class="btnSearchreset" id="eSearchFormInit">
+
+								<span>초기화</span>
+
+							</a>
+
+
+
+						</div>
+
+						<!-- 표영역 -->
+
+						<div class="mBoardtypeListgScrollgCell">
+
+							<table class="eChkColor">
+								<colgroup>
+									<col class="chk">
+									<col style="width: 250px">
+									<col style="width: 100px">
+									<col style="width: 150px">
+									<col style="width: 150px">
+									<col style="width: 160px">
+									<col style="width: 300px">
+									<col class="date">
+
+								</colgroup>
+								<thead>
+									<tr>
+										<th scope="col"><input type="checkbox" class="allcheck"
+											id="check"></th>
+
+										<th scope="col" id="code">상품코드</th>
+										<th scope="col" id="name">상품명</th>
+										<th scope="col" id="price">상품가격</th>
+										
+										<th scope="col" id="stock">상품재고수량</th>
+										<th scope="col" id="image">상품이미지</th>
+										<th scope="col" id="imagedetail">상품설명</th>
+
+
+
+									</tr>
+
+								</thead>
+						
+
+
+
+
+							</table>
+
+						</div>
+
+						<div class="mCtrltypeFooter">
+							<div class="gLeft">
+								<span class="txtLess">선택상품을 </span> <a href="#none"
+									class="btnNormaldelete">삭제</a> <a href="#none"
+									class="btnNormalmodify">수정</a>
+
+
+
+							</div>
+
+
+						</div>
+
+
+					</div>
+
+
+
+
+				</form>
+
+			</div>
+			<!--content 영역종료 -->
+
+
+		</div>
+		<!-- container 영역종료 -->
+	</div>
+	<!-- wrap영역종료 -->
+
+</body>
+</html>

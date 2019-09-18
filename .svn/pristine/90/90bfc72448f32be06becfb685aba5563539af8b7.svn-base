@@ -1,0 +1,880 @@
+<%@page import="site.itwill.dao.ProductDAO"%>
+<%@page import="site.itwill.dto.ProductDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+	String name=request.getParameter("name");
+	ProductDTO product=ProductDAO.getDAO().getProduct1(name);
+%> 
+<!DOCTYPE html>
+<html lang="ko"><head>
+    <link rel="icon" href="http://www.lush.co.kr/data/common/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/boxslider.css">
+    <link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/gd_reset.css">
+    <link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/gd_common.css">
+    <link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/gd_item-display.css">
+    <link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/gd_goods-view.css">
+    <link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/gd_contents.css">
+    <link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/gd_share.css">
+    <link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/gd_custom.css">
+    <link href="<%=request.getContextPath() %>/resources/slider.css" rel="stylesheet">
+    
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="<%=request.getContextPath() %>/resources/gd_ui.js.다운로드"></script>
+    <script src="<%=request.getContextPath() %>/resources/AceCounter_AW.js.다운로드"></script>
+    <script src="<%=request.getContextPath() %>/resources/ac.js.다운로드"></script>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/resources/jquery.min.js.다운로드"></script>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/resources/underscore-min.js.다운로드"></script>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/resources/jquery.validate.min.js.다운로드"></script>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/resources/additional-methods.min.js.다운로드"></script>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/resources/numeral.min.js.다운로드"></script>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/resources/accounting.min.js.다운로드"></script>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/resources/money.min.js.다운로드"></script>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/resources/chosen.jquery.min.js.다운로드"></script>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/resources/placeholders.jquery.min.js.다운로드"></script>
+    <!--[if gt IE 8]-->
+    <script type="text/javascript" src="<%=request.getContextPath() %>/resources/clipboard.min.js.다운로드"></script>
+    <!--[endif]-->
+    <script type="text/javascript" src="<%=request.getContextPath() %>/resources/jquery.vticker.js.다운로드"></script>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/resources/gd_gettext.js.다운로드"></script>
+
+    <!-- Add script : start -->
+    <script type="text/javascript" src="<%=request.getContextPath() %>/resources/jquery.cookie.js.다운로드"></script>
+    <!-- Add script : end -->
+
+    
+
+    <!--{ ? }-->
+
+    <style type="text/css">
+        body {
+        }
+
+        /* body > #wrap > #top : 상단 영역 */
+        #top {
+        }
+
+        /* body > #wrap > #container : 메인 영역 */
+        #container {
+        }
+
+        /* body > #wrap > #footer : 하단 영역 */
+        #footer {
+        }
+    </style>
+    <!--
+
+
+
+<!--[if lt IE 8]><!-->
+
+<!--<![endif]-->
+<!--
+==============================
+** 웹폰트
+==============================
+-->
+
+<link href="<%=request.getContextPath() %>/resources/product_list.css" rel="stylesheet">
+<link href="<%=request.getContextPath() %>/resources/detail.css" rel="stylesheet">
+	
+</head>
+
+<body class="body-goods body-goods-view pc" ondragstart="return false" onselectstart="return false" oncontextmenu="return false">
+
+<div class="top-area"></div>
+<div id="wrap">
+
+    
+
+
+    <div id="container" class="goodsv_container">
+
+
+        <!-- 본문 시작 : start -->
+        <div id="content">
+<div class="goods-view">
+    <div class="location">
+		<div class="path">
+			<h3 class="dn">현재 위치</h3>
+			<span>홈</span>
+				<div class="navi">
+					<div class="this">
+						<a href="#">러쉬</a>
+						<div>
+							<a href="./goods_list.php?cateCd=001">러쉬</a>
+						</div>
+					</div>
+				</div>
+				<div class="navi">
+					<div class="this">
+						<a href="#">배쓰</a>
+						<div>
+
+							<a href="./goods_list.php?cateCd=001001">배쓰</a>
+							<a href="./goods_list.php?cateCd=001002">샤워</a>
+							<a href="./goods_list.php?cateCd=001003">보디</a>
+						</div>
+					</div>
+				</div>
+				<div class="navi">
+					<div class="this">
+						<a href="#">배쓰 밤</a>
+						<div>
+							<a href="./goods_list.php?cateCd=001001001">배쓰 밤</a>
+							<a href="./goods_list.php?cateCd=001001002">버블 바</a>
+							<a href="./goods_list.php?cateCd=001001003">배쓰 오일</a>
+						</div>
+					</div>
+				</div>
+		</div>
+    </div>
+
+	<form name="team" id="team" method="post">
+	<input type="hidden" name="itemNo" value="<%=product.getItemNo()%>">
+    <div class="goods">
+        <div class="image">
+            <div class="thumbnail">
+                <a href="#zoom-layer" class="zoom-layer-open btn-open-layer" id="mainImage"><img src="<%=request.getContextPath()%>/admin/product_image/<%=product.getImage() %>" width="380" class="middle"></a>
+            </div>
+            <!--<div class="zoom">
+                <a href="#zoom-layer" class="zoom-layer-open btn-open-layer">확대보기</a>
+            </div>-->
+            <div class="more-thumbnail">
+                <div class="slide">
+                    <div class="slider-wrap cycle slider-image-thumbnail slick-initialized slick-slider">
+                        <div aria-live="polite" class="slick-list"><div class="slick-track" role="listbox" style="opacity: 1; width: 80px; transform: translate3d(0px, 0px, 0px);"><span class="swiper-slide slick-slide slick-current slick-active" data-slick-index="0" aria-hidden="false" tabindex="-1" role="option" aria-describedby="slick-slide10" style="width: 80px;"> <a href="javascript:change_image('0','detail');" tabindex="0"><img src="<%=request.getContextPath()%>/admin/product_image/<%=product.getImage() %>" width="68" class="middle"></a></span></div></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+            <div class="info">
+				<div class="info_wrap">
+					<div class="goods-header">
+						<div class="top">
+							<div class="tit">
+								<h2> <%=product.getName() %></h2> 
+							</div>
+						</div>
+					</div>
+					<div class="item">
+						<div>
+							<a href="#reviews"><span class="-moslow"><span class="review_underline">338</span>개의 후기 보기</span></a>
+						</div>
+						<div class="mt10">
+                            <!-- 튜닝 : vegan,sp start -->
+                                Good to Know
+                            <!-- 튜닝 : vegan,sp end -->
+							<span class="toggle_w">
+								<span class="toggle_btn"></span>
+								<div class="toggle_content">
+									<a href="#;" class="toggle_close">닫기</a>
+									<div class="inner">
+									Vegan - 동물성&nbsp;원재료를 전혀 포함하지 않은 제품<br><br>
+									Vegetarian - 우유, 달걀, 꿀 등 동물에게서 고통 없이 얻은 원재료를 포함한 제품<br><br>
+									Suitable for Vegans<br>
+									Suitable for Vegetarians - 베지테리언 소사이어티(Vegetarian Society) 인증을 앞둔 제품<br><br>
+									Self-Preserving - 화학 합성 보존제 없이도 신선함을 유지하는 제품
+									</div>
+								</div>
+							</span>
+							<script>
+								$(document).ready(function(){
+									$('.toggle_btn').click(function(){
+											$('.toggle_content').toggle(); 
+									});
+									$('.toggle_close').click(function(){
+											$('.toggle_content').hide();
+									});  
+									$('.sns > a').click(function(){
+											$('.toggle_content').hide();
+									});  
+								});
+							</script>	
+							 
+						</div>
+
+						<ul>
+							<li class="price ">
+								<strong> 판매가</strong>
+								<div>
+									<strong><%=product.getPrice() %></strong><span>원</span>
+								</div>
+							</li>					
+						</ul>
+					</div>
+
+					<div class="order-goods option_display_area">
+						<div id="option_display_item_0">
+							<div class="check optionKey_0">
+								<span class="name"><!--<strong>섹스 밤</strong>-->구매수량
+									
+									<span id="option_text_display_0"></span>
+								</span>
+
+								<div class="price">
+							
+								<input type=text name=amount value=1> 
+								<input type=button value="증가" onClick="javascript:this.form.amount.value++;"> 
+								<input type=button value="감소" onClick="javascript:this.form.amount.value--;"> 
+							
+
+						<em>
+	<input type="hidden" value="0" name="optionPriceSum[]"> 
+	<input type="hidden" value="0.00" name="option_price_0">￦<strong class="option_price_display_0"><%=product.getPrice() %></strong>
+						</em>
+
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="end-price">
+					
+						<ul>
+							<li class="price">
+								<span>총 제품 금액</span>
+								<strong class="goods_total_price"><%=product.getPrice() %><b></b></strong>
+							</li>
+							<li class="total">
+								<span>총 합계 금액</span>
+								<strong class="total_price"><%=product.getPrice() %><b></b></strong>
+							</li>
+						</ul>
+					</div>
+					<div class="btn">
+ 
+						<a onclick="plusCart();" id="cartBtn" class="skinbtn point1 btn-add-cart"><em>장바구니</em></a>
+						
+						<a onclick="getOrder();" class="skinbtn point2 btn-add-order"><em>주문하기</em></a>
+					</div>
+
+
+					
+
+				</div>
+            </div>
+    </div>
+    </form>
+    
+    
+    
+    <div class="multiple-topics">
+        <div id="detail">
+			<div class="in_width_wrap">
+				<div class="tab">
+					<a href="#detail" class="on">상품상세정보</a><a href="#reviews">상품후기 (338)</a><a href="#delivery">배송/교환 및 반품안내</a>
+				</div>
+			</div>
+
+            <h3>상품상세정보</h3>
+
+
+
+            <div class="image-manual">
+                <!-- 이미지 -->
+            </div>
+            <div class="txt-manual">
+                <!-- 상품상세 공통정보 관리를 상세정보 상단에 노출-->
+                
+                <p align="center" style="text-align: center;">
+                <img src=" <%=request.getContextPath()%>/admin/product_image/<%=product.getImageDetail() %>">
+                <br style="clear:both;">
+                <br style="clear:both;">&nbsp;</p>
+            </div>
+			<div class="related-goods">
+				
+				<div class="item-display type-gallery type-gallery_widget">
+    <div class="list">
+    
+	</div>
+</div>
+<div id="optionViewLayer" class="layer-wrap dn"></div>
+<!-- 장바구니 담기 레이어 -->
+<div id="addCartLayer" class="layer-wrap dn">
+    <div class="box add-cart-layer">
+        <div class="view">
+           <!--  <h2>장바구니 담기</h2> -->
+            <div class="scroll-box">
+                <p class="success"><strong>상품이 장바구니에 담겼습니다.</strong> 바로 확인하시겠습니까?</p>
+            </div>
+            <div class="btn">
+                <button class="btnicon btn_wt btn_m w160  layer-cartaddcancel btn-close" style="margin-right:20px;"><em>취소</em></button>
+                <button class="btnicon btn_bk btn_m w160  layer-cart-btn layer-cartaddconfirm"><em>확인</em></button>
+            </div>
+            <button title="닫기" class="close" type="button">닫기</button>
+        </div>
+    </div>
+</div>
+<!--//장바구니 담기 레이어 -->
+
+<!-- 찜리스트 레이어 -->
+<div id="addWishLayer" class="layer-wrap dn">
+	<div class="box add-wish-layer">
+		<div class="view">
+			<!-- <h2>찜 리스트 담기</h2> -->
+			<div class="scroll-box">
+				<p class="success"><strong>상품이 찜 리스트에 담겼습니다.</strong> 바로 확인하시겠습니까?</p>
+			</div>
+			<div class="btn">
+				<button class="btnicon btn_wt btn_m w160 layer-wishaddcancel btn-close" style="margin-right:20px;"><em>취소</em></button>
+				<button class="btnicon btn_bk btn_m w160 layer-wish-btn layer-wishaddconfirm"><em>확인</em></button>
+			</div>
+			<button title="닫기" class="close" type="button">닫기</button>
+		</div>
+	</div>
+</div>
+<!--//찜리스트 레이어 -->
+
+
+<form id="frmCartTemplateView" method="post">
+    <input type="hidden" name="mode" value="get_benefit">
+    <input type="hidden" name="cartMode" value="">
+	<input type="hidden" name="optionFl" value="n">
+</form>
+
+<form id="frmWishTemplateView" method="post">
+	<input type="hidden" name="mode" value="get_benefit">
+	<input type="hidden" name="cartMode" value="">
+	<input type="hidden" name="optionFl" value="">
+</form>
+
+
+<script type="text/javascript">
+	function plusCart() {
+		var amount=team.amount.value;
+		$("#team").attr("action","<%=request.getContextPath() %>/cart/cart_add_action2.jsp?itemNo=<%=product.getItemNo()%>&amount="+amount);
+		$("#team").submit();
+	}
+	
+	function getOrder() {
+		var amount=team.amount.value;
+		$("#team").attr("action","<%=request.getContextPath() %>/cart/cart_add_action.jsp?itemNo=<%=product.getItemNo()%>&amount="+amount);
+		$("#team").submit();
+	}
+    <!--
+
+    // DOM 로드
+    $(document).ready(function(){
+
+        //찜하기
+		$('.thumbnail').on('click', '.btn-add-wishwidget', function(){
+
+			alert("로그인하셔야 본 서비스를 이용하실 수 있습니다.");
+			document.location.href = "../member/login.php";
+			return false;
+		});
+
+        //찜하기
+
+        $('.thumbnail').on('click', '.btn-add-cartwidget', function(){
+            if($(this).data('mode') == 'cartIn') {
+                var params = {
+                    page: 'goods',
+                    type: 'goods',
+                    goodsNo: $(this).data('goods-no')
+                };
+
+                $.ajax({
+                    method: "POST",
+                    cache: false,
+                    url: "../goods/layer_option.php",
+                    data: params,
+                    success: function (data) {
+                        $('#optionViewLayer').empty().append(data);
+                        $('#optionViewLayer').find('>div').center();
+                    },
+                    error: function (data) {
+                        //alert(data.message);
+
+                    }
+                });
+            }
+
+        });
+
+        $('.layer-cartaddconfirm').click(function(){
+			location.href = '../order/cart.php';
+        });
+
+		$('.layer-wishaddconfirm').click(function(){
+			location.href = '../mypage/wish_list.php';
+		});
+
+		/*$('.layer-cartaddcancel').click(function(){
+			location.reload();
+		});*/ // 장바구니 새로고침 추가
+    });
+
+
+    function goods_option_view_result(params) {
+
+        params += "&mode=cartIn";
+
+        var url = "../order/cart_ps.php";
+
+        $.ajax({
+            method: "POST",
+            cache: false,
+            url: url,
+            data: params,
+            success: function (data) {
+
+                $("#optionViewLayer").addClass('dn');
+                $("#addCartLayer").removeClass('dn');
+                $('#layerDim').removeClass('dn');
+                $("#addCartLayer").find('> div').center();
+
+            },
+            error: function (data) {
+                //alert(data.message);
+
+            }
+        });
+
+    }
+
+    //-->
+</script>
+					<!-- 추천상품 -->
+				</div>
+
+			</div>
+		<div id="reviews">
+			<div class="in_width_wrap">
+				<div class="tab">
+					<a href="#detail">상품상세정보</a><a href="#reviews" class="on">상품후기(338)</a><a href="#delivery">배송/교환 및 반품안내</a> 
+				</div>
+				<div class="top-reviews"> 
+					<div class="tit">
+						<h3>Product Reviews
+							<span class="star">
+★★★★                            </span>
+							<span class="reviewCount">
+							338
+							</span>
+						</h3>
+						<p>나만의 꿀팁이나 제품을 사용하는 생생한 모습을 보여주세요!</p>
+					</div>
+					<div class="btn">
+						<a href="javascript:openWriteLayer('goodsreview','41')" class="skinbtn point2 gv-reviewwrite"><em>후기작성</em></a>
+						<!-- <a href="../board/list.php?bdId=goodsreview" class="skinbtn point1 gv-reviewlist"><em>전체보기</em></a> -->
+					</div>
+				</div>
+				<div>
+
+<div class="section m2">
+    
+</div>
+
+
+				</div>
+	            <div id="ajax-goods-goodsreview-list"></div> 
+			</div>         
+           
+     </div>
+							
+
+           <div class="tab">
+					<a href="#detail">상품상세정보</a><a href="#reviews" >상품후기(338)</a><a href="#delivery" class="on">배송/교환 및 반품안내</a> 
+				</div>
+        </div>
+        <div id="delivery">
+			<div class="in_width_wrap">
+				<h3>배송안내</h3>
+				<div class="admin-msg"><p><span style="color: rgb(134, 134, 134); font-family: 나눔고딕, NanumGothic; font-size: 9pt;">■&nbsp;</span><span style="font-family: 나눔고딕, NanumGothic; font-size: 9pt;">배송비&nbsp;:&nbsp;기본배송료는&nbsp;2,500원&nbsp;입니다.&nbsp;(도서,산간,오지&nbsp;일부지역은&nbsp;배송비가&nbsp;추가될&nbsp;수&nbsp;있습니다)&nbsp; 회원가입 후&nbsp;30,000원&nbsp;이상&nbsp;구매시&nbsp;무료배송입니다.</span></p><p><span style="color: rgb(134, 134, 134); font-family: 나눔고딕, NanumGothic; font-size: 9pt;">■</span><span style="font-family: 나눔고딕, NanumGothic; font-size: 9pt;">&nbsp;택배사 : 우체국 택배를 이용합니다. </span></p><p><span style="color: rgb(134, 134, 134); font-family: 나눔고딕, NanumGothic; font-size: 9pt;">■&nbsp;</span><span style="font-family: 나눔고딕, NanumGothic; font-size: 9pt;">배송가능지역 : 국내 배송, 해외 배송은 불가 합니다.</span></p><p><span style="font-family: 나눔고딕, NanumGothic; font-size: 9pt;"><span style="color: rgb(134, 134, 134); font-family: 나눔고딕, NanumGothic; font-size: 9pt;">■</span><span style="font-family: 나눔고딕, NanumGothic; font-size: 9pt;">&nbsp;묶음 배송 : 여러 주문번호로 주문하더라도 동일 주문자, 수령인, 주소, 연락처가 기재되어 있다면 묶음 배송 됩니다. 묶음 배송을 원치 않으신다면&nbsp;고객센터로 연락 부탁드립니다.</span><br><span style="font-family: 나눔고딕, NanumGothic; font-size: 9pt;">* 비회원 주문건의 경우 묶음배송이 진행되지 않습니다.&nbsp;</span><br><span style="color: rgb(134, 134, 134); font-family: 나눔고딕, NanumGothic;"></span><span style="font-family: 나눔고딕, NanumGothic; font-size: 10pt;">&nbsp;</span></span></p></div>
+			</div>
+        
+			<div class="in_width_wrap">
+            <h3>교환 및 반품안내</h3>
+            <div class="admin-msg">
+                <p>&nbsp;</p>
+            </div>
+            </div>
+			<div class="in_width_wrap">
+            <h3>환불안내</h3>
+            <div class="admin-msg">
+                <p><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;"><span style="color: rgb(134, 134, 134);">■&nbsp;</span>전국 러쉬 매장에서 구매한 경우&nbsp;</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">상품 및 서비스를 공급 받으신 날로부터 14일 이내 가능하며, 미 개봉 제품만 가능합니다.</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">구매 영수증 및 결제수단(신용카드인 경우 결제한 카드)을 지참하여 구입처로 방문 바랍니다.</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><br><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;"><span style="color: rgb(134, 134, 134);">■&nbsp;</span>홈페이지에서 구매한 경우&nbsp;</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">러쉬코리아 홈페이지에서 구매한 제품은 홈페이지를 통해서만 교환이 가능합니다.</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">고객님의 변심에 의한 반품인 경우 상품 및 서비스를 공급 받은 날로부터 7일 이내 가능하며, 미 개봉 제품만 가능합니다.</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">고객센터(1644-2357)로 반품 접수를 받고 있으며,&nbsp;</span><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">지정 택배사를 이용하여 상품 회수 후 교환/반품 여부에 관한 안내가 이루어집니다.&nbsp;</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">*고객변심으로 인한 교환시 초도 택배 비용을 포함한 반품 택배 비용이 부과됩니다.&nbsp;</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">*상품결함으로 인한 교환의 경우 러쉬코리아에서 택배비용을 부담합니다.</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">*택배 비용은 무통장 입금을 통해서만 결제 가능합니다.</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">*교환 상품에 증정 제품이 있는 경우, 증정 제품도 함깨 반품하여야 교환이 진행됩니다.</span><br style="color: rgb(134, 134, 134); font-family: dotum, gulim, sans-serif;"><span style="color: rgb(37, 37, 37); font-family: 나눔고딕, NanumGothic;">* 프레쉬 마스크를 포함하여 냉장배송을 받은 제품은 교환이 불가합니다.&nbsp;</span><span style="font-family: 나눔고딕, NanumGothic;">&nbsp;</span>&nbsp;</p>
+            </div>
+			</div>
+			<div class="in_width_wrap">
+            <h3>AS안내</h3>
+            <div class="admin-msg">
+                <p><span style="font-size: 10pt; font-family: 나눔고딕, NanumGothic;">﻿고객센터 1644-2357</span>&nbsp;</p>
+            </div>
+            </div>
+
+			
+			<div class="in_width_wrap">
+            <h3>상품필수 정보</h3>
+            <table class="type-col " cellspacing="0" border="1" style="margin-top:50px;">
+                <colgroup>
+                    <col width="20%">
+                    <col>
+                </colgroup>
+                <tbody>
+                <tr>
+                    <th style="width:20%">
+                        사용 방법
+                    </th>
+                    <td colspan="3" style="width:80%">욕조속에 풍덩, 알록달록 배쓰밤에 듬뿍 담긴 섬세한 오일과 매혹적인 향기는 당신을 행복의 나라로 데려다줄 거예요.</td>
+                </tr>
+                <tr>
+                    <th style="width:20%">
+                        보관 시 유의사항
+                    </th>
+                    <td colspan="3" style="width:80%">물기와 직사광선을 피해 서늘한 곳에 보관해 주세요.</td>
+                </tr>
+                <tr>
+                    <th style="width:20%">
+                        사용상의 주의사항
+                    </th>
+                    <td colspan="3" style="width:80%">1. 화장품 사용 시 또는 직사광선에 의하여 사용부위가 붉은 반점, 부어오름, 가려움증 등의 이상 증상이나 부작용 우려 등이 있는 경우 전문의 등과 상담할 것  2. 상처가 있는 부위 등에는 사용을 자제할 것  3. 보관 및 취급 시의 주의사항  가) 어린이의 손이 닿지 않는 곳에 보관할 것  나) 직사광선을 피해서 보관할 것  본 제품은 사용 및 보관 시 이염 가능성이 있습니다.  4. 러쉬의 모든 제품은 손으로 직접 만드는 특성상 보이는 이미지와 제품의 모양 또는 색상이 상이할 수 있습니다.</td>
+                </tr>
+                <tr>
+                    <th style="width:20%">
+                        제조일 및 사용기한
+                    </th>
+                    <td colspan="3" style="width:80%">이 제품의 최적의 사용기한은 제조일자로부터 14개월입니다.  당사의 쇼핑몰에서는 제조년월일이 가장 빠른 상품부터 선출고 진행되고 있으며,  제품의 입출고가 빈번하여 온라인상에 상세 제조년월일 기재가 어려운 점 양해 바랍니다. 수령하신 상품에 부착된 라벨에 제조일자가 년/월/일의 순으로 기재되어 개별 확인이 가능합니다. 추가 문의는 고객센터 1644-2357로 문의주시면 상세히 안내 드리겠습니다.</td>
+                </tr>
+                <tr>
+                    <th style="width:20%">
+                        기능성 제품 식약청 심사 필 유무
+                    </th>
+                    <td colspan="3" style="width:80%">식품의약품안전처 심사 대상 아님</td>
+                </tr>
+                <tr>
+                    <th style="width:20%">
+                        품질 보증 기준
+                    </th>
+                    <td colspan="3" style="width:80%">공정거래위원회 고시 소비자분쟁해결기준에 의거 교환 또는 보상 받을 수 있습니다</td>
+                </tr>
+                <tr>
+                    <th style="width:20%">
+                        제조국 / 제조 판매업자
+                    </th>
+                    <td colspan="3" style="width:80%">- 제조원: LUSH JAPAN CO.,LTD. 4027-3, NAKATSU, AIKAWA, AIKO, KANAGAWA, JAPAN - 제조판매업자: ㈜ 러쉬코리아 서울특별시 서초구 서운로 138  www.lush.co.kr</td>
+                </tr>
+                <tr>
+                    <th style="width:20%">
+                        전성분
+                    </th>
+                    <td colspan="3" style="width:80%">상세페이지 참조</td>
+                </tr>
+                <tr>
+                    <th style="width:20%">
+                        용량 또는 중량
+                    </th>
+                    <td colspan="3" style="width:80%">200g</td>
+                </tr>
+                <tr>
+                    <th style="width:20%">
+                        제품 주요 사양
+                    </th>
+                    <td colspan="3" style="width:80%">모든 피부용</td>
+                </tr>
+
+                </tbody>
+			</table>
+			</div>
+        </div>
+        
+        <div id="qna" style="display: none;">
+		<div class="in_width_wrap">
+            <div class="tab">
+				<a href="#detail">상품상세정보</a><a href="#reviews">상품후기(338)</a><a href="#delivery">배송/교환 및 반품안내</a>
+			</div>
+            <div class="top-reviews">
+                <div class="tit">
+                    <h3>상품Q&amp;A</h3>
+                    <p>상품에 대한 문의를 남겨주세요. 게시판의 성격과 다른 글은 임의로 삭제되거나 다른 게시판으로 이동될 수 있습니다.</p>
+                </div>
+				<div class="btn">
+					<a href="javascript:openWriteLayer('goodsqa','41')" class="skinbtn point2 gv-qnawrite"><em>상품문의</em></a>
+					<!-- <a href="../board/list.php?bdId=goodsqa" class="skinbtn point1 gv-qnalist"><em>전체보기</em></a> -->
+				</div>
+            </div>
+            11
+            <div id="ajax-goods-goodsqa-list"></div>
+            
+        </div>
+		</div>
+    </div>
+
+    <!-- 확대보기 레이어 -->
+    <div id="zoom-layer" class="layer-wrap dn">
+        <div class="wrap">
+            <div class="ctt">
+                <div class="txt">
+                    <h4>이미지 확대보기</h4>
+                    <p>섹스 밤</p>
+                </div>
+                <div class="view">
+                    <div class="detail" id="magnifyImage">
+                        <img src="<%=request.getContextPath() %>/resources/섹스밤확대이미지.jpg" width="500" alt="섹스 밤" title="섹스 밤" class="middle">
+                    </div>
+                    <div class="list">
+                        <div class="slide">
+                            <div class="slider-image-magnify slick-initialized slick-slider slick-vertical">
+                                <div aria-live="polite" class="slick-list" style="height: 500px;"><div class="slick-track" role="listbox" style="opacity: 1; height: 100px; transform: translate3d(0px, 0px, 0px);"><div class="swiper-slide slick-slide slick-current slick-active" data-slick-index="0" aria-hidden="false" tabindex="-1" role="option" aria-describedby="slick-slide00" style="width: 0px;"> <a href="javascript:change_image('0','magnify');" tabindex="0"><img src="<%=request.getContextPath() %>/resources/섹스밤확대이미지.jpg" width="68" alt="섹스 밤" title="섹스 밤" class="middle"></a></div></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="close" title="닫기">닫기</button>
+            </div>
+        </div>
+    </div>
+    <!-- //확대보기 레이어 -->
+</div>
+<hr>
+
+<!-- 비밀글 클릭시 인증 레이어 -->
+<div class="cite-layer dn js-password-layer">
+    <div class="wrap">
+        <h4>비밀번호 인증</h4>
+        <div>
+            <p>글 작성시 설정한 비밀번호를 입력해 주세요.</p>
+            <input type="password" name="writerPw" class="text" autocomplete="off">
+            <a href="javascript:void(0)" class="skinbtn base2 gv-layerciteconfirm  js-submit"><em>확인</em></a>
+        </div>
+        <button type="button" class="close" title="닫기">닫기</button>
+    </div>
+</div>
+<!-- //비밀글 클릭시 인증 레이어 -->
+<!-- 쿠폰 다운받기 레이어 -->
+<div id="couponDownLayer" class="layer-wrap dn"></div>
+<!--//쿠폰 다운받기 레이어 -->
+<!-- 쿠폰 적용하기 레이어 -->
+<div id="couponApplyLayer" class="layer-wrap dn"></div>
+<!--//쿠폰 적용하기 레이어 -->
+<div id="writePop" class="layer-wrap write-pop dn"></div>
+
+<!-- 장바구니 담기 레이어 -->
+<div id="addCartLayer" class="layer-wrap dn">
+    <div class="box add-cart-layer">
+        <div class="view">
+            <!-- <h2>장바구니 담기</h2> -->
+            <div class="scroll-box">
+                <p class="success"><strong> 장바구니에 담겼습니다.</strong> 바로 확인하시겠습니까?</p>
+            </div>
+            <div class="btn">
+                <button class="btnicon btn_wt btn_m w160 layer-cartaddcancel btn-close" style="margin-right:20px;"><em>취소하기</em></button>
+                <button class="btnicon btn_bk btn_m w160 layer-cartaddconfirm layer-cart-btn"><em>확인하기</em></button>
+            </div>
+            <button title="닫기" class="close" type="button">닫기</button>
+        </div>
+    </div>
+</div>
+<!--//장바구니 담기 레이어 -->
+
+<script>
+    $(function () {
+        $('input.js-number').one('keyup', function (e) {
+            $(this).number_only();
+        });
+    });
+
+    (function($){
+        $.fn.number_only = function(stringLength, maxNum, defaultNum) {
+            /* 숫자만입력. sj */
+            var onlyDigit = false;
+            for(var i = 0; i < arguments.length; i++) {
+                if (arguments[i] == 'd') {
+                    onlyDigit = true;
+                    break;
+                }
+            }
+            return this.each(function() {
+                $(this).keydown(function(event){
+                    // 숫자만입력. sj
+                    return (keyCodeObj[event.keyCode] && (!onlyDigit || (onlyDigit && $.inArray(event.keyCode, [188, 109, 189, 110, 190]) == -1))) ? true : false;
+//				return keyCodeObj[event.keyCode] ? true : false;
+                });
+                $(this).keyup(function(event){
+                    // 해당 input text 에 기 작성된 숫자와 입력된 숫자를 비교
+                    var oldText	= $(this).val();
+                    // 숫자만입력. sj
+                    var newText	= (!onlyDigit)? oldText.replace(/[^0-9,.-]+/g,"") : oldText.replace(/[^0-9]+/g,"");
+//				var newText	= oldText.replace(/[^0-9,.-]+/g,"");
+                    if(stringLength > 0 && newText.length > stringLength){
+                        newText	= newText.substr(0,stringLength);
+                    }
+                    var chkText	= parseInt(newText.replace(/[,]+/g,""));
+                    if (chkText > maxNum) {
+                        if (defaultNum) {
+                            newText	= defaultNum;
+                        } else {
+                            newText	= 0;
+                        }
+                    }
+                    // 비교후 동일하지 않은 경우 제한 새로운 숫자로 갱신 (탭으로 이동시 블럭 해제도 해결)
+                    if (oldText != newText) {
+                        $(this).val(newText);
+                    }
+                });
+                $(this).trigger('keyup');
+            });
+        };
+
+        var keyCodeObj = {
+            8	: 'Backspace',
+            9	: 'Tab',
+            13	: 'Enter',
+            17	: 'Ctrl',
+            16	: 'Shift',
+            35	: 'End',
+            36	: 'home',
+            37	: 'Left Arrow',
+            39	: 'Right Arrow',
+            46	: 'Delete',
+            48	: '0 - 키보드',
+            49	: '1 - 키보드',
+            50	: '2 - 키보드',
+            51	: '3 - 키보드',
+            52	: '4 - 키보드',
+            53	: '5 - 키보드',
+            54	: '6 - 키보드',
+            55	: '7 - 키보드',
+            56	: '8 - 키보드',
+            57	: '9 - 키보드',
+            96	: '0 - 키패드',
+            97	: '1 - 키패드',
+            98	: '2 - 키패드',
+            99	: '3 - 키패드',
+            100	: '4 - 키패드',
+            101	: '5 - 키패드',
+            102	: '6 - 키패드',
+            103	: '7 - 키패드',
+            104	: '8 - 키패드',
+            105	: '9 - 키패드',
+            67	: 'C , Ctrl + C',
+            86	: 'V , Ctrl + V',
+            188	: ',',
+            109	: '- - 키패드',
+            189	: '- - 키보드',
+            110	: '. - 키패드',
+            190	: '. - 키보드'
+        };
+    })(jQuery);
+
+</script>
+
+
+
+<!-- ACE_Trader_Script : Start -->
+<script type="text/javascript" src="//static.tagmanager.toast.com/tag/view/1328"></script>
+<script type="text/javascript">
+ window.ne_tgm_q = window.ne_tgm_q || [];
+ window.ne_tgm_q.push(
+ {
+     tagType: 'detail',
+     device:'web'/*web, mobile, tablet*/,
+     uniqValue:'',
+     pageEncoding:'utf-8',
+     items : [{
+         id: "41"/*ID값입력*/,
+         price:"12000"/*가격정보입력*/,
+         quantity:"1"/*갯수정보입력*/,
+         category:""/*카테고리 대|중|소*/,
+         imgUrl:""/*img링크값입력 ex)http://example.com/img/img.jpg*/,
+         name:"섹스 밤"/*제품명또는 전환메뉴명입력*/,
+         desc:""/*상품상세 설명 text*/,
+         link:"http://www.lush.co.kr/goods/goods_view.php?goodsNo=41"/*상품상세페이지 URL ex)http://example.com/detail/product.html*/
+     }]
+ });
+ </script>
+
+<!-- ACE_Trader_Script : End -->
+
+</div>
+        <!-- 본문 끝 : end -->
+
+    </div>
+
+    
+
+	
+
+
+
+	
+	<div id="quick">
+
+		<!-- 좌측 스크롤 배너 : start -->
+		<div id="quickL" class="-moslow">
+			<div class="wing fix" style="top: 120px;">
+<strong class="dn">광고</strong>
+
+			</div>
+		</div>
+		<!-- 좌측 스크롤 배너 : end -->
+
+	</div>
+	<!--//퀵메뉴-->
+
+
+
+</div>
+
+
+<!-- 외부 스크립트 -->
+<!-- 테라스크립트 공통 하단 - 관리자 - 외부스크립트  -->
+<!-- 공통 호출 하단 스크립트 : 모든페이지 하단 설치 -->
+<!-- PlayD TERA Log Script v1.1 -->
+<script>
+var _nSA=(function(_g,_c,_s,_p,_d,_i,_h){ 
+ if(_i.wgc!=_g){var _ck=(new Image(0,0)).src=_p+'//'+_c+'/?cookie';_i.wgc=_g;_i.wrd=(new Date().getTime());
+ var _sc=_d.createElement('script');_sc.src=_p+'//sas.nsm-corp.com/'+_s+'gc='+_g+'&rd='+_i.wrd;
+ var _sm=_d.getElementsByTagName('script')[0];_sm.parentNode.insertBefore(_sc, _sm);_i.wgd=_c;} return _i;
+})('TR10071603419','ngc1.nsm-corp.com','sa-w.js?',location.protocol,document,window._nSA||{},location.hostname);
+</script><noscript><img src="//ngc1.nsm-corp.com/?uid=TR10071603419&je=n&" border=0 width=0 height=0></noscript>
+<!-- LogAnalytics Script Install -->
+
+<!-- AceCounter Log Gathering Script V.7.5.AMZ2017020801 -->
+<noscript><img src='http://gtc12.acecounter.com:8080/?uid=AS4A43152575411&je=n&' border='0' width='0' height='0' alt=''></noscript>
+<!-- AceCounter Log Gathering Script End -->
+
+<!-- 뷰저블 : Start -->
+<script type="text/javascript">
+(function(w, d, a){
+	w.__beusablerumclient__ = {
+		load : function(src){
+			var b = d.createElement("script");
+			b.src = src; b.async=true; b.type = "text/javascript";
+			d.getElementsByTagName("head")[0].appendChild(b);
+		}
+	};w.__beusablerumclient__.load(a);
+})(window, document, '//rum.beusable.net/script/b170409e144350u776/7af4e74b9f');
+</script>
+<!-- 뷰저블 : End -->
+<!-- ACE_Trader_Script : Start -->
+<script type="text/javascript" src="//static.tagmanager.toast.com/tag/view/1328"></script>
+<script type="text/javascript">
+ window.ne_tgm_q = window.ne_tgm_q || [];
+ window.ne_tgm_q.push(
+ {
+ 	tagType: 'visit',
+ 	device:'web'/*web, mobile, tablet*/,
+ 	uniqValue:'',
+ 	pageEncoding:'utf-8'
+ });
+ </script><iframe id="ne_tgmiframe_1" width="0" height="0" style="position:absolute;width:0px;height:0px;display:none;" src="about:blank"></iframe>
+<!-- ACE_Trader_Script : End -->
+
+
+
+<style>
+.plusreview-container .reward{display:none;}
+.plusreview-container .write-form{display:none;}
+</style></body></html>

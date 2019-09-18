@@ -1,0 +1,112 @@
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="site.itwill.dao.ProductDAO"%>
+<%@page import="site.itwill.dto.ProductDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+
+int num=Integer.parseInt(request.getParameter("num"));
+String pageNum=request.getParameter("pageNum");
+String search=request.getParameter("search");
+String keyword=request.getParameter("keyword");
+
+
+
+ProductDTO product=ProductDAO.getDAO().getProduct(num);
+
+	
+%>
+
+<h2>제품상세정보</h2>
+<table style="
+    padding-left: 500px;">
+
+	<tr>
+		<td class="title">카테고리-대분류</td>
+		<td class="value"><%=product.getMainCategory()%></td>
+	</tr>
+
+	<tr>
+		<td class="title">카테고리-소분류</td>
+		<td class="value"><%=product.getSubCategory()%></td>
+	</tr>
+
+
+	<tr>
+		<td class="title">상품코드</td>
+		<td class="value"><%=product.getItemNo()%></td>
+	</tr>
+
+	<tr>
+		<td class="title">제품수량</td>
+		<td class="value"><%=DecimalFormat.getInstance().format(product.getStock())%></td>
+	</tr>
+
+
+
+	<tr>
+		<td class="title">제품가격</td>
+		<td class="value"><%=DecimalFormat.getCurrencyInstance().format(product.getPrice())%></td>
+	</tr>
+
+
+	<tr>
+
+		<td class="title">제품이름</td>
+		<td class="value"><%=product.getName()%></td>
+	</tr>
+	<tr>
+		<td class="title">제품이미지</td>
+		<td class="value"><img
+			src="<%=request.getContextPath()%>/admin/product_image/<%=product.getImage()%>"
+			width="200"></td>
+	</tr>
+
+
+	<tr>
+		<td class="title">제품상세설명</td>
+		<td class="value"><img
+			src="<%=request.getContextPath()%>/admin/product_image/<%=product.getImageDetail()%>"
+			width="200"></td>
+	</tr>
+
+
+
+</table>
+
+<div id="board_menu" style="
+    padding-left: 500px;">
+
+	<div>
+		<button type="button" id="removeBtn">글삭제</button>
+		<button type="button" id="modifyBtn">글변경</button>
+		<button type="button" id="listBtn">게시글목록</button>
+	</div>
+</div>
+
+<form id="boardForm" method="post">
+	<input type="hidden" name="num" value="<%=num%>">
+	<input type="hidden" name="pageNum" value="<%=pageNum%>">
+	<input type="hidden" name="search" value="<%=search%>">
+	<input type="hidden" name="keyword" value="<%=keyword%>">
+</form>
+
+<script type="text/javascript">
+$("#removeBtn").click(function() {
+	if(confirm("정말로 삭제 하시겠습니까?")) {
+		$("#boardForm").attr("action", "<%=request.getContextPath()%>/admin/product/product_remove_action.jsp");
+		$("#boardForm").submit();
+	}
+});
+
+$("#modifyBtn").click(function() {
+	$("#boardForm").attr("action", "<%=request.getContextPath()%>/admin/index.jsp?workgroup=product&work=product_modify");
+	$("#boardForm").submit();
+});
+
+
+$("#listBtn").click(function() {
+	$("#boardForm").attr("action", "<%=request.getContextPath()%>/admin/index.jsp?workgroup=product&work=product_list");
+	$("#boardForm").submit();
+});
+
+</script>

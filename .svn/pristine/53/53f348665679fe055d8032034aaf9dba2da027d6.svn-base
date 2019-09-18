@@ -1,0 +1,87 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+    String message=(String)session.getAttribute("message");
+    if(message== null){
+        message="";
+    } else {
+        session.removeAttribute("message");
+    }
+    
+    String id=(String)session.getAttribute("id");
+    if(id==null) {
+        id="";
+    } else {
+        session.removeAttribute("id");
+    }
+
+%>
+
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">;
+<style type="text/css">
+
+#content {
+    margin: 50px auto; 
+    width: 800px;
+    padding: 0px 0px 50px;
+}
+
+.member {
+    width: 650px;
+    padding: 50px;
+    text-align: center;
+}
+
+
+</style>
+<div id="content">
+   <div class="member">
+   <h2>로그인</h2>
+       <ul id="user">
+                <li id="user">회원</li> &nbsp;&nbsp;&nbsp;&nbsp;
+                <li id="user">비회원</li>
+       </ul>
+   </div>
+   <div class="member">
+       <form id="login" name="loginForm" action="<%=request.getContextPath() %>/lushuser/login_action.jsp" method="post">
+        <div id="login">
+            <div id="id_login">
+                <input type="text" id="id" name="id" placeholder="아이디" required>
+            </div>
+            <div id="pw_login">
+                <input type="password" id="pass" name="pass"  placeholder="비밀번호" required>
+            </div>
+        <div>
+            <input type="checkbox" id="checkbox">
+            <label>아이디 저장</label>
+        </div>
+        <div>
+            <button type="submit"> 로그인 </button>
+        </div>
+        <div id="login_menu">
+            <button type="submit" id="new_id">회원가입</button>
+            <button type="submit" id="find_id">아이디 찾기</button>
+            <button type="submit" id="find_pw">비밀번호 찾기</button>
+        </div>
+        </div>
+       </form>
+   </div>
+</div>
+
+
+<script type="text/javascript">
+$("#new_id").click(function() {
+	location.href="<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=insertUser";
+});
+
+$("#find_id").click(function() {
+    location.href="<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=findUser";
+});
+
+$("#find_pw").click(function() {
+    location.href="<%=request.getContextPath() %>/index.jsp?workgroup=lushuser&work=findPass";
+});
+
+
+
+</script>

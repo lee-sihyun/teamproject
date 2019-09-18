@@ -1,0 +1,50 @@
+<%@page import="site.itwill.utill.Utility"%>
+<%@page import="site.itwill.dto.FAQDTO"%>
+<%@page import="site.itwill.dao.FAQDAO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+	//비정상적인 요청에 대한 응답 처리
+
+	if(request.getMethod().equals("GET")) {
+		response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+		return;
+	}
+
+	//POST 방식으로 요청되어 전달된 값에 대한 캐릭터셋 변경
+	request.setCharacterEncoding("UTF-8");
+
+	//전달된 입력값을 반환받아 저장
+	String pageNum=request.getParameter("pageNum");
+	String title=Utility.stripTag(request.getParameter("title"));
+	String content=Utility.stripTag(request.getParameter("content"));	
+	String category=request.getParameter("category");
+	
+
+	
+	int num=FAQDAO.getDAO().getFAQNum();
+
+
+
+
+	
+	
+	FAQDTO FAQ=new FAQDTO();
+	FAQ.setNum(num);
+	FAQ.setTitle(title);
+	FAQ.setContent(content);
+	FAQ.setCategory(category);
+
+
+	
+	//게시글을 전달하여 BOARD 테이블에 저장하는 DAO 클래스의 메소드 호출
+
+	
+
+	
+	FAQDAO.getDAO().addFAQ(FAQ);
+	
+	
+	//게시글 목록 출력페이지 이동
+	response.sendRedirect(request.getContextPath()+"/admin/index.jsp?workgroup=board&work=faq_list");
+%>

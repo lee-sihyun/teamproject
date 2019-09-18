@@ -1,0 +1,246 @@
+package site.itwill.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import site.itwill.dto.ReviewDTO;
+import site.itwill.dto.noticeDTO;
+import site.itwill.dto.ReviewDTO;
+import site.itwill.dto.ReviewDTO;
+
+public class ReviewDAO extends JdbcDAO {
+	private static ReviewDAO _dao;
+
+	public ReviewDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	static {
+		_dao = new ReviewDAO();
+	}
+
+	public static ReviewDAO getDAO() {
+		return _dao;
+	}
+	
+		//검색대상과 검색키워드를 전달받아 Review 테이블에 저장된 검색키워드 게시글의 갯수를 검색하여 반환하는 메소드
+		// => 검색대상이 없는 경우 Review 테이블에 저장된 전체 게시글의 갯수를 검색하여 반환하는 메소드
+		public int getReviewTotal(String search, String keyword) {
+			Connection con=null;
+			PreparedStatement pstmt=null;
+			ResultSet rs=null;
+			int rows=0;
+			try {
+				con=getConnection();
+				
+				//메소드의 파라메터에 전달된 값에 따라 다른 SQL   
+				//명령을 저장하여 전달되도록 설정 - 동적 SQL
+				if(keyword.equals("")) {//검색 기능 미사용
+					String sql="select count(*) from Review";
+					pstmt=con.prepareStatement(sql);
+				} else {//검색 기능 사용
+					//컬럼명을 저장한 Java 변수는 InParameter로 사용 불가능
+					String sql="select count(*) from Review where "+search+" like '%'||?||'%'";
+					pstmt=con.prepareStatement(sql);
+					pstmt.setString(1, keyword);
+				}
+				
+				rs=pstmt.executeQuery();
+				
+				if(rs.next()) {
+					rows=rs.getInt(1);
+				}
+			} catch (SQLException e) {
+				System.out.println("[에러]getReviewTotal() 메소드의 SQL 오류 = "+e.getMessage());
+			} finally {
+				close(con, pstmt, rs);
+			}
+			return rows;
+		}
+		
+		//시작 행번호와 종료 행번호를 전달받아 Review 테이블에 저장된 게시글 목록을 페이지 단위로 검색하여 반환하는 메소드
+		// => 테이블에 저장된 행에 대한 페이징 처리
+		public List<ReviewDTO> getReviewList(int startRow, int endRow, String search, String keyword) {
+			Connection con=null;
+			PreparedStatement pstmt=null;
+			ResultSet rs=null;
+			List<ReviewDTO> ReviewList=new ArrayList<ReviewDTO>();
+			try {
+				con=getConnection();
+			
+				if(keyword.equals("")) {	
+					String sql="select * from (select rownum rn, temp.* from (select * from REVIEW order by num desc) temp) where rn between ? and ?";
+					pstmt=con.prepareStatement(sql);
+					pstmt.setInt(1, startRow);
+					pstmt.setInt(2, endRow);
+				} else {
+					String sql="select * from (select rownum rn, temp.* from (select * from REVIEW where "
+							+search+" like '%'||?||'%' order by num desc) temp) where rn between ? and ?";
+					pstmt=con.prepareStatement(sql);
+					pstmt.setString(1, keyword);
+					pstmt.setInt(2, startRow);
+					pstmt.setInt(3, endRow);
+				}
+				
+				rs=pstmt.executeQuery();
+				
+				while(rs.next()) {
+					ReviewDTO Review=new ReviewDTO();
+					Review.setNum(rs.getInt("num"));
+					Review.setRating(rs.getString("rating"));
+					Review.setName(rs.getString("name"));
+					Review.setImage(rs.getString("image"));
+					Review.setContent(rs.getString("content"));
+					Review.setId(rs.getString("id"));
+					Review.setRegDate(rs.getString("regdate"));
+					Review.setStatus(rs.getInt("status"));
+					ReviewList.add(Review);
+				}
+			} catch (SQLException e) {
+				System.out.println("[에러]getReviewList() 메소드의 SQL 오류 = "+e.getMessage());
+			} finally {
+				close(con, pstmt, rs);
+			}
+			return ReviewList;
+		}
+		
+		//Review_SEQ 시퀸스의 자동 증가값을 검색하여 반환하는 메소드
+		public int getReviewNum() {
+			Connection con=null;
+			PreparedStatement pstmt=null;
+			ResultSet rs=null;
+			int num=0;
+			try {
+				con=getConnection();
+				
+				String sql="select Review_seq.nextval from dual";					
+				pstmt=con.prepareStatement(sql);
+				
+				rs=pstmt.executeQuery();
+				
+				if(rs.next()) {
+					num=rs.getInt(1);
+				}
+			} catch (SQLException e) {
+				System.out.println("[에러]getReviewNum() 메소드의 SQL 오류 = "+e.getMessage());
+			} finally {
+				close(con, pstmt, rs);
+			}
+			return num;
+		}
+		
+		//게시글 정보를 전달받아 Review 테이블에 저장하고 저장행의 갯수를 반환하는 메소드
+		public int addReview(ReviewDTO Review) {
+			Connection con=null;
+			PreparedStatement pstmt=null;
+			int rows=0;
+			try {
+				con=getConnection();
+				
+				String sql="insert into Review values(REVIEW_SEQ.NEXTVAL,?,?,?,?,?,sysdate,?)";
+				pstmt=con.prepareStatement(sql);
+				pstmt.setString(1, Review.getRating());
+				pstmt.setString(2, Review.getName());
+				pstmt.setString(3, Review.getImage());
+				pstmt.setString(4, Review.getContent());
+				pstmt.setString(5, Review.getId());
+				pstmt.setInt(6, Review.getStatus());
+				rows=pstmt.executeUpdate();
+			} catch (SQLException e) {
+				System.out.println("[에러]addReview() 메소드의 SQL 오류 = "+e.getMessage());
+			} finally {
+				close(con, pstmt);
+			}
+			return rows;
+		}
+		
+		
+		//게시글 번호를 전달받아 Review 테이블에 저장된 게시글을 검색하여 반환하는 메소드
+		public ReviewDTO getReview(int num) {
+			Connection con=null;
+			PreparedStatement pstmt=null;
+			ResultSet rs=null;
+			ReviewDTO Review=null;
+			try {
+				con=getConnection();
+				
+				String sql="select * from Review where num=?";
+				pstmt=con.prepareStatement(sql);
+				pstmt.setInt(1, num);
+				
+				rs=pstmt.executeQuery();
+				
+				if(rs.next()) {
+					Review=new ReviewDTO();
+					Review.setNum(rs.getInt("num"));
+					Review.setRating(rs.getString("rating"));
+					Review.setName(rs.getString("name"));
+					Review.setImage(rs.getString("image"));
+					Review.setContent(rs.getString("content"));
+					Review.setId(rs.getString("id"));
+					Review.setRegDate(rs.getString("regdate"));
+					Review.setStatus(rs.getInt("status"));
+				}
+			} catch (SQLException e) {
+				System.out.println("[에러]getReview() 메소드의 SQL 오류 = "+e.getMessage());
+			} finally {
+				close(con, pstmt, rs);
+			}
+			return Review;
+		}
+		
+				
+		//게시글 번호를 전달받아 Review 테이블에 저장된 게시글을 삭제 처리하고 변경행의 갯수를 반환하는 메소드
+		public int removeReview(int num) {
+			Connection con=null;
+			PreparedStatement pstmt=null;
+			int rows=0;
+			try {
+				con=getConnection();
+				
+				String sql="delete from Review where num=?";
+				pstmt=con.prepareStatement(sql);
+				pstmt.setInt(1, num);
+				
+				rows=pstmt.executeUpdate();
+			} catch (SQLException e) {
+				System.out.println("[에러]removeReview() 메소드의 SQL 오류 = "+e.getMessage());
+			} finally {
+				close(con, pstmt);
+			}
+			return rows;
+		}
+		
+		//게시글을 전달받아 Review 테이블에 저장된 게시글을 변경하고 변경행의 갯수를 반환하는 메소드
+		public int modifyReview(ReviewDTO Review) {
+			Connection con=null;
+			PreparedStatement pstmt=null;
+			int rows=0;
+			try {
+				con=getConnection();
+				
+				String sql="update Review set rating=?,image=?,content=? where num=?";
+				pstmt=con.prepareStatement(sql);
+				pstmt.setString(1, Review.getRating());
+				pstmt.setString(2, Review.getImage());
+				pstmt.setString(3, Review.getContent());
+				pstmt.setInt(4, Review.getNum());
+				
+				rows=pstmt.executeUpdate();
+			} catch (SQLException e) {
+				System.out.println("[에러]modifyReview() 메소드의 SQL 오류 = "+e.getMessage());
+			} finally {
+				close(con, pstmt);
+			}
+			return rows;
+		}
+
+
+}
+	
+	
+

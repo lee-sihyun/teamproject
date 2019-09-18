@@ -1,0 +1,456 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%-- 게시글(새글 또는 답글)을 입력하기 위한 JSP 문서 --%>
+<%-- => 로그인 상태의 사용자만 글쓰기 기능 제공 --%>    
+<%-- => [글저장]을 클릭한 경우 게시글 처리페이지(QnA_write_action.jsp)로 이동 --%>    
+<%@include file="/security/login_status.jspf" %>
+
+<%
+
+	request.setCharacterEncoding("UTF-8");
+	LushUserDTO loginUser1=(LushUserDTO)session.getAttribute("loginUser");
+	
+	//부모글의 전달값을 저장하기 위한 변수
+	// => 부모글이 없는 경우 초기값 저장
+	String pageNum="1";//요청 페이지 번호
+	String rating="";
+	String content="";
+	int num=0;
+	int item=0;//item 페이지마다 no값 여기에 주어야해!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//부모글의 전달값을 반환받아 저장
+	pageNum=request.getParameter("pageNum");
+
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Anton|Archivo+Black&display=swap" rel="stylesheet">
+
+<style type="text/css">
+#reviews {
+	width: 1180px;
+	height: 2682.76px;
+	padding: 100px 0 0;
+}
+
+* {
+	margin: 0px;
+}
+
+div {
+	display: block;
+}
+
+body {
+	-webkit-font-smoothing: antialiased;
+}
+
+body {
+	color: #333;
+	font-family: "notokrR";
+	font-size: 14px;
+	line-height: 1.4;
+	letter-spacing: -0.5px;
+}
+
+.top-reviews {
+	width: 1180px;
+	height: 67.99px;
+	padding: 80px 0 0;
+	overflow: hidden;
+}
+
+.tit {
+	width: 781.63px;
+	height: 67.99px;
+}
+
+.top-reviews .tit h3 {
+	display: block;
+	width: auto;
+	height: 30px;
+	line-height: 30px;
+	margin: 0;
+	padding: 0 0;
+	color: #000000;
+	font-size: 30px;
+	font-weight: normal;
+	text-align: center;
+	border: none;
+	font-family: 'HelveticaNeue-Bold', "notokrB";
+}
+
+.top-reviews .tit h3 {
+	float: left;
+}
+
+h3 {
+	width: 353.89px;
+	height: 30px;
+	margin-block-start: 1em;
+	margin-block-end: 1em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+}
+
+.top-reviews .tit h3 .star {
+	width: 79.51px;
+	height: 24.44px;
+	padding-left: 15px;
+	font-size: 16px;
+	font-family: "notokrR";
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+.top-reviews .tit h3 .reviewCount {
+	padding-left: 15px;
+	font-size: 16px;
+	font-family: "notokrR";
+}
+
+.top-reviews .tit p {
+	display: block;
+	width: 100%;
+	padding: 8px 0 0 0;
+	line-height: 30px;
+	color: #333;
+	font-size: 18px;
+	font-weight: normal;
+}
+
+.top-reviews .tit p {
+	float: left;
+}
+
+.top-reviews .btn {
+	float: right;
+	font-size: 0;
+	display: none;
+}
+
+.multiple-topics .btn {
+	text-align: right;
+}
+
+.top-reviews .btn .skinbtn {
+	width: 200px;
+	height: 56px;
+	line-height: 54px;
+	font-size: 15px;
+	margin: 0 0 0 0;
+	background: #000;
+	color: #fff;
+	font-weight: normal;
+}
+
+.skinbtn.point2.gv-reviewwrite {
+	text-decoration: none;
+	border: 1px solid #000;
+}
+
+.skinbtn * {
+	font-size: 100%;
+}
+
+address, caption, cite, code, dfn, em, var {
+	font-style: normal;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+.plusreview-add {
+	width: 99.8%;
+	margin-top: 20px;
+	border: 1px solid #dbdbdb;
+	border-bottom: 0;
+}
+
+.plusreview-add dl {
+	position: relative;
+	padding: 20px;
+}
+
+.plusreview-add dl dt {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+}
+
+.plusreview-add dl dd {
+	padding-left: 100px;
+}
+
+.plusreview-add dl dd ul li {
+	float: left;
+	margin-right: 20px;
+}
+
+.plusreview-add dl dd ul li input.radio {
+	margin: 4px 4px;
+}
+
+ul {
+	vertical-align: center;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	margin-block-start: 1em;
+	margin-block-end: 1em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+	padding-inline-start: 40px;
+	display: block;
+}
+
+li {
+	vertical-align: center;
+	display: list-item;
+}
+
+input.radio {
+	width: 13px;
+	height: 13px;
+	vertical-align: top;
+}
+
+label {
+	cursor: pointer;
+	vertical-align: top;
+}
+
+.rating02 {
+	display: inline-block;
+	width: 70px;
+	height: 15px;
+	vertical-align: middle;
+}
+
+.rating02 span {
+	display: block;
+	font-size: 13px;
+}
+
+.plusreview-container {
+	width: 1180px;
+	height: 302.969px;
+}
+
+.plusreview-container .write-form {
+	margin-bottom: 10px;
+	border: #dbdbdb 1px solid;
+	width: 99.8%;
+}
+
+.textarea {
+	height: 200px;
+	border-bottom: #dbdbdb solid 1px;
+	padding: 20px;
+}
+
+.reviewText {
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+
+.attach-container {
+	padding: 0 0 0 10px;
+}
+
+.filelist {
+	float: left;
+}
+
+.file {
+	width: 40px;
+	height: 40px;
+	margin-right: 8px;
+	margin-top: 10px;
+	float: left;
+	cursor: pointer;
+	position: relative;
+}
+
+.plusreview-container .write-form .attach-container .filelist .image-upload-button
+	{
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	border-color: transparent;
+	cursor: pointer;
+	background-image:;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.plusreview-container .write-form .attach-container .filelist .image-upload
+	{
+	width: 40px;
+	height: 40px;
+	border-color: transparent;
+	font-size: 25px;
+	color: #fff;
+	cursor: pointer;
+	opacity: 0;
+	position: relative;
+}
+
+.clear-both {
+	clear: both;
+}
+
+.plusreview-container .write-form .attach-container .buttons {
+	float: right;
+	width: 140px;
+}
+
+.plusreview-container .write-form .attach-container .buttons .button {
+	background-color: #fff;
+	border: 1px solid #000;
+	font-weight: bold;
+	font-size: 15px;
+	color: #333;
+	width: 140px;
+	height: 60px;
+}
+
+button {
+	font-family: "notokrR";
+}
+
+button {
+	cursor: pointer;
+	background: none;
+	outline: none;
+}
+</style>
+</head>
+<body>
+	<div id="reviews">
+		<div class="in_width_wrap">
+			<div class="top-reviews">
+				<div class="tit">
+					<h3>
+						Product Reviews <span class="star"> ★★★★ </span> <span
+							class="reviewCount"> <%=num%></span>
+					</h3>
+					<p>나만의 꿀팁이나 제품을 사용하는 생생한 모습을 보여주세요!</p>
+				</div>
+				<div class="btn">
+					<a class="skinbtn point2 gv-reviewwrite" id="complete"><em>후기작성</em></a>
+				</div>
+			</div>
+			<div>
+				<div class="section m2">
+					<div class="section-body">
+						<form action="<%=request.getContextPath()%>/board/Review/Review_write_action.jsp" 
+							method="post" id="rating"  onsubmit="button_form_chk();"
+							novalidate="novalidate">
+							 
+							<input type="hidden" name="goodsNo" value="<%=item%>">
+							<div class="plusreview-add">
+								<dl>
+									<dt>평가</dt>
+									<dd>
+										<ul class="choice-rating">
+											<li>
+												<input type="radio" name="rating" value="★★★★★" class="radio rating" id="rating5">
+													<label for="rating5"> 
+														<span class="rating02"> 
+															<span style="width: 100%;">★★★★★</span>
+														</span>
+													</label>
+											</li>
+											<li>
+												<input type="radio" name="rating" value="★★★★☆" class="radio rating" id="rating4"> 
+													<label for="rating4"> 
+														<span class="rating02"> 
+															<span style="width: 80%;">★★★★☆</span>
+														</span>
+													</label>
+											</li>
+											<li>
+												<input type="radio" name="rating" value="★★★☆☆" class="radio rating" id="rating3"> 
+													<label for="rating3">
+														<span class="rating02">
+															<span style="width: 60%;">★★★☆☆</span>
+														</span>
+													</label>
+											</li>
+											<li>
+											<input type="radio" name="rating" value="★★☆☆☆" class="radio rating" id="rating2"> 
+												<label for="rating2">
+													<span class="rating02">
+														<span style="width: 40%;">★★☆☆☆</span>
+													</span>
+												</label>
+											</li>
+											<li>
+												<input type="radio" name="rating" value="★☆☆☆☆" class="radio rating" id="rating1"> 
+													<label for="rating1">
+														<span class="rating02">
+															<span style="width: 20%;">★☆☆☆☆</span>
+														</span>
+													</label>
+											</li>
+										</ul>
+										
+									</dd>
+								</dl>
+							</div>
+							<div class="plusreview-container">
+								<div class="write-form" style="display: block;">
+									<div class="textarea">
+										<textarea name="contents" class="reviewText" aria-required="true" id="review_content"></textarea>
+									</div>
+									<div class="attach-container">
+										<div class="buttons">
+											<button class="button" type="submit">후기작성</button>
+										</div>
+										<div class="clear-both"></div>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		function button_form_chk() {
+			// rating
+			if ($("input:radio[name='rating']").is(":checked") == false) {
+				$("input:radio[name='rating']").rules("add", {
+					required : true,
+					messages : {
+						required : "평가를 선택하세요",
+					}
+				});
+			}
+
+		}
+		
+		if($("#review_content").val()=="") {
+			$("#message").text("내용을 입력해 주세요.");
+			$("#review_content").focus();
+			return false;
+			
+		}
+		
+	    if($("#complete").click(function() {
+	    	location.href="<%=request.getContextPath()%>/index.jsp?workgroup=board/Review&work=Review_write_action";
+	    }));
+	</script>
+</body>
+</html>

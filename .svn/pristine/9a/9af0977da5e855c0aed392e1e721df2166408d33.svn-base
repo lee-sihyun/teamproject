@@ -1,0 +1,95 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%
+	String pageNum = "1";
+%>
+<jsp:include page="/admin/header.jsp" />
+<link href="css/admin_board_enroll.css" rel="stylesheet" type="text/css">
+
+
+<!--본문내용역역 시작 content로 잡으면 됩니다  -->
+
+
+<div id="content">
+	<div class="headingArea"></div>
+
+	<form
+		action="<%=request.getContextPath()%>/admin/board/faq_write_action.jsp
+				"
+		method="post" id="boardForm">
+		<input type="hidden" name="pageNum" value="<%=pageNum%>">
+
+		<div class="mToggleBar eToggle selected ec-product-register-toggle">
+			<h2>FAQ</h2>
+
+		</div>
+		
+
+		
+		<div class="toggleArea" style="display: block">
+			<div class="mBoadrtypeWrite">
+				<table border="1">
+
+					<tbody>
+
+						<tr>
+
+
+
+
+							<th scope="row" id="title">제목</th>
+							<td colspan="2"><input type="text" placeholder="제목을 입력하세요. "
+								name="title" style="width: 500px; height: 20px;"></td>
+
+						</tr>
+
+						<tr>
+
+							<th>카테고리</th>
+
+							<td><select name="category">
+									<option value="주문/배송" selected="selected">&nbsp;주문/배송&nbsp;</option>
+									<option value="교환/반품">&nbsp;교환/반품&nbsp;</option>
+
+							</select></td>
+						</tr>
+
+						<tr style="height: 750px;">
+
+							<th scope="row" id="content"
+								style="padding-left: 15px; padding-top: 11px;">내용</th>
+							<td colspan="2"><textarea cols="50" name="content"
+									style="height: 700px; width: 950px;" placeholder="내용을 입력하세요. "></textarea></td>
+
+						</tr>
+
+						<%--/*	 --%>
+
+
+
+
+					</tbody>
+				</table>
+			</div>
+			<!-- mBoadrtypeWrite종료 -->
+		</div>
+		<div class="mButtongCenter">
+			<button type="submit" class="btn">등록</button>
+
+
+		</div>
+	</form>
+
+	<!-- toggleArea 종료 -->
+
+	<!-- 표 헤더 -->
+
+
+</div>
+<!-- container 영역종료 -->
+</div>
+<!-- wrap영역종료 -->
+
+
+</body>
+</html>

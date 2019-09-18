@@ -1,0 +1,309 @@
+package site.itwill.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import site.itwill.dto.LushUserDTO;
+/*
+id;
+passwd;
+name;
+nickname;
+email;
+phone;
+address;
+*/
+public class LushUserDAO extends JdbcDAO{
+    public static LushUserDAO _dao;
+    
+    public LushUserDAO() {
+        // TODO Auto-generated constructor stub
+    }
+    
+    static {
+        _dao=new LushUserDAO();
+    }
+    
+    public static LushUserDAO getDao() {
+        return _dao;
+    }
+    
+    //회원가입
+    public int addUser(LushUserDTO user) {
+        Connection con=null;
+        PreparedStatement pstmt=null;
+        int rows=0;
+        try {
+            con=getConnection();
+            
+            String sql="insert into lushuser values(?,?,?,?,?,?,?,?,?,?,1,sysdate)";
+            
+            System.out.println();
+            
+            pstmt=con.prepareStatement(sql);
+            pstmt.setInt(1, user.getNum());
+            pstmt.setString(2, user.getId());
+            pstmt.setString(3, user.getPasswd());
+            pstmt.setString(4, user.getName());
+            pstmt.setString(5, user.getNickname());
+            pstmt.setString(6, user.getEmail());
+            pstmt.setString(7, user.getPhone());
+            pstmt.setString(8, user.getPostcode());
+            pstmt.setString(9, user.getAddress1());
+            pstmt.setString(10, user.getAddress2());
+            
+            rows=pstmt.executeUpdate();
+            
+        } catch (SQLException e) {
+            System.out.println("[에러] addUser SQL 오류 = "+e.getMessage());
+        } finally {
+            close(con, pstmt);
+        }
+        
+        return rows;
+    }
+    
+    //아이디 찾기
+    public int findId(String name, String phone){
+        Connection con=null;
+        PreparedStatement pstmt=null;
+        int rows=0;
+        
+        try {
+            con=getConnection();
+            
+            String sql="select id from lushuser where "+name+"like '%'||like||'%' ? and "+phone+ "'%'||like||'%'";
+            
+            pstmt=con.prepareStatement(sql);
+            pstmt.setString(1, name);
+            pstmt.setString(2, phone);
+            
+            rows=pstmt.executeUpdate();
+            
+        } catch (SQLException e) {
+            System.out.println("[에러] searchId SQL 에러 "+e.getMessage());
+        } finally {
+            close(con, pstmt);
+        }
+        return rows;
+    }
+    
+    //아이디를 통한 계정탈퇴
+    public int deleteUser(String id) {
+        Connection con=null;
+        PreparedStatement pstmt=null;
+        int rows=0;
+
+        try {
+            con=getConnection();
+            
+            String sql="delete from lushuser where id=?";
+            
+            pstmt=con.prepareStatement(sql);
+            pstmt.setString(1, id);
+            
+            rows=pstmt.executeUpdate();
+            
+        } catch (SQLException e) {
+            System.out.println("[에러] deleteUser SQL 에러 "+e.getMessage());
+        } finally {
+            close(con, pstmt);
+        }
+        
+        return rows;
+    }
+    
+    //회원정보변경
+    public int updateUser(LushUserDTO user){
+        Connection con=null;
+        PreparedStatement pstmt=null;
+        int rows=0;
+        
+        try {
+            con=getConnection();
+            
+            String sql="update lushuser set passwd=?, name=?, nickname=?, email=?, phone=?, mainaddrss=?, address1=?, address2=? where id=?";
+            pstmt=con.prepareStatement(sql);
+            pstmt.setString(1, user.getPasswd());
+            pstmt.setString(2, user.getName());
+            pstmt.setString(3, user.getNickname());
+            pstmt.setString(4, user.getEmail());
+            pstmt.setString(5, user.getPhone());
+            pstmt.setString(6, user.getPostcode());
+            pstmt.setString(7, user.getAddress1());
+            pstmt.setString(8, user.getAddress2());
+            pstmt.setString(9, user.getId());
+            
+            rows=pstmt.executeUpdate();
+            
+        } catch (SQLException e) {
+            System.out.println("[에러] changeUser SQL 에러 "+e.getMessage());
+        } finally {
+            close(con, pstmt);
+        }
+        
+        return rows;
+        
+    }
+    
+    //회원정보 찾기
+    public int userFind(String id) {
+        Connection con=null;
+        PreparedStatement pstmt=null;
+        int rows=0;
+        
+        try {
+            con=getConnection();
+            
+            String sql="select * from lushuser where id="+id;
+            
+            pstmt=con.prepareStatement(sql);
+            pstmt.setString(1, id);
+            
+            rows=pstmt.executeUpdate();
+            
+        } catch (SQLException e) {
+            System.out.println("[에러] userFind SQL 에러 "+e.getMessage());
+        } finally {
+            close(con, pstmt);
+        }
+        
+        return rows;
+    }
+    
+    //회원정보반환
+    public List<LushUserDTO> getUserList(){
+        Connection con=null;
+        PreparedStatement pstmt=null;
+        ResultSet rs=null;
+        List<LushUserDTO> userList=new ArrayList<LushUserDTO>();
+        
+        try {
+            con=getConnection();
+            
+            String sql="select * from lushuser order by id";
+            
+            pstmt=con.prepareStatement(sql);
+            
+            rs=pstmt.executeQuery();
+            
+            while(rs.next()) {
+                LushUserDTO user= new LushUserDTO();
+                user.setId(rs.getString("id"));
+                user.setPasswd(rs.getString("passwd"));
+                user.setName(rs.getString("name"));
+                user.setNickname(rs.getString("nickname"));
+                user.setEmail(rs.getString("email"));
+                user.setPhone(rs.getString("phone"));
+                user.setPostcode(rs.getString("mainaddrss"));
+                user.setAddress1(rs.getString("address1"));
+                user.setAddress2(rs.getString("address2"));
+                user.setAddress2(rs.getString("address2"));
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("[에러] getUserList SQL 에러 "+e.getMessage());
+        } finally {
+            close(con, pstmt, rs);
+        }
+        
+        return userList;
+    }
+    
+    //회원정보 단일 검색
+    public LushUserDTO getUser(String id) {
+        Connection con=null;
+        PreparedStatement pstmt=null;
+        ResultSet rs=null;
+        LushUserDTO user=null;
+        
+        try {
+            con=getConnection();
+            
+            String sql="select * from lushuser where id=?";
+            pstmt=con.prepareStatement(sql);
+            pstmt.setString(1,id);
+            
+            rs=pstmt.executeQuery();
+            if(rs.next()) {
+                user=new LushUserDTO();
+                user.setNum(rs.getInt("num"));
+                user.setId(rs.getString("id"));
+                user.setPasswd(rs.getString("passwd"));
+                user.setName(rs.getString("name"));
+                user.setNickname(rs.getString("nickname"));
+                user.setEmail(rs.getString("email"));
+                user.setPhone(rs.getString("phone"));
+                user.setPostcode(rs.getString("mainaddrss"));
+                user.setAddress1(rs.getString("address1"));
+                user.setAddress2(rs.getString("address2"));
+                user.setStatus(rs.getInt("status"));
+                user.setLastday(rs.getString("logdate"));
+            }
+            
+            
+        } catch (SQLException e) {
+            System.out.println("[에러] getUser SQL 에러 "+e.getMessage());
+        } finally {
+            close(con, pstmt, rs);
+        }
+        
+        return user;
+    }
+    
+    //접속회원 마지막 접속으로 로그인
+    public int lastLoginUser(String id) {
+        Connection con=null;
+        PreparedStatement pstmt=null;
+        int rows=0;
+        
+        try {
+            con=getConnection();
+            String sql="update lushuser set logdate=sysdate where id=?";
+            
+            
+            pstmt=con.prepareStatement(sql);
+            pstmt.setString(1, id);
+            
+            rows=pstmt.executeUpdate();
+            
+        } catch (SQLException e) {
+            System.out.println("[에러] lastLoginUser SQL 에러 "+e.getMessage());
+        } finally {
+            close(con, pstmt);
+        }
+        
+        return rows;
+    }
+    
+    
+    public int getLushUserNum() {
+        Connection con=null;
+        PreparedStatement pstmt=null;
+        ResultSet rs=null;
+        int num=0;
+        try {
+            con=getConnection();
+            
+            String sql="select lushuser_sequence.nextval from dual";
+            pstmt=con.prepareStatement(sql);
+            
+            rs=pstmt.executeQuery();
+            
+            if(rs.next()) {
+                num=rs.getInt(1);
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("[에러] getLushUserNum SLQ 명령오류 =  "+e.getMessage());
+        } finally {
+            close(con, pstmt, rs);
+        }
+        return num;
+    }
+    
+}

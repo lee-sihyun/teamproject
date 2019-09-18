@@ -1,0 +1,173 @@
+﻿$(document).ready(function () {
+	/*********************************/
+	var onover = {
+		on: function (node) {
+			var sSrc = $(node).find('img').attr('src');
+			var sSrcimg = $(node).find('img');
+			if (sSrcimg.length > 0) {
+
+				if (sSrc.indexOf('_on.') === -1) {
+					$(node).find('img').attr('src', sSrc.replace('.', '_on.'));
+				}
+			}
+		},
+		out: function (node) {
+			var sSrc = $(node).find('img').attr('src');
+
+			if (sSrc.indexOf('_on.') > -1) {
+				$(node).find('img').attr('src', sSrc.replace('_on.', '.'));
+			}
+		}
+	}
+
+	//$('#sider .sns a, #allcatelist ul.navi > li .subcate').mouseenter(function () {
+	//	onover.on(this);
+	//}).mouseleave(function () {
+	//	onover.out(this);
+	//});
+
+
+
+
+	var scrollControl = {
+		goTop: function () {
+			var bwtop = $(document).scrollTop() - $(document).height();
+			$("html, body").animate({ scrollTop: bwtop }, 'fast');
+			return false;
+		},
+		goBottom: function () {
+			var bwfoot = $(document).scrollTop() + $(document).height();
+			$("html,body").animate({ scrollTop: bwfoot }, 'fast');
+			return false;
+		}
+	};
+	/*위로*/
+	$(".scrollup").click(function () {
+		scrollControl.goTop();
+	});
+
+	$(".scrolldown").click(function () {
+		scrollControl.goBottom();
+	});
+
+
+	//$(window).on('scroll', function (e) {
+	//	$(window).scrollTop() > $(window).height() ? $(scrolltopID).stop().fadeTo(100, 1) : $(scrolltopID).stop().fadeTo(100, 0);
+	//});
+
+	//$('.scrollbtns').hide();
+	var fixscrolltop = function (scrolltopID) {
+		var navi = $(scrolltopID), navipos = navi.offset();
+		$(window).scroll(function () {
+			var $H = $(scrolltopID).height();
+
+			if ($(this).scrollTop() > navipos.top) {
+				$(scrolltopID).stop().fadeTo(100,1);
+			} else {
+				$(scrolltopID).stop().fadeTo(100, 0);
+			}
+		});
+	}
+	//fixscrolltop('.scrollbtns');
+	
+	/*상단메뉴 고정*/
+	var fixNavi = function (fixID) {
+		var navi = $(fixID), navipos = navi.offset();
+		
+		$(window).scroll(function () {
+
+			var $H = $(fixID).outerHeight();
+			//if ($(this).scrollTop() > $H) {
+			if ($(this).scrollTop() > 0) {
+				$(fixID).addClass("headerfixed");
+			} else {
+				$(fixID).removeClass("headerfixed");
+			}
+
+		});
+	}
+	fixNavi('.header .fixed');
+
+
+	$(window).scroll(function () {
+		var $H = $('#header').outerHeight();
+		if ($(this).scrollTop() > $H ) {
+			$('.adpicfixwrap .adpic_slider').addClass("adpicfix");
+		}else {
+			$('.adpicfixwrap .adpic_slider').removeClass("adpicfix");
+		}
+	});
+
+
+	$('.category.type-layer > li').on({
+		mouseenter: function () {
+			$(this).addClass('on');
+		},
+		mouseleave: function () {
+			$(this).removeClass('on');
+		}
+	});
+
+	var scrolls = function (scrollID) {
+		var $window = $(window); //윈도우
+		var $winH = $window.height();
+		var scrollbg = $(scrollID); //타겟명
+		var scrollbgpos = scrollbg.offset();//타깃 
+		var scrollpos = scrollbgpos.top;
+		$window.on('scroll', function () {			
+			scrollbg[($window.scrollTop() + $winH >= scrollpos ? 'add' : 'remove') + 'Class']('on');
+		});
+
+	}
+	//scrolls('.adpic_bgscroll');
+
+	if ($('.adpic_bgscroll').size() !== 0) {
+		$(window).scroll(function (e) {
+			var bgtop = $(this).scrollTop();
+			$('.adpic_bgscroll').each(function (index) {
+				var scrollbg = Number($(this).offset().top) - ($(window).height() / 2);
+				if (Number(bgtop) < 50 || Number(bgtop) < Number(scrollbg)) {
+					$(this).closest('.adpic_bgscroll').removeClass('on');
+				} else {
+					$(this).closest('.adpic_bgscroll').addClass('on');
+				}
+			});
+		});
+	};
+
+	if ($('.item-display-wrap').size() !== 0) {
+		$(window).scroll(function (e) {
+			var bgtop = $(this).scrollTop();
+			$('.item-display-wrap h2').each(function (index) {
+				var scrollbg = Number($(this).offset().top) - ($(window).height() / 2);
+				if (Number(bgtop) < 50 || Number(bgtop) < Number(scrollbg)) {
+					$(this).closest('.item-display-wrap h2').removeClass('on');
+				} else {
+					$(this).closest('.item-display-wrap h2').addClass('on');
+				}
+			});
+		});
+	};
+
+	$(document).on('click', '.banking', function (e) {
+		e.preventDefault();
+		$(this).addClass('on').find('ul.list').slideDown();
+	});
+
+	$(document).on('mouseleave', '.banking', function (e) {
+		$(this).removeClass('on').find('ul.list').slideUp('fast');
+	});
+
+
+
+
+	//$(document).on('mouseenter', '#search', function (e) {
+	//	$(this).find('.search_input').stop().animate({ width: '228px' }, { 'duration': 200, 'queue': false, 'easing': 'linear' });
+	//	$(this).find('.search-area').fadeIn();
+	//}).on('mouseleave', '#search', function (e) {
+	//	$(this).find('.search_input').stop().animate({ width: '228px' }, { 'duration': 200, 'queue': false, 'easing': 'linear' });
+	//	$(this).find('.search-area').fadeOut('fast');
+	//});
+
+
+});

@@ -1,0 +1,19 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+    <%
+   // request.setCharacterEncoding("UTF-8");	
+    
+    String workgroup=request.getParameter("workgroup");
+    if(workgroup== null) workgroup="main";
+    
+    String work=request.getParameter("work");
+    if(work==null)work="mainIndex";
+    
+    String contentPath=workgroup+"/"+work+".jsp";
+    %>
+
+<jsp:include page="header.jsp"/>
+
+
+<jsp:include page="<%=contentPath %>"/>

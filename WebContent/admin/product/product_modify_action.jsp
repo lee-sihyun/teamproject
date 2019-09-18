@@ -1,0 +1,74 @@
+<%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
+<%@page import="com.oreilly.servlet.MultipartRequest"%>
+<%@page import="site.itwill.dto.ProductDTO"%>
+<%@page import="site.itwill.dao.ProductDAO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+
+
+String saveDirectory = request.getServletContext().getRealPath("/admin/product_image");
+
+MultipartRequest mr = new MultipartRequest(request, saveDirectory, 30 * 1024 * 1024, "UTF-8",
+		new DefaultFileRenamePolicy());
+
+
+
+
+int num=Integer.parseInt(mr.getParameter("num"));
+
+String pageNum=request.getParameter("pageNum");
+String search=request.getParameter("search");
+String keyword=request.getParameter("keyword");
+
+
+
+/*
+
+	private int num;
+		private	String mainCategory;
+		private	String subCategory;
+		private String itemNo;
+		private int stock;
+		private int price;
+		private String name;
+		private String image;
+		private String imageDetail;
+
+
+*/
+
+String mainCategory=mr.getParameter("mainCategory");
+String subCategory=mr.getParameter("subCategory");
+//int itemNo=Integer.parseInt(mr.getParameter("itemNo"));
+int stock=Integer.parseInt(mr.getParameter("stock"));
+int price=Integer.parseInt(mr.getParameter("price"));
+String name=mr.getParameter("name");
+String image = mr.getFilesystemName("image");
+String imageDetail = mr.getFilesystemName("imageDetail");
+
+
+
+ProductDTO product = new ProductDTO();
+product.setNum(num);
+product.setMainCategory(mainCategory);
+product.setSubCategory(subCategory);
+product.setItemNo(num);
+product.setStock(stock);
+product.setPrice(price);
+product.setName(name);
+product.setImage(image);
+product.setImageDetail(imageDetail);
+
+
+
+
+
+
+ProductDAO.getDAO().modifyProduct(product);
+
+
+
+response.sendRedirect(request.getContextPath()+"/admin/index.jsp?workgroup=product&work=product_detail&num="+num);
+%>
+

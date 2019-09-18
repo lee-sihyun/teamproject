@@ -1,0 +1,312 @@
+package site.itwill.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import site.itwill.dto.QnADTO;
+import site.itwill.dto.QnADTO;
+
+public class QnADAO extends JdbcDAO {
+	private static QnADAO _dao;
+
+	public QnADAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	static {
+		_dao = new QnADAO();
+	}
+
+	public static QnADAO getDAO() {
+		return _dao;
+	}
+
+	// => 검색대상이 없는 경우 QnA 테이블에 저장된 전체 게시글의 갯수를 검색하여 반환하는 메소드
+	public int getQnATotal() {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int rows = 0;
+		try {
+			con = getConnection();
+			String sql = "select count(*) from QnA";
+			pstmt = con.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				rows = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("[에러]getQnATotal() 메소드의 SQL 오류 = " + e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return rows;
+	}
+	
+	// => 유저 로그인 했을 때 그 사람만의 글을 보여주는 메소드
+	public List<QnADTO> getQnAIDList(String ID) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<QnADTO> QnAID = new ArrayList<QnADTO>();
+		try {
+			con = getConnection();
+
+				String sql = "select * from QnA where id=?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, ID );
+				
+			rs=pstmt.executeQuery();
+			
+			while (rs.next()) {
+				QnADTO QnA = new QnADTO();
+				QnA.setRegDate(rs.getString("reg_date"));
+				QnA.setCategory(rs.getString("category"));
+				QnA.setTitle(rs.getString("title"));
+				QnA.setInquiry(rs.getString("inquiry"));
+				QnAID.add(QnA);
+			}
+		} catch (Exception e) {
+			System.out.println("[에러]getQnAList() 메소드의 SQL 오류 = " + e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return QnAID;
+	}
+		
+	// 시작 행번호와 종료 행번호를 전달받아 QnA 테이블에 저장된 게시글 목록을 페이지 단위로 검색하여 반환하는 메소드
+	// => 테이블에 저장된 행에 대한 페이징 처리
+	public List<QnADTO> getQnAList(int startRow, int endRow) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<QnADTO> QnAList = new ArrayList<QnADTO>();
+		try {
+			con = getConnection();
+
+				String sql = "select * from (select rownum rn, temp.* from (select * from QnA order by ref desc,ref_step) temp) where rn between ? and ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, startRow);
+				pstmt.setInt(2, endRow);
+			
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				QnADTO QnA = new QnADTO();
+				QnA.setNum(rs.getInt("num"));
+				QnA.setTitle(rs.getString("title"));
+				QnA.setContent(rs.getString("content"));
+				QnA.setCategory(rs.getString("category"));
+				QnA.setInquiry(rs.getString("inquiry"));
+				QnA.setId(rs.getString("id"));
+				QnA.setRegDate(rs.getString("regdate"));
+				QnA.setRef(rs.getInt("ref"));
+				QnA.setRefStep(rs.getInt("ref_step"));
+				QnA.setRefLevel(rs.getInt("ref_level"));
+				QnA.setStatus(rs.getInt("status"));
+				QnAList.add(QnA);
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]getQnAList() 메소드의 SQL 오류 = " + e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return QnAList;
+	}
+
+	
+	// QnA_SEQ 시퀸스의 자동 증가값을 검색하여 반환하는 메소드
+	public int getQnANum() {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int num = 0;
+		try {
+			con = getConnection();
+
+			String sql = "select QnA_seq.nextval from dual";
+			pstmt = con.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				num = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]getQnANum() 메소드의 SQL 오류 = " + e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return num;
+	}
+
+	
+	
+	// 게시글 정보를 전달받아 QnA 테이블에 저장하고 저장행의 갯수를 반환하는 메소드
+	public int addQnA(QnADTO QnA) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int rows = 0;
+		try {
+			con = getConnection();
+
+			//String sql = "insert into QnA values(QNA_SEQ.NEXTVAL,?,?,?,"+"NO"+",?,SYSDATE,?,?,?,?)";
+			String sql = "insert into QnA values(QNA_SEQ.NEXTVAL,?,?,?,?,?,SYSDATE,?,?,?,?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, QnA.getTitle());
+			pstmt.setString(2, QnA.getContent());
+			pstmt.setString(3, QnA.getCategory());
+			pstmt.setString(4, QnA.getInquiry());
+			pstmt.setString(5, QnA.getId());
+			pstmt.setInt(6, QnA.getRef());
+			pstmt.setInt(7, QnA.getRefStep());
+			pstmt.setInt(8, QnA.getRefLevel());
+			pstmt.setInt(9, QnA.getStatus());
+
+			rows = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[에러]addQnA() 메소드의 SQL 오류 = " + e.getMessage());
+		} finally {
+			close(con, pstmt);
+		}
+		return rows;
+	}
+/*
+		// refLevel를 전달받아 QnA 테이블에 저장된 Inquiry 상태를 변경해서 저장하는 메소드
+		public int getInquiry(int ref, int refStep) {
+			Connection con = null;
+			PreparedStatement pstmt = null;
+		int rows = 0;
+			try {
+				con=getConnection();
+				
+				String sql= "update QnA set inquiry="+"Yes"+" where ref=? and ref_step>?";
+				pstmt = con.prepareStatement(sql);
+				
+				pstmt.setInt(1, ref);
+				pstmt.setInt(2, refStep);
+				
+				rows = pstmt.executeUpdate();
+			} catch (SQLException e) {
+				System.out.println("[에러]getrefLevel() 메소드의 SQL 오류 = " + e.getMessage());
+			} finally {
+				close(con, pstmt);
+			}
+			return rows;
+		}
+	*/	
+	// 부모글 정보를 전달받아 QnA 테이블에 저장된 게시글에서 같은 그룹의 순서가
+	// 높은 게시글의 순서값을 1 증가되도록 변경하고 변경행을 반환하는 메소드
+	// => 새로운 답글을 기존 답글보다 먼저 검색되도록 설정
+	public int modifyRefStep(int ref, int refStep) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int rows = 0;
+		try {
+			con = getConnection();
+
+			String sql = "update QnA set ref_step=ref_step+1 where ref=? and ref_step>?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, ref);
+			pstmt.setInt(2, refStep);
+
+			rows = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[에러]modifyRefStep() 메소드의 SQL 오류 = " + e.getMessage());
+		} finally {
+			close(con, pstmt);
+		}
+		return rows;
+	}
+	
+	
+	// 게시글 번호를 전달받아 QnA 테이블에 저장된 게시글을 검색하여 반환하는 메소드
+	public QnADTO getQnA(int num) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		QnADTO QnA = null;
+		try {
+			con = getConnection();
+
+			String sql = "select * from QnA where num=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				QnA = new QnADTO();
+				QnA.setNum(rs.getInt("num"));
+				QnA.setTitle(rs.getString("title"));
+				QnA.setContent(rs.getString("content"));
+				QnA.setCategory(rs.getString("category"));
+				QnA.setInquiry(rs.getString("inquiry"));
+				QnA.setId(rs.getString("id"));
+				QnA.setRegDate(rs.getString("reg_date"));
+				QnA.setRef(rs.getInt("ref"));
+				QnA.setRefStep(rs.getInt("ref_step"));
+				QnA.setRefLevel(rs.getInt("ref_Level"));
+				QnA.setStatus(rs.getInt("status"));
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]getQnA() 메소드의 SQL 오류 = " + e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return QnA;
+	}
+
+	// 게시글 번호를 전달받아 QnA 테이블에 저장된 게시글을 삭제 처리하고 변경행의 갯수를 반환하는 메소드
+	public int deleteQnA(int num) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int rows = 0;
+		try {
+			con = getConnection();
+
+			String sql = "update QnA set status=9 where num=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+
+			rows = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[에러]deleteQnA() 메소드의 SQL 오류 = " + e.getMessage());
+		} finally {
+			close(con, pstmt);
+		}
+		return rows;
+	}
+
+	// 게시글을 전달받아 QnA 테이블에 저장된 게시글을 변경하고 변경행의 갯수를 반환하는 메소드
+	public int modifyQnA(QnADTO QnA) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int rows = 0;
+		try {
+			con = getConnection();
+
+			String sql = "UPDATE QNA SET TITLE=?, CONTENT=?, INQUIRY=? REGDATE=SYSDATE WHERE NUM=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, QnA.getTitle());
+			pstmt.setString(2, QnA.getContent());
+			pstmt.setString(3, QnA.getInquiry());
+			pstmt.setInt(4, QnA.getNum());
+
+			rows = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[에러]modifyQnA() 메소드의 SQL 오류 = " + e.getMessage());
+		} finally {
+			close(con, pstmt);
+		}
+		return rows;
+	}
+
+}

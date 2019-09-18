@@ -1,0 +1,106 @@
+<%@page import="javax.xml.stream.Location"%>
+<%@page import="site.itwill.dto.LushUserDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+	<%@include file="/security/login_status.jspf"%>
+
+<%
+
+
+
+
+
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>LUSH ADMIN</title>
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<link rel="icon" href="http://lush.co.kr/data/common/favicon.ico"
+	type="image/x-icon" />
+<link
+	href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap"
+	rel="stylesheet">
+
+
+
+</head>
+<body class="ECInfluencer">
+	<div id="wrap">
+		<div id="header">
+			<div class="header">
+					<a  href="<%=request.getContextPath() %>/index.jsp?workgroup=rush&work=rush_main" ><img src="image/hand.png"></a>
+					
+				<h1 class="logo">
+					<a href="index.jsp"> <img src="image/logo.PNG"> <span
+						class="icoStandardMode"></span></a>
+						
+				
+				</h1>
+			</div>
+		</div>
+		<hr class="layout">
+		<!-- 헤더영역종료 -->
+		<div id="container">
+			<div id="sidebar">
+				<hr class="layout">
+				<div class="snbArea" style="
+    margin-left: 25px;
+">
+					<ul id="snb">
+						<li class="depth1expandablecollapsable"><a
+							id="QA_Lnb_Menu2486" class="product">상품관리</a>
+							<ul>
+								<li class="a"><a id="QA_Lnb_Menu2033"
+									href="index.jsp?workgroup=product&work=product"> 상품등록</a></li>
+									
+							
+								<li class="a">
+								<a id="QA_Lnb_Menu2037" href="index.jsp?workgroup=product&work=product_list"> 상품목록</a></li>
+	
+
+							</ul></li>
+						<!-- li class 종료 -->
+
+						<!-- 상품관리 목록 종료 -->
+
+
+						<li class="depth1expandablecollapsable"><a
+							id="QA_Lnb_Menu2478" class="order">주문관리</a>
+							<ul>
+								<li class="a"><a id="QA_Lnb_Menu74" href="index.jsp?workgroup=order&work=order">전체주문목록</a></li>
+								<li class="a"><a id="QA_Lnb_Menu71" href="index.jsp?workgroup=order&work=delivery">배송관리</a></li>
+								<li class="a"><a id="QA_Lnb_Menu76" href="index.jsp?workgroup=order&work=refund">교환/환불</a></li>
+							</ul></li>
+						<!-- li 클래스 종료 -->
+						<!-- 주문관리 목록종료 -->
+
+						<li class="depth1expandablecollapsable" id="membertest"><a
+							class="member" id="QA_Lnb_Menu2488" href="index.jsp?workgroup=member&work=member_list">고객관리</a></li>
+						<!-- 고객관리 목록종료 -->
+
+						<li class="depth1expandablecollapsable" id="boardtest"><a
+							id="QA_Lnb_Menu2489" class="board">게시판관리</a>
+							<ul>
+								
+								<li class="a"><a id="QA_Lnb_Menu390" href="index.jsp?workgroup=board&work=board_list">공지사항</a></li>
+								<li class="a"><a id="QA_Lnb_Menu390" href="index.jsp?workgroup=board&work=faq_list">FAQ</a></li>
+						<li class="a">
+						<a id="QA_Lnb_Menu390" href="<%=request.getContextPath() %>/index.jsp?workgroup=board&work=QnA/QnA_list">QnA</a></li>
+								<li class="a">
+								<a id="QA_Lnb_Menu390" href="<%=request.getContextPath()%>/index.jsp?workgroup=board&work=Review/Review_list">review</a></li>
+								
+							</ul></li>
+						<!-- li 클래스종료 -->
+						<!-- 게시판관리 종료 -->
+					</ul>
+					<!-- 게시판목록 종료 -->
+				</div>
+				<!-- snbArea종료 -->
+			</div>
+			<!--sidebar 아예 종료 -->
+			<hr class="layout">
+			<!-- sidebar영역종료 -->

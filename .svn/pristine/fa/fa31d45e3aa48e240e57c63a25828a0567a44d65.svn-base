@@ -1,0 +1,272 @@
+<%@page import="site.itwill.dao.CartDAO"%>
+<%@page import="site.itwill.dto.LushUserDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+    LushUserDTO loginUser=(LushUserDTO)session.getAttribute("loginUser");
+	//장바구니 갯수를 출력하기 위한 CartDAO 메소드 호출
+	String id="";
+	int cartNum=0;
+	if(loginUser==null) {
+		id="";		
+	} else {
+		id=loginUser.getId();
+		cartNum=CartDAO.getCartDAO().getCartNumber(id);
+	}
+%>
+
+<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/gd_reset.css">
+<link href="<%=request.getContextPath() %>/resources/eee.css" rel="stylesheet">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<div id="header" class="header">
+<div class="inner">
+	<div class="headerwrap fixed headerfixed">
+		<script type="text/javascript">
+		
+            $(function () {
+
+                $('#header .btn_togglearea').on({
+                    click: function () {
+                        $(this).find('#btn_toggle').toggleClass("on");
+
+                        if ($(this).find('#btn_toggle').hasClass('active')) {
+                            $(this).removeClass('on');
+                            $(this).find('#btn_toggle').removeClass('active');
+                        } else {
+                            $(this).addClass('on');
+                            $(this).find('#btn_toggle').addClass('active');
+                        }
+
+                        //$(this).find('.all-category-layer').stop().fadeIn();//.addClass('db');
+                        return false;
+                    }
+                });
+
+                $('.overlay, #modal1 .closeBtn').click(function (e) {
+
+                    $('#header .btn_togglearea').trigger("click");
+
+                    return false;
+                });
+            });
+
+		</script>
+		<div class="gnbwrap">
+			<div class="fixed2">
+				<div class="inner_wrap">
+
+					<div id="logo" class=" ">
+						<!--로고 test-->
+						<h1 class=" "><a href="index.jsp"><img src="<%=request.getContextPath() %>/resources/1bb87d41d15fe27b500a4bfcde01bb0e_44024.png" alt="lush" title="lush"></a></h1>
+						<!--//로고-->
+					</div>
+
+					<div class="gnb">
+						<ul class="nav">
+							<li><a href="http://www.lush.co.kr/main/index.php#" class="openMask" viewpop=".pop_w01"><img src="<%=request.getContextPath() %>/resources/icon_top_search.png"></a></li>
+							<li><a href="<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart_list"><img src="<%=request.getContextPath() %>/resources/icon_top_cart.png"> <span><%=cartNum %></span></a></li>
+							<li class="mypage">
+							    <%if(loginUser==null) { %> 
+								    <a href="index.jsp?workgroup=lushuser&work=login">
+										<img src="<%=request.getContextPath() %>/resources/icon_top_mypage.png" alt="">
+									</a>
+								<%} else { %>	
+								    <a href="index.jsp?workgroup=lushuser&work=mypage">
+										<img src="<%=request.getContextPath() %>/resources/icon_top_mypage.png" alt="">
+									</a>
+								<%} %>
+									<div class="pop_mypage">
+										<ul>
+                                            <%if(loginUser==null) { %> 
+	                                            <li><a href="index.jsp?workgroup=lushuser&work=login">로그인</a></li>
+	                                            <li><a href="index.jsp?workgroup=lushuser&work=insertUser">회원가입</a></li>
+	                                            <li><a href="index.jsp?workgroup=board/Review&work=Review_list">고객센터</a></li>
+	                                        <%} else if(loginUser!=null && loginUser.getStatus()==9) { %>    
+	                                            <li><a href="admin/index.jsp">관리자센터</a></li>
+	                                            <li><a href="lushuser/logout.jsp">로그아웃</a></li>
+                                            <%}  else { %>
+                                            
+	                                            <li><a href="lushuser/logout.jsp">로그아웃</a></li>
+	                                            <li><a href="index.jsp?workgroup=lushuser&work=mypage">마이페이지</a></li>
+	                                            <li><a href="index.jsp?workgroup=board/QnA&work=QnA_list">고객센터</a></li>
+										    <% } %>
+                                        </ul>
+									</div>
+							</li>
+						</ul>
+						<!-- <div class="btn_togglearea -moslow">
+							<a href="modal1" id="btn_toggle" class="modalLink1">
+								<span class="a"></span><span class="b"></span><span class="c"></span>
+							</a>
+						</div> -->
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div>
+			<ul class="top_gnbmenu  ">
+				<li class="menu01 menu_product">
+					<a href="index.jsp?workgroup=rush&work=bath">PRODUCTS</a>
+					<div class="all_menu">
+						<div class="all-category category">
+							<div class="all-category-layer category db"><div> <ul><li><strong><a href="/index.jsp?workgroup=rush&work=rush_main">러쉬</a></strong>
+							<ul>
+							<li><a href="index.jsp?workgroup=rush&work=bath">배쓰</a><ul>
+							<li><a href="index.jsp?workgroup=rush&work=bath&subcategory=1">배쓰 밤</a></li>
+							<li><a href="index.jsp?workgroup=rush&work=bath&subcategory=2">버블 바</a></li>
+							<li><a href="index.jsp?workgroup=rush&work=bath&subcategory=3">배쓰 오일</a></li></ul></li>
+							
+							<li><a href="index.jsp?workgroup=rush&work=shower">샤워</a><ul>
+							<li><a href="index.jsp?workgroup=rush&work=shower&subcategory=4">솝</a></li>
+							<li><a href="index.jsp?workgroup=rush&work=shower&subcategory=5">샤워 젤 &amp; 젤리</a></li>
+							<li><a href="index.jsp?workgroup=rush&work=shower&subcategory=6">보디 컨디셔너</a></li>
+							<li><a href="index.jsp?workgroup=rush&work=shower&subcategory=7">샤워 밤</a></li></ul></li>
+							
+							<li><a href="index.jsp?workgroup=rush&work=body">보디</a><ul>
+							<li><a href="index.jsp?workgroup=rush&work=body&subcategory=8">보디 스프레이</a></li>
+							<li><a href="index.jsp?workgroup=rush&work=body&subcategory=9">클렌저</a></li>
+							<li><a href="index.jsp?workgroup=rush&work=body&subcategory=10">로션</a></li></ul></li>
+							</ul></li></ul><button type="button" title="닫기"><span>닫기</span></button></div></div>
+						</div>
+					</div>
+				</li>
+				<li class="menu02 menu_brand">
+					<a href="index.jsp?workgroup=rush&work=brand">BRAND</a>
+					<div class="all_brand">
+						<ul>
+							<li>
+								<a href="index.jsp?workgroup=rush&work=brand">러쉬</a>
+								<ul>
+									<li><a href="index.jsp?workgroup=rush&work=brand">ABOUT LUSH</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>		
+				</li>
+				
+				<li class="menu03"><a href="index.jsp?workgroup=board/Review&work=Review_list">REVIEW</a></li>
+			</ul>
+
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $( ".top_gnbmenu .menu_product" ).hover(
+            function() {
+                $( ".all_menu" ).addClass( "cate_over" );
+            },
+            function(){
+                $( ".all_menu" ).removeClass( "cate_over" );
+            }
+        );
+    });
+    $(document).ready(function(){
+        $( ".top_gnbmenu .menu_brand" ).hover(
+            function() {
+                $( ".all_brand" ).addClass( "cate_over" );
+            },
+            function(){
+                $( ".all_brand" ).removeClass( "cate_over" );
+            }
+        );
+    });
+
+    
+</script>
+
+<div id="mask"></div>
+<div class="pop_w pop_w01">
+	<a href="rush.main.jsp" class="pop_close">
+		<span>닫기</span>
+	</a>
+	<!-- 검색 폼 -->
+	<div class="search_con">
+	<div class="search">
+    <form name="frmSearchTop" id="frmSearchTop" action="http://www.lush.co.kr/goods/goods_search.php" method="get" novalidate="novalidate">
+    <fieldset>
+        <legend>검색폼</legend>
+                <div id="n2tab01"> 
+					<div class="related-searches keyword_list"> 
+						<ul>
+							<li><a href="index.jsp?workgroup=rush&work=bath">#배쓰</a></li>
+							<li><a href="index.jsp?workgroup=rush&work=shower">#샤워</a></li>
+							<li><a href="index.jsp?workgroup=rush&work=body">#보디</a></li>
+						</ul>
+					</div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+<script type="text/javascript">
+	<!--
+	var tabcount = 2;
+	function tab2_view(num){
+	 for (i=1; i<=tabcount; i++) {
+		var view_up = document.getElementById("n2tab0" + i);
+		if (i == num) view_up.style.display="";
+		else view_up.style.display="none";
+	 }
+	}
+	//-->
+</script>
+
+</div>
+	<!-- 검색 폼 -->
+</div>
+
+<script type="text/javascript">
+    //<![CDATA[
+    function wrapWindowByMask(viewpop_selecter){
+        //화면의 높이와 너비를 구한다.
+        var maskHeight = $(document).height();
+        var maskWidth = $(window).width();
+
+        //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채운다.
+        $('#mask').css({'width':maskWidth,'height':maskHeight});
+        //애니메이션 효과 - 일단 0초동안 까맣게 됐다가 40% 불투명도로 간다.
+        $('#mask').fadeIn(0);
+        $('#mask').fadeTo("slow",0.9);
+        //윈도우 같은 거 띄운다.
+        $(viewpop_selecter).show();
+    }
+    $(document).ready(function(){
+        //검은 막 띄우기
+        $('.openMask').click(function(e){
+            e.preventDefault();
+            var viewpop_selecter = $(this).attr('viewpop');
+            wrapWindowByMask(viewpop_selecter);
+            $('body').css('overflow','hidden');
+
+            // $("#search-form").focus();
+        });
+        //닫기 버튼을 눌렀을 때
+        $('.pop_close').click(function (e) {
+            //링크 기본동작은 작동하지 않도록 한다.
+            e.preventDefault();
+            var popObj = $(this).parent();
+            $('#mask').hide();
+            popObj.hide();
+            $('body').css('overflow','initial');
+        });
+        //검은 막을 눌렀을 때
+        //$('#mask').click(function () {
+        //	$(this).hide();
+        //	$('.pop_w').hide();
+        //});
+    });
+
+    // esc 누르면 검색창 닫김
+    $(document).keyup(function(e) {
+        if (e.keyCode == 27) { //
+            if(jQuery("#mask").next().css("display")=="block") jQuery('.pop_close').trigger("click");
+        }
+    });
+
+    //]]>
+</script>
+</div>    

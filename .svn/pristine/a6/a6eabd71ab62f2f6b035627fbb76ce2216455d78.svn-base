@@ -1,0 +1,249 @@
+package site.itwill.dto;
+/*
+이름        널?       유형             
+--------- -------- -------------- 
+NUM       NOT NULL NUMBER(20)     - 게시글 번호(고유값) : 자동증가값  
+TITLE     NOT NULL VARCHAR2(200)  - 게시글 제목   
+CONTENT   NOT NULL VARCHAR2(3000) - 게시글 내용
+CATEGORY  NOT NULL VARCHAR2(20)   - 게시글이 속한 카테고리
+ID        NOT NULL VARCHAR2(20)   - 작성자 아이디 : 로그인 사용자의 아이디
+REGDATE            DATE           - 게시글 작성일자 : 현재(저장날짜)
+REF                NUMBER(4)      - 게시글 그룹번호 : 답글
+RE_STEP            NUMBER(4)      - 게시글 그룹순서 : 답글
+RE_LEVEL           NUMBER(4)      - 게시글 깊이 : 답글 
+STATUS             NUMBER(1)
+*/
+
+
+
+/*
+
+	private int num;
+	private String title;
+	private String content;
+	private String category;
+	private String id;
+	private String regDate;
+	private int ref;
+	private int refStep;
+	private int refLevel;
+	private int status;
+
+	public FAQDTO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getNum() {
+		return num;
+	}
+
+	public void setNum(int num) {
+		this.num = num;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getRegDate() {
+		return regDate;
+	}
+
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
+	}
+
+	public int getRef() {
+		return ref;
+	}
+
+	public void setRef(int ref) {
+		this.ref = ref;
+	}
+
+	public int getRefStep() {
+		return refStep;
+	}
+
+	public void setRefStep(int refStep) {
+		this.refStep = refStep;
+	}
+
+	public int getRefLevel() {
+		return refLevel;
+	}
+
+	public void setRefLevel(int refLevel) {
+		this.refLevel = refLevel;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	
+	조장님 작성
+	*/
+
+public class FAQDTO{ 
+	
+	/*NUM       NOT NULL NUMBER(20)     
+TITLE     NOT NULL VARCHAR2(200)  
+CONTENT   NOT NULL VARCHAR2(3000) 
+CATEGORY  NOT NULL VARCHAR2(20)   
+ID        NOT NULL VARCHAR2(20)   
+REGDATE            DATE           
+READCOUNT          NUMBER(20)     
+
+	 * 
+	 * 
+	 * */
+	
+	private int num;
+	private String title;
+	private String content;
+	private String category;
+	private String id;
+	private String regdate;
+	private int readcount;
+
+
+	
+	
+	public FAQDTO() {
+		// TODO Auto-generated constructor stub
+	}
+
+
+
+
+	public int getNum() {
+		return num;
+	}
+
+
+
+
+	public void setNum(int num) {
+		this.num = num;
+	}
+
+
+
+
+	public String getTitle() {
+		return title;
+	}
+
+
+
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+
+
+
+	public String getContent() {
+		return content;
+	}
+
+
+
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+
+
+
+	public String getCategory() {
+		return category;
+	}
+
+
+
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+
+
+
+	public String getId() {
+		return id;
+	}
+
+
+
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+
+
+
+	public String getRegdate() {
+		return regdate;
+	}
+
+
+
+
+	public void setRegdate(String regdate) {
+		this.regdate = regdate;
+	}
+
+
+
+
+	public int getReadcount() {
+		return readcount;
+	}
+
+
+
+
+	public void setReadcount(int readcount) {
+		this.readcount = readcount;
+	}
+	
+	
+	
+
+}

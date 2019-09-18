@@ -1,0 +1,25 @@
+﻿
+$(function () {
+    $('.floatwrap .floatwing').mscsticker({
+	    headerSelector: '.gnbwrap',
+        navSelector: 'nav',
+        containerSelector: '#wrap',
+        contentSelector: '#container',
+        footerSelector: '.enddiv',
+        siderbarTopMargin: 0,
+        footerThreshold: 10
+
+    });
+    $('#quickL .wing, #quickR .wing').mscsticker({
+		
+		headerSelector: '.adpic_wideslide',
+		navSelector: 'nav',
+		containerSelector: '#container',
+		contentSelector: '#content',
+		siderbarTopMargin: 120,
+		footerThreshold: 150
+
+
+	});
+});
+

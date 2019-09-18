@@ -1,0 +1,270 @@
+@charset "UTF-8";
+
+
+
+body {
+font-family: Noto Sans KR;
+ font-size: 14px;
+   min-width: 1580px;
+   max-width: 1920px;
+   height: 100%;
+   word-spacing: -1px;
+   background: #ecf0f7;
+
+}
+
+#wrap {
+  
+    /*  width: 1580px;*/
+   /*height: 100%;*/
+   /* height: 1400px;*/
+   padding: 30px 0px 0px 150px;
+}
+
+#header {
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   z-index: 202;
+   height: 60px;
+   box-sizing: border-box;
+   background: black;
+}
+
+#header .header {
+   display: flex;
+   align-items: center;
+   max-width: 1920px;
+   min-width: 1024px;
+}
+
+
+#header h1.logo {
+   width: 220px;
+   height: 60px;
+   margin: 0 auto 0 0;
+   /* padding: 21px 0 0 20px;*/
+   box-sizing: border-box;
+   background: black;
+}
+
+#header h1.logo a {
+   display: block;
+   text-decoration: none;
+   color: #2e3039;
+}
+
+img {
+   border: 0;
+   vertical-align: top;
+   
+   width: 100px;
+   height: 60px;
+   
+}
+
+hr {
+   display: none;
+   unicode-bidi: isolate;
+   margin-block-start: 0.5em;
+   margin-block-end: 0.5em;
+   margin-inline-start: auto;
+   margin-inline-end: auto;
+   overflow: hidden;
+   border-style: inset;
+   border-width: 1px;
+}
+
+/*헤더영역 css종료*/
+#container { 
+   position: relative;
+   width: 1360px;
+   height: 982.266px;
+}
+/*사이드바 시작*/
+#sidebar {
+   float: left;
+   position: fixed;
+   z-index: 201;
+   top: 0;
+   left: 0;
+   width: 219px;
+   padding: 60px 0px 0px 0px;
+   box-sizing: border-box;
+   vertical-align: top;
+   border-right: 1px solid #d3dee4;
+   background: #fff;
+      
+}
+
+.snbArea {
+   display: flex;
+   flex-direction: column;
+   width: 219px;
+   height: 871px;
+}
+
+#snb {
+   width: 219px;
+   height: 400px;
+   padding-left: 30px;
+}
+
+ul {
+   display: block;
+   margin-block-start: 1em;
+   margin-block-end: 1em;
+   margin-inline-start: 0px;
+   margin-inline-end: 0px;
+   padding-inline-start: 40px;
+   width: 219px;
+   height: 160px;
+}
+
+.depth1expandablecollapsable {
+   width: 219px;
+   height: 100px; /*너무 넓어서 내가 조정함*/
+}
+
+/*상품관리*/
+#QA_Lnb_Menu2486 {
+   width: 151x;
+   height: 14x;
+   padding: 17px 26px 19px 0px;
+   text-decoration: none;
+}
+
+/*상품등록*/
+#QA_Lnb_Menu2033 {
+   width: 158px;
+   height: 13px;
+   /*padding:11px 0px 12px 0px;*/
+
+   text-decoration: none;
+}
+/*상품목록*/
+#QA_Lnb_Menu2037 {
+   width: 158px;
+   height: 13px;
+   /*   padding:11px 10px 12px 51px;*/
+   text-decoration: none;
+}
+
+/*상품목록끝*/
+/*주문관리*/
+#iQA_Lnb_Menu2487 {
+   width: 151x;
+   height: 14x;
+   padding: 17px 26px 19px 42px;
+   text-decoration: none;
+}
+/*전체주문목록*/
+#QA_Lnb_Menu74 {
+   width: 158px;
+   height: 13px;
+   /*padding:11px 0px 12px 0px;*/
+
+   text-decoration: none;
+
+}
+
+
+/*배송관리*/
+#QA_Lnb_Menu71 {
+   width: 158px;
+   height: 13px;
+   /*padding:11px 0px 12px 0px;*/
+
+   text-decoration: none;
+
+
+}
+
+/*취소교환반품환불*/
+
+#QA_Lnb_Menu76  {
+   width: 158px;
+   height: 13px;
+   /*padding:11px 0px 12px 0px;*/
+   
+   text-decoration: none;
+
+}
+/*배송끝*/
+
+#membertest{
+   width: 219px;
+   height: 50px;
+
+}
+
+
+
+/*게시판관리*/
+#QA_Lnb_Menu2489 {
+width: 151x;
+   height: 14x;
+   /*padding: 17px 26px 19px 42px;*/
+   text-decoration: none;
+
+}
+
+/*게시판 */
+
+
+#boardtest {
+
+
+
+}
+
+
+/*게시판설정*/
+
+#QA_Lnb_Menu106{
+   width: 151x;
+   height: 14x;
+   padding: 17px 26px 19px 0px;
+   text-decoration: none;
+}
+/*게시물 관리 */
+
+
+#QA_Lnb_Menu390 {
+width: 158px;
+   height: 13px;
+   /*padding:11px 0px 12px 0px;*/
+   
+   text-decoration: none;
+}
+
+
+ #QA_Lnb_Menu2488 {
+ text-decoration: none;
+ 
+ }
+
+ul, ol, dl, li {
+   list-style: none;
+   text-decoration: none;
+}
+
+
+a, a:visited {
+text-decoration: none;
+color: black;
+
+}
+
+#snb {
+	
+	
+
+    padding-left: 0px;
+
+}
+
+
+
+

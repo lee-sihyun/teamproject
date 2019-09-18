@@ -1,0 +1,45 @@
+<%@page import="site.itwill.dto.noticeDTO"%>
+<%@page import="site.itwill.dao.noticeDAO"%>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%-- 입력페이지(board_write.jsp)에서 전달된 게시글(새글 또는 답글)을 반환받아 
+BOARD 테이블에 저장하고  게시글 목록 출력페이지(board_list.jsp)로 이동하는 JSP 문서 --%>
+<%
+	//비정상적인 요청에 대한 응답 처리
+	if(request.getMethod().equals("GET")) {
+		response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+		return;
+	}
+
+	//POST 방식으로 요청되어 전달된 값에 대한 캐릭터셋 변경
+	request.setCharacterEncoding("UTF-8");
+	
+	//전달된 입력값을 반환받아 저장
+	String pageNum=request.getParameter("pageNum");
+	
+
+	
+	
+	//BOARD_SEQ 객체의 자동 증가값을 검색하여 반환하는 DAO 클래스의 메소드 호출
+	int num=noticeDAO.getDAO().getNoticeNum();
+	
+
+
+	
+	//DTO 인스턴스 생성 후 필드값 변경
+	noticeDTO notice=new noticeDTO();
+	notice.setNum(num);//
+	notice.setTitle(title);
+	notice.setContent(content);
+	notice.setId(id);
+	notice.setRegdate(regdate);
+	notice.setReadcount(readcount);
+
+	
+	//게시글을 전달하여 BOARD 테이블에 저장하는 DAO 클래스의 메소드 호출
+	noticeDAO.getDAO().addNotice(notice);
+	
+	//게시글 목록 출력페이지 이동
+	response.sendRedirect(request.getContextPath()+"/admin/index.jsp?workgroup=board&work=board_list&pageNum="+pageNum);
+%>

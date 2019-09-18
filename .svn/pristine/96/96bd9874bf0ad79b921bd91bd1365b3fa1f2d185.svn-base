@@ -1,0 +1,47 @@
+<%@page import="site.itwill.dao.noticeDAO"%>
+<%@page import="site.itwill.dto.noticeDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%
+
+request.getParameter("UTF-8");
+
+	int num = Integer.parseInt(request.getParameter("num"));
+	String pageNum = request.getParameter("pageNum");
+	String search = request.getParameter("search");
+	String keyword = request.getParameter("keyword");
+
+	noticeDTO notice = noticeDAO.getDAO().getNotice(num);
+%>
+
+<h2>공지사항 수정</h2>
+<form
+	action="<%=request.getContextPath()%>/admin/board/board_modify_action.jsp"
+	method="post" id="boardForm" style="
+    padding-left: 100px;
+">
+	<input type="hidden" name="num" value="<%=num%>"> <input
+		type="hidden" name="pageNum" value="<%=pageNum%>"> <input
+		type="hidden" name="search" value="<%=search%>"> <input
+		type="hidden" name="keyword" value="<%=keyword%>">
+	<table>
+		<tr>
+			<th>제목</th>
+			<td><input type="text" name="title" id="title"
+				value="<%=notice.getTitle()%>"></td>
+		</tr>
+
+		<tr>
+			<th>내용</th>
+			<td><textarea cols="50" name="content" id=""><%=notice.getContent()%></textarea>
+			</td>
+		</tr>
+		
+		<tr>
+		<th colspan="2">
+		<button type="submit">수정</button>
+		</tr>
+
+
+	</table>
+</form>

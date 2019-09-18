@@ -1,0 +1,522 @@
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.List"%>
+<%@page import="site.itwill.dao.FAQDAO"%>
+<%@page import="site.itwill.dto.FAQDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+//request.setCharacterEncoding("UTF-8");	
+
+
+String search=request.getParameter("search");
+if(search==null) search="";
+String keyword=request.getParameter("keyword");
+if(keyword==null) keyword="";
+
+
+	int pageNum = 1;
+	if (request.getParameter("pageNum") != null  ) {
+		pageNum = Integer.parseInt(request.getParameter("pageNum"));
+
+	}
+
+	int pageSize = 10;
+
+	int totalFAQ = FAQDAO.getDAO().getFAQTotal(search, keyword);
+
+	int totalPage = (int) Math.ceil((double) totalFAQ / pageSize);
+
+	if (pageNum <= 0 || pageNum > totalPage) {
+		pageNum = 1;
+	}
+
+	int startRow = (pageNum - 1) * pageSize + 1;
+
+	int endRow = pageNum * pageSize;
+
+	if (endRow > totalFAQ) {
+		endRow = totalFAQ;
+	}
+
+	List<FAQDTO> FAQList = FAQDAO.getDAO().getFAQList(startRow, endRow, search, keyword);
+
+	int number = totalFAQ - (pageNum - 1) * pageSize;
+
+	//	noticeDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
+	String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+%>
+
+
+
+
+<jsp:include page="/admin/header.jsp" />
+<!--<link href="css/admin_board.css" rel="stylesheet" type="text/css">  -->
+<style type="text/css">
+#content {
+	width: 1280px;
+	height: 919px;
+	padding: 0 40px 40px 40px;
+	box-sizing: border-box;
+	vertical-align: top;
+}
+
+.headingArea {
+	width: 1280px;
+	height: 30px;
+	position: relative;
+	margin: 0 0 38px;
+}
+
+form {
+	width: 1280px;
+	height: 821px;
+	display: block;
+}
+
+#table1 {
+	width: 1237px;
+	height: 188px;
+	height: 50px;
+	table-layout: fixed;
+	border: 0;
+	border-spacing: 0;
+	/*border-collapse: collapse;*/
+	line-height: 1.5;
+	background-color: #fff;
+}
+
+tr {
+	width: 1237px;
+	height: 49px;
+	display: table-row;
+	vertical-align: inherit;
+	border-color: inherit;
+}
+
+th {
+	width: 135px;
+	height: 32x;
+	padding: 9px 9px 7px 9px;
+	background-color: #f3f3f3;
+	display: table-cell;
+	border: 1px solid #dedede;
+	/*vertical-align: top;
+
+   word-wrap: break-word;
+   font-weight: bold;*/
+}
+
+#pname {
+	width: 135px;
+	height: 32px;
+	padding: 9px 9px 7px 9px;
+	border: 1px solid #dedede;
+}
+
+.fTexteSearchText {
+	width: 280px;
+	height: 28px;
+	padding: 0px 9px 2px 9px;
+	border: 1px solid #d4d4d4;
+}
+
+td {
+	width: 1064px;
+	height: 32px;
+	padding: 9px 9px 7px;
+	/*border: 1px solid #dedede;*/
+	text-align: center;
+	word-wrap: break-word;
+	display: table-cell;
+	vertical-align: inherit;
+}
+
+.mButtongCenter {
+	width: 1234px;
+	height: 36x;
+	position: relative;
+	text-align: center;
+	margin: 20px 0;
+	padding: 0 4px 0 0;
+}
+
+.mButton a:first-child {
+	margin-left: 0;
+}
+
+.btnSearch {
+	height: 34px;
+	padding: 0 20px 0 20px;
+	color: #fff;
+	line-height: 34px;
+	border: 1px solid transparent;
+	background-color: #55a0ff;
+}
+
+/*
+.btnSearchreset {
+	color: #55a0ff;
+	border-color: #55a0ff;
+	background-color: #fff;
+}
+*/
+.section {
+	width: 1238px;
+	height: 1000px;
+	margin: 0 0 30px 0;
+	padding: 80px 20px 30px 20px;
+	border-radius: 2px;
+	border: 1px solid #ddd;
+	background: #fff;
+	box-shadow: 0px 2px 1px 0px rgba(205, 211, 222, 1);
+}
+
+.mBoardtypeListgScrollgCell {
+	width: 1236px;
+	height: 700px;
+	position: relative;
+	border: 1px solid #dedede;
+	/*overflow: auto;
+
+   border-right: 1px solid #d9dadc;
+   border-left: 1px solid #d9dadc;
+   */
+}
+
+.eChkColor {
+	width: 1236px;
+	height: 234px;
+	border-top: 1px solid #dedede;
+	background-color: #fff;
+	line-height: 1.5;
+	/*
+   table-layout: fixed;
+   width: 100%;
+   border: 0;
+   border-spacing: 0;
+   border-collapse: collapse;
+   */
+}
+
+thead {
+	width: 1252px;
+	height: 38px;
+	display: table-header-group;
+	vertical-align: middle;
+	border-color: inherit;
+}
+
+input[type="checkbox"] {
+	width: 18px;
+	height: 18px;
+	position: relative;
+	opacity: 1;
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+	font-size: 14px;
+	color: #2e3039;
+	border: 1px solid #d4d4d4;
+	background: #fff;
+	outline: 0;
+}
+
+.gLeft {
+	float: left;
+	text-align: center;
+}
+
+.mBoardtypeListgScrollgCell thead th {
+	width: 1206px;
+	height: 28px;
+	padding-left: 4px;
+	padding-right: 4px;
+	border-right-width: 0;
+	padding: 8px 5px;
+	border: 1px solid #dedede;
+	text-align: center;
+	vertical-align: middle;
+	color: #2e3039;
+	background-color: #f3f3f3;
+	word-wrap: break-word;
+}
+
+.mCtrltypeFooter {
+	width: 1206px;
+	height: 28px;
+	margin: -1px 0 0 0;
+	padding: 7px 15px 7px 15px;
+	border: 1px solid #dedede;
+	line-height: 21px;
+	text-align: center;
+	background: #fff;
+}
+
+.txtLess {
+	vertical-align: middle;
+	font-size: 13px;
+}
+
+.btnNormaldelete {
+	width: 26px;
+	height: 26px;
+	padding: 0 10px;
+	color: #1c1c1c;
+	font-size: 13px;
+	font-weight: normal;
+	line-height: 26px;
+	border: 1px solid #98989b;
+	background-color: #fff;
+	position: relative;
+	text-align: center;
+	/* display: inline-block;*/
+	transition: .2s ease-out;
+	vertical-align: middle;
+	text-decoration: none;
+	white-space: nowrap;
+	box-sizing: border-box;
+	/*
+   */
+}
+
+.btnNormalmodify {
+	width: 26px;
+	height: 26px;
+	padding: 0 10px;
+	color: #1c1c1c;
+	font-size: 13px;
+	font-weight: normal;
+	line-height: 26px;
+	border: 1px solid #98989b;
+	background-color: #fff;
+	transition: .2s ease-out;
+	vertical-align: middle;
+	text-decoration: none;
+	white-space: nowrap;
+	box-sizing: border-box;
+}
+
+.chart {
+	text-align: center;
+}
+
+.test {
+	color: black;
+}
+</style>
+
+<!--본문내용역역 시작 content로 잡으면 됩니다  -->
+
+<div id="content">
+	<div class="mTitle">
+		<h1>게시물관리</h1>
+	</div>
+
+	<div class="section" id="QA_list2">
+
+
+
+
+
+
+
+			<!-- 표영역 -->
+
+			<div class="mBoardtypeListgScrollgCell">
+
+				<table class="eChkColor">
+		<tr>
+
+						<th>번호</th>
+
+						<th>제목</th>
+						<th>조회수</th>
+						<th>작성일</th>
+					</tr>
+
+
+					<%
+						if (totalFAQ == 0) {
+					%>
+					<tr>
+						<td colspan="5">검색된 게시글이 존재하지 않습니다</td>
+					</tr>
+					<%
+						} else {
+					%>
+					<%
+						for (FAQDTO faq :FAQList) {
+					%>
+
+
+
+					<tr>
+						<!-- 글번호 -->
+						<td><%=number%></td>
+						<!--글제목 -->
+						<td class="title"><a
+							href="<%=request.getContextPath()%>
+							/admin/index.jsp?workgroup=board&work=board_detail&num=
+							<%=faq.getNum()%>&pageNum=<%=pageNum%>&search=<%=search%>&keyword=
+							<%=keyword%>"><%=faq.getTitle()%></a>
+	<%-- <a href="<%=request.getContextPath()%>/site/index.jsp?workgroup=board&work=board_detail&num=
+<%=board.getNum()%>&pageNum=<%=pageNum%>&search=<%=search%>&keyword=<%=keyword%>"><%=board.getSubject() %></a>		--%>						
+																	
+							
+						</td>
+
+						<!-- 조회수 -->
+						<td><%=faq.getReadcount()%></td>
+						<!-- 작성일 -->
+
+						<td>
+							<%
+								if (currentDate.equals(faq.getRegdate().substring(0, 10))) {
+							%> <%=faq.getRegdate().substring(11, 19)%> <%
+ 	} else {
+ %> <%=faq.getRegdate().substring(0, 19)%> <%
+ 	}
+ %>
+						</td>
+					</tr>
+					<%
+						number--;
+					%>
+					<%
+						}
+					%>
+					<%
+						}
+					%>
+					
+		
+					
+				</table>
+							<%
+					int blockSize = 5;
+					int startPage = (pageNum - 1) / blockSize * blockSize + 1;
+					int endPage = startPage + blockSize - 1;
+					if (endPage > totalPage) {
+						endPage = totalPage;
+					}
+				%>
+				<div class="chart">
+					<%
+						if (startPage > blockSize) {
+					%>
+					<a
+						href="<%=request.getContextPath()%>
+/admin/index.jsp?workgroup=board&work=board_list&pageNum=1
+&search=<%=search%>&keyword=<%=keyword%>">[처음]</a>
+					<a
+						href="<%=request.getContextPath()%>/admin/index.jsp?workgroup=board&work=board_list&pageNum
+=<%=startPage - blockSize%>&search=<%=search%>&keyword=<%=keyword%>">[이전]</a>
+					<%
+						} else {
+					%>
+					[처음][이전]
+					<%
+						}
+					%>
+					<%
+						for (int i = startPage; i <= endPage; i++) {
+					%>
+					<%
+						if (pageNum != i) {
+					%>
+					<a
+						href="<%=request.getContextPath()%>/admin/index.jsp?workgroup=board&work=board_list&pageNum=
+		<%=i%>&search=<%=search%>&keyword=<%=keyword%>">[<%=i%>]
+					</a>
+					<%
+						} else {
+					%>
+					<span style="font-weight: bold; color: red;">[<%=i%>]
+					</span>
+					<%
+						}
+					%>
+					<%
+						}
+					%>
+					<%
+						if (endPage != totalPage) {
+					%>
+					<a
+						href="<%=request.getContextPath()%>
+	/admin/index.jsp?workgroup=board&work=board_list&pageNum=
+	<%=startPage + blockSize%>&search=<%=search%>&keyword=<%=keyword%>">[다음]</a>
+					<a
+						href="<%=request.getContextPath()%>/admin/index.jsp?workgroup=board&work=board_list&pageNum=
+	<%=totalPage%>&search=<%=search%>&keyword=<%=keyword%>">[마지막]</a>
+					<%
+						} else {
+					%>
+					[다음][마지막]
+					<%
+						}
+					%>
+				</div>
+			<form
+			action="<%=request.getContextPath()%>/admin/index.jsp?workgroup=board&work=board_list"
+			method="post" id="searchForm">
+		<div class="mButtongCenter">
+	<div id="btn">
+		<button type="button" id="writeBtn">글쓰기</button>
+	</div>
+			
+
+
+					<select name="search">
+						<option value="title" selected="selected">&nbsp;제목&nbsp;</option>
+						<option  value="id">&nbsp;작성자&nbsp;</option>
+						<option value="content">&nbsp;내용&nbsp;</option>
+					</select> 
+					<input type="text" name="keyword" id="keyword">
+
+					<button type="submit" class="btnSearch">검색</button>
+				</div>
+					</form>
+	
+
+
+
+				<br>
+			</div>
+	<%--</form> --%>	
+
+		<%-- 페이지 번호 출력(페이징 처리) 및 하이퍼 링크 --%>
+
+	</div>
+	<br>
+
+	<!--
+	
+
+
+	</div>
+
+  -->
+
+
+
+
+
+
+
+</div>
+<!--content 영역종료 -->
+
+
+</div>
+<!-- container 영역종료 -->
+</div>
+<!-- wrap영역종료 -->
+
+<script type="text/javascript">
+$("#writeBtn").click(function() {
+	location.href="<%=request.getContextPath()%>/admin/index.jsp?workgroup=board&work=board";
+});
+
+</script>

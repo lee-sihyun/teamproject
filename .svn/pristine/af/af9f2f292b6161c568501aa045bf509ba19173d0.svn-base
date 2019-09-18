@@ -1,0 +1,282 @@
+package site.itwill.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import site.itwill.dto.noticeDTO;
+
+public class noticeDAO extends JdbcDAO {
+	private static noticeDAO _dao;
+
+	public noticeDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	static {
+
+		_dao = new noticeDAO();
+
+	}
+
+	public static noticeDAO getDAO() {
+
+		return _dao;
+	}
+
+	// 검색키워드를 전달받아 notice 테이블에 저장된 검색키워드 게시글의 개수를 검색하여 반환
+	//=>검색대상이없는 경우 notice테이블에 저장된 제체 게시그르이 개수를 검삭하여 반화
+	
+	public int getNoticeTotal(String search, String keyword) {
+
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		int rows=0;
+
+		try {
+			con=getConnection();
+			if (keyword.equals("")) {
+				String sql="select count(*) from notice";
+				
+				pstmt = con.prepareStatement(sql);
+
+			} else {
+			
+			
+			String sql="select count(*) from notice where "+ search +" like '%'||?||'%'";
+			
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, keyword);
+			}
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				rows=rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("[에러]getNoticeTotal() SQL 오류=" + e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return rows;
+
+	}
+
+	// notice_seq 시퀀스의 자동 증가값을 검색하여 반환하는 메소드
+	public int getNoticeNum() {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		int num=0;
+
+		try {
+
+			con=getConnection();
+
+			String sql="select notice_seq.nextval from dual";
+			pstmt =con.prepareStatement(sql);
+
+			rs =pstmt.executeQuery();
+
+			if(rs.next()) {
+				num = rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+
+			System.out.println("[에러] getNoticeNum() 메소드 SQL오류 =" + e.getMessage());
+
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return num;
+
+	}
+
+	// 시작행과 종료 행번호를 받아 notice테이블에 저장된 게시글몰록을 페이지 단위로 검색하여 반환 (페이징처리)
+
+	public List<noticeDTO> getNoticeList(int startRow, int endRow, String search, String keyword) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<noticeDTO> noticeList = new ArrayList<noticeDTO>();
+		try {
+			con = getConnection();
+
+			if (keyword.equals("")) {
+				String sql = "select * from (select rownum rn, temp.* from (select * from notice order by num desc) temp) where rn between ? and ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, startRow);
+				pstmt.setInt(2, endRow);
+
+			} else {
+				String sql = "select * from (select rownum rn, temp.* from (select * from notice where " + search
+						+ " like '%'||?||'%'  order by num desc) temp) where rn between ? and ?";
+
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, keyword);
+				pstmt.setInt(2, startRow);
+				pstmt.setInt(3, endRow);
+
+			}
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+
+				noticeDTO notice = new noticeDTO();
+				notice.setNum(rs.getInt("num"));
+				notice.setTitle(rs.getString("title"));
+				notice.setContent(rs.getString("content"));
+				notice.setId(rs.getString("id"));
+				notice.setRegdate(rs.getString("regdate"));
+				notice.setReadcount(rs.getInt("readcount"));
+				noticeList.add(notice);
+
+			}
+
+		} catch (SQLException e) {
+			// TODO: handle exception
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return noticeList;
+
+	}
+
+	public int addNotice(noticeDTO notice) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int rows = 0;
+		try {
+			con = getConnection();
+
+			String sql = "insert into notice values(?,?,?,'id',sysdate,0)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, notice.getNum());
+			pstmt.setString(2, notice.getTitle());
+			pstmt.setString(3, notice.getContent());
+			//pstmt.setString(4, notice.getId());
+
+			
+
+			
+			
+
+			rows = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[에러]addNotice() 메소드의 SQL 오류 = " + e.getMessage());
+		} finally {
+			close(con, pstmt);
+		}
+		return rows;
+	}
+
+	public noticeDTO getNotice(int num) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		noticeDTO notice = null;
+		try {
+			con = getConnection();
+
+			String sql = "select * from notice where num=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				notice = new noticeDTO();
+				notice.setNum(rs.getInt("num"));
+				notice.setTitle(rs.getString("title"));
+				notice.setContent(rs.getString("content"));
+				notice.setId(rs.getString("id"));
+				notice.setRegdate(rs.getString("regdate"));
+				notice.setReadcount(rs.getInt("readcount"));
+
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]getNotice() 메소드의 SQL 오류 = " + e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return notice;
+	}
+
+	//조회수 증가 dao
+	public int modifyReadCount(int num) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int rows = 0;
+		try {
+			con = getConnection();
+
+			String sql = "update notice set readcount=readcount+1 where num=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+
+			rows = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[에러]modifyReadCount() 메소드의 SQL 오류 = " + e.getMessage());
+		} finally {
+			close(con, pstmt);
+		}
+		return rows;
+	}
+
+	
+	//게시물삭제
+	public int removeNotice(int num) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int rows = 0;
+		try {
+			con = getConnection();
+
+			String sql = "delete from notice where num=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+
+			rows = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[에러]removeNotice() 메소드의 SQL 오류 = " + e.getMessage());
+		} finally {
+			close(con, pstmt);
+		}
+		return rows;
+	}
+	
+	//게시물 수정
+	
+	public int modifyNotice (noticeDTO notice) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		int rows=0;
+		
+		try {
+			
+			con=getConnection();
+			String sql="update notice set title=?, content=? where num=?";
+			
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, notice.getTitle());
+			pstmt.setString(2,notice.getContent());
+			pstmt.setInt(3, notice.getNum());
+			
+			rows=pstmt.executeUpdate();
+			
+		}catch (SQLException e) {
+			System.out.println("[에러]modifyNotice ()메소드 SQL ="+e.getMessage());
+		}finally {
+			close(con,pstmt);
+		}
+		return rows;
+	}
+
+}

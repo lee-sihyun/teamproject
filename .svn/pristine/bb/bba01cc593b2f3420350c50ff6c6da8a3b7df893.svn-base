@@ -1,0 +1,32 @@
+<%@page import="site.itwill.dto.ProductDTO"%>
+<%@page import="site.itwill.dao.ProductDAO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%
+	request.setCharacterEncoding("UTF-8");
+
+
+/*
+int num=Integer.parseInt(request.getParameter("num"));
+String pageNum=request.getParameter("pageNum");
+String search=request.getParameter("search");
+String keyword=request.getParameter("keyword");
+
+ProductDTO product=ProductDAO.getDAO().getProduct(num);
+*/
+
+	String[] checkName = request.getParameterValues("checkName");
+
+	for (String name:checkName) {
+
+		//ProductDAO.getDAO().removeProduct(Integer.parseInt(num));
+
+			ProductDAO.getDAO().removeCheckProduct(name);
+	}
+	
+	response.sendRedirect(request.getContextPath()+"/index.jsp?workgroup=product&work=product_list");
+	
+//	response.sendRedirect(request.getContextPath()+"/admin/index.jsp?workgroup=product&work=product_list&pageNum="+pageNum+"&search="+search+"&keyword="+keyword);
+	
+	
+%>

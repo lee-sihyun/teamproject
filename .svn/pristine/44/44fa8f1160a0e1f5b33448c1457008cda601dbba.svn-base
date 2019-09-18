@@ -1,0 +1,125 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<jsp:include page="/admin/header.jsp"/>
+<link href="css/admin_member.css" rel="stylesheet" type="text/css">
+			<!--본문내용역역 시작 content로 잡으면 됩니다  -->
+
+			<div id="content">
+				<div class="mTitle">
+					<h1>고객관리</h1>
+				</div>
+				<form action="" method="post" name="eProductSearchForm"
+					id="eProductSearchForm">
+
+					<!--<div class="optionArea" id="QA_list1">
+					
+
+					</div> -->
+					<!-- QA_list1종료 -->
+					<div class="section" id="QA_list2">
+
+
+						<div class="mOption">
+							<table>
+								<tr>
+
+									<th scope="row">고객명</th>
+
+									<td colspan="1">
+										<div id="testfiled">
+
+											<input type="text" class="fTexteSearchText">
+										</div>
+
+									</td>
+								</tr>
+
+
+
+
+
+							</table>
+
+						</div>
+
+						<!-- 검색영역 종료 -->
+						<div class="mButtongCenter">
+							<a href="#none" class="btnSearch"> <span>검색</span>
+
+							</a> <a href="#none" class="btnSearchreset" id="eSearchFormInit">
+
+								<span>초기화</span>
+
+							</a>
+
+
+
+						</div>
+
+						<!-- 표영역 -->
+
+						<div class="mBoardtypeListgScrollgCell">
+
+							<table class="eChkColor">
+					
+					
+									<tr>
+										<th scope="col" id="namn">아이디</th>
+										<th scope="col" id="password">비밀번호</th>
+										<th scope="col" id="name">이름</th>
+										<th scope="col" id="image">닉네임</th>
+										<th scope="col" id="email">이메일</th>
+										<th scope="col" id="phone">핸드폰번호</th>
+										<th scope="col" id="address">주소</th>
+
+
+									</tr>
+
+					
+								<!--  <tbody> </tbody>-->
+
+								<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								</tr>
+
+
+							</table>
+
+						</div>
+
+						<div class="mCtrltypeFooter">
+							<div class="gLeft">
+								<span class="txtLess">선택고객 </span> <a href="#none"
+									class="btnNormaldelete">확인</a> <a href="#none"
+									class="btnNormalmodify">수정</a>
+
+
+
+							</div>
+
+
+						</div>
+
+
+					</div>
+
+
+
+
+				</form>
+
+			</div>
+			<!--content 영역종료 -->
+
+
+		</div>
+		<!-- container 영역종료 -->
+	</div>
+	<!-- wrap영역종료 -->
+
+</body>
+</html>

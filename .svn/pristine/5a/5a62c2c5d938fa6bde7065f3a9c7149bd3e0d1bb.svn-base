@@ -1,0 +1,70 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div id="side">
+
+<div class="side_wrap -moslow">
+    
+    <div class="inner_wrap -moslow">
+            
+            <div class="lnb mypage-lnb">
+                <h2>마이페이지</h2>
+                <h3>쇼핑정보</h3>
+                <ul>
+                    <li><a href="../mypage/order_list.php">주문목록/배송조회</a></li>
+                    <li><a href="../mypage/cancel_list.php">취소/반품/교환 내역</a></li>
+                    <li><a href="../mypage/refund_list.php">환불/입금 내역</a></li>
+                    <li><a href="../mypage/wish_list.php">찜리스트</a></li>
+                </ul>
+
+                <h3 class="">내 덕찌</h3>
+                <ul>
+                    <li><a href="/mypage/ver1_my_ducczi2019.php">2019</a></li>
+                    <li><a href="/mypage/ducczi_list.php">2018</a></li>
+                </ul>
+
+
+                <h3>스파</h3>
+
+                <ul>
+                    <li><a href="/mypage/spa_order_list.php">스파 주문 내역</a></li>
+                    <li><a href="/mypage/spa_voucher_list.php">바우처 등록/예약</a></li>
+                    <li><a href="/mypage/spa_booking_list.php">스파 예약현황</a></li>
+                    <li><a href="/main/html.php?htmid=mypage/spa_useinfo.html">스파 이용안내</a></li>
+                </ul>
+
+                <h3>혜택관리</h3>
+                <ul>
+                    <li><a href="../mypage/coupon.php">쿠폰</a></li>
+                </ul>
+                <h3>고객센터</h3>
+                <ul>
+                    
+                    <li><a href="../service/notice.php">공지사항</a></li>
+                    <li><a href="../mypage/mypage_qa.php">1:1 문의</a></li>
+                    <li><a href="../service/faq.php">FAQ</a></li>
+                </ul>
+                <h3>회원정보</h3>
+                <ul>
+                    <li><a href="../mypage/my_page_password.php">회원정보 변경</a></li>
+                    <li><a href="../mypage/hack_out.php">회원 탈퇴</a></li>
+                    <li><a href="../mypage/shipping.php">배송지 관리</a></li>
+                </ul>
+                <h3 class="my-review"><a href="../mypage/mypage_plus_review_article.php">나의 플러스 리뷰</a></h3>
+ 
+                <!--<h3>멤버십</h3>-->
+
+                <hr>
+            </div>
+        </div>
+    
+</div>
+        </div>
+</body>
+</html>
