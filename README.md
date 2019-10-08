@@ -1,4 +1,4 @@
-# teamproject
+# shoppingmall
 The manager of the shopping mall page was responsible for implementing the page.
 Product registration, deletion, and publication have been implemented.
 The member's status change has been implemented.
